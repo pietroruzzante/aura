@@ -9,8 +9,8 @@ import 'package:stress/screens/Solutionpage.dart';
 class Homepage extends StatelessWidget {
 
   final headScore = HeadacheScore();
-  final stressScore = 2;
-  final weatherScore = 2;
+  final stressScore = 2.0;
+  final weatherScore = 2.0;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class Homepage extends StatelessWidget {
                         fontSize: 20),
                   ),
                   Consumer<HeadacheScore>(
-                    builder: (context, he, child) {
+                    builder: (context, headScore, child) {
                       return SemicircularIndicator(
                         strokeWidth: 20,
                         radius: 100,
