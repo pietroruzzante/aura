@@ -51,7 +51,7 @@ class Homepage extends StatelessWidget {
                       return SemicircularIndicator(
                         strokeWidth: 20,
                         radius: 100,
-                        progress: (headScore.calculateScore(stressScore, weatherScore)),
+                        progress: (headScore.calculateScore(stressScore, weatherScore))/100,
                         color: Color.fromARGB(255, 243, 122, 49),
                         bottomPadding: -20,
                         contain: true,
