@@ -5,11 +5,19 @@ import 'package:ml_algo/ml_algo.dart';
 import 'package:provider/provider.dart';
 import 'package:stress/models/headache_score.dart';
 
-class Homepage extends StatelessWidget {
+class Homepage extends StatefulWidget {
 
-  final headScore = HeadacheScore();
-  final stressScore = 2;
-  final weatherScore = 2;
+  @override
+  State<Homepage> createState() => _HomepageState();
+  
+}
+
+class _HomepageState extends State<Homepage> {
+
+  final double stressScore = 2;
+  final double weatherScore = 2;
+  //final headScore = HeadacheScore();
+  HeadacheScore headScore = HeadacheScore();
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +33,15 @@ class Homepage extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       body: Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Container(
               height: 300,
               width: 350,
               decoration: BoxDecoration(
                 color: Colors.white, //Color.fromARGB(255, 243, 122, 49),
-                borderRadius: BorderRadius.circular(
-                    20.0), // Applies same radius to all corners
+                borderRadius: BorderRadius.circular(20.0), // Applies same radius to all corners
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -61,54 +68,55 @@ class Homepage extends StatelessWidget {
                                 fontWeight: FontWeight.w800,
                                 color: Color.fromARGB(255, 243, 122, 49))),
                       );
-                    },
+                    }, // builder
                   ),
                   Text("Your stress level is very high!",
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
-                          color: Colors.white)),
-                ],
-              )),
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Headache forecast:",
+                          color: Colors.white)
+                  ),
+                ], // Children
+              )
+            ),
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Headache forecast:",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: Color.fromARGB(255, 231, 225, 220))),
-              ],
+                  ], // Children
+              ),
+              height: 50,
+              width: 350,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0), // Applies same radius to all corners
+              ),
             ),
-            height: 50,
-            width: 350,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                  20.0), // Applies same radius to all corners
-            ),
-          ),
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("What can you do?",
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text("What can you do?",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                         color: Color.fromARGB(255, 231, 225, 220)))
-              ],
+                ],
+              ),
+              height: 100,
+              width: 350,
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 24, 77, 142),
+                borderRadius: BorderRadius.circular(20.0), // Applies same radius to all corners
+              ),
             ),
-            height: 100,
-            width: 350,
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 24, 77, 142),
-              borderRadius: BorderRadius.circular(
-                  20.0), // Applies same radius to all corners
-            ),
-          ),
-        ],
-      )),
+          ], // Children
+        )
+      ),
       bottomNavigationBar: BottomNavigationBar(items: [
         BottomNavigationBarItem(
             icon: Icon(Icons.health_and_safety), label: 'Headache '),
