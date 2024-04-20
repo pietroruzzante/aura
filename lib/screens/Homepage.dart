@@ -4,12 +4,18 @@ import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:provider/provider.dart';
 import 'package:stress/models/headache_score.dart';
+import 'package:stress/screens/Solutionpage.dart';
 
 class Homepage extends StatelessWidget {
-
   final headScore = HeadacheScore();
-  final stressScore = 2;
+  final stressScore = 5;
   final weatherScore = 2;
+
+  // Method for navigation Homepage -> Solutionpage
+  void _toSolutionPage(BuildContext context) {
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: ((context) => Solutionpage())));
+  } //_toSolutionPage
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +57,14 @@ class Homepage extends StatelessWidget {
                       return SemicircularIndicator(
                         strokeWidth: 20,
                         radius: 100,
-                        progress: (headScore.calculateScore(stressScore, weatherScore))/100,
+                        progress: (headScore.calculateScore(
+                                stressScore, weatherScore)) /
+                            8,
                         color: Color.fromARGB(255, 243, 122, 49),
                         bottomPadding: -20,
                         contain: true,
-                        child: Text("5/8",
+                        child: Text(
+                            "${headScore.calculateScore(stressScore, weatherScore)}/8",
                             style: TextStyle(
                                 fontSize: 40,
                                 fontWeight: FontWeight.w800,
@@ -67,44 +76,57 @@ class Homepage extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
-                          color: Colors.white)),
+                          color: Color.fromARGB(255, 243, 122, 49))),
                 ],
               )),
           Container(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Headache forecast:",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15,
-                        color: Color.fromARGB(255, 231, 225, 220))),
-              ],
-            ),
-            height: 50,
-            width: 350,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                  20.0), // Applies same radius to all corners
-            ),
-          ),
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text("What can you do?",
+                Text("Headache history and forecast:",
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Color.fromARGB(255, 231, 225, 220)))
+                        color: Color.fromARGB(255, 24, 77, 142))),
               ],
             ),
+            height: 150,
+            width: 350,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.white // Applies same radius to all corners
+                ),
+          ),
+          Container(
             height: 100,
             width: 350,
             decoration: BoxDecoration(
               color: Color.fromARGB(255, 24, 77, 142),
               borderRadius: BorderRadius.circular(
                   20.0), // Applies same radius to all corners
+            ),
+            child: TextButton(
+              //True if this widget will be selected as the initial focus when no other node in its scope is currently focused.
+              autofocus: true,
+              //Called when the button is tapped or otherwise activated.
+              onPressed: () => _toSolutionPage(context),
+              //Customizes this button's appearance
+              style: TextButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 24, 77, 142),
+                  shadowColor: Colors.grey,
+                  elevation: 5,
+                  side: const BorderSide(color: Colors.white, width: 2),
+                  shape: const BeveledRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(5))),
+                  textStyle: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold)),
+              //Typically the button's label.
+              child: const Text(
+                "Solutions",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
         ],

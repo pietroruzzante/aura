@@ -7,5 +7,5 @@ class HeadacheScore extends ChangeNotifier {
     int score = stressScore + weatherScore;
     notifyListeners();
     return score;
-  }
+  }//calculateScore
 }
