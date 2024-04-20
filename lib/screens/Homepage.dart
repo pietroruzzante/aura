@@ -14,7 +14,7 @@ class Homepage extends StatelessWidget {
   // Method for navigation Homepage -> Solutionpage
   void _toSolutionPage(BuildContext context) {
     Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: ((context) => Solutionpage())));
+        .push(MaterialPageRoute(builder: ((context) => Solutionpage())));
   } //_toSolutionPage
 
   @override

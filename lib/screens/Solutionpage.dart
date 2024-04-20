@@ -13,6 +13,10 @@ class Solutionpage extends StatelessWidget {
             fontWeight: FontWeight.bold,
             fontSize: 20),
         backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: Center(
         child: Column(
