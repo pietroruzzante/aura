@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 
 class HeadacheScore extends ChangeNotifier {
-  double score = 0;
+  List<double> scores = [0, 0, 0, 0, 0, 0, 0];
 
-  double calculateScore(double stressScore, double weatherScore){
-    score = stressScore + weatherScore;
+  double getScore(int day){
+    final stressScore = getStress();
+    final weatherScore = getWeather();
+    this.refreshScore(stressScore, weatherScore);
+    return scores[day];
+  }//getScore
+
+  void refreshScore(List<double> stressScore, List<double> weatherScore){
+    for (int i=0; i<6;i++){
+      scores[i] = stressScore[i] + weatherScore[i];
+    }
     notifyListeners();
-    return score;
-  }//calculateScore
+  }//refreshScore
 }
+
+
+
+
