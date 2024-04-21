@@ -6,7 +6,7 @@ class Solutionpage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Solution",
+          "Solutions",
         ),
         titleTextStyle: TextStyle(
             color: const Color.fromARGB(255, 24, 77, 142),

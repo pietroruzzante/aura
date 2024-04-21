@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
-import 'package:ml_dataframe/ml_dataframe.dart';
-import 'package:ml_algo/ml_algo.dart';
 import 'package:provider/provider.dart';
 import 'package:stress/models/headache_score.dart';
-import 'package:stress/screens/Solutionpage.dart';
+
 
 class Homepage extends StatelessWidget {
 
+  final stressScore = [0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0];
+  final weatherScore = [0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0];
   final headScore = HeadacheScore();
-  final stressScore = 2.0;
-  final weatherScore = 2.0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +31,8 @@ class Homepage extends StatelessWidget {
               height: 300,
               width: 350,
               decoration: BoxDecoration(
-                color: Colors.white, //Color.fromARGB(255, 243, 122, 49),
-                borderRadius: BorderRadius.circular(20.0), // Applies same radius to all corners
+                color: Colors.white, 
+                borderRadius: BorderRadius.circular(20.0), 
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -51,14 +49,12 @@ class Homepage extends StatelessWidget {
                       return SemicircularIndicator(
                         strokeWidth: 20,
                         radius: 100,
-                        progress: (headScore.calculateScore(
-                                stressScore, weatherScore)) /
-                            8,
+                        progress: (headScore.getScore(3))/8,
                         color: Color.fromARGB(255, 243, 122, 49),
                         bottomPadding: -20,
                         contain: true,
                         child: Text(
-                            "${headScore.calculateScore(stressScore, weatherScore)}/8",
+                            "${headScore.getScore(3)}/8",
                             style: TextStyle(
                                 fontSize: 40,
                                 fontWeight: FontWeight.w800,
