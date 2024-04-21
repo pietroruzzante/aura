@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
-import 'package:ml_dataframe/ml_dataframe.dart';
-import 'package:ml_algo/ml_algo.dart';
 import 'package:provider/provider.dart';
 import 'package:stress/models/headache_score.dart';
-import 'package:stress/screens/Solutionpage.dart';
+
 
 class Homepage extends StatelessWidget {
 

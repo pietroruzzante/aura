@@ -3,7 +3,8 @@ import 'package:stress/models/headache_score.dart';
 import 'package:stress/screens/Splash.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+
+void main(){
   runApp(const MyApp());
 }
 
