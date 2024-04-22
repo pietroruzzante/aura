@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
@@ -11,8 +13,8 @@ class HeadacheScore extends ChangeNotifier {
     return scores[day];
   } //getScore
 
-  void refreshScore() {
-    final stressScore = getStress();
+  void refreshScore() async{
+    final stressScore = await getStress();
     final weatherScore = getWeather();
     for (int i = 0; i < 6; i++) {
       scores[i] = stressScore[i] + weatherScore[i];
@@ -20,17 +22,24 @@ class HeadacheScore extends ChangeNotifier {
     notifyListeners();
   } //refreshScore
 
-  List<double> getStress(){
+  Future<List<double>> getStress() async{
     
     final featureNames = ["hours_of_sleep", "heart_rate"];
     final data = DataFrame([
       featureNames,
       [1.0, 200.0],
+      [1.0, 200.0],
+      [1.0, 200.0],
+      [9.0, 130.0],
+      [1.0, 200.0],
+      [1.0, 200.0],
       [1.0, 200.0]
     ]); //Here we need data request from Impact and from database
-    final classifier = DecisionTreeClassifier.fromJson('assets/classifier_model/stress_model.json');
+    final file = File('/Users/pietroruzzante/Documents/BWT/Project/stress/assets/classifier_model/stress_model.json');
+    final json = await file.readAsString();
+    final classifier = DecisionTreeClassifier.fromJson(json);
     final prediction = classifier.predict(data).toMatrix().asFlattenedList;
-
+    notifyListeners();
     return prediction;
   } //getStress
 
@@ -39,7 +48,7 @@ class HeadacheScore extends ChangeNotifier {
       0.0,
       0.0,
       0.0,
-      0.0,
+      1002.0,
       0.0,
       0.0,
       0.0
@@ -60,7 +69,7 @@ class HeadacheScore extends ChangeNotifier {
         weatherScore[i] = 4.0;
       }
     }
-
+    notifyListeners();
     return weatherScore;
   } //getWeather
 

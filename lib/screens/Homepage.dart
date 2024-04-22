@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:stress/models/headache_score.dart';
+import 'package:stress/screens/Solutionpage.dart';
 
 
 class Homepage extends StatelessWidget {
 
-  final stressScore = [0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0];
-  final weatherScore = [0.0, 0.0, 0.0, 2.0, 0.0, 0.0, 0.0];
-  final headScore = HeadacheScore();
-
+  final headScore = HeadacheScore().refreshScore();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +53,7 @@ class Homepage extends StatelessWidget {
                         bottomPadding: -20,
                         contain: true,
                         child: Text(
-                            "${headScore.getScore(3)}/8",
+                            "${headScore.getScore(3).toInt()}/8",
                             style: TextStyle(
                                 fontSize: 40,
                                 fontWeight: FontWeight.w800,
@@ -95,10 +94,16 @@ class Homepage extends StatelessWidget {
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
-                        color: Color.fromARGB(255, 231, 225, 220)))
+                        color: Color.fromARGB(255, 231, 225, 220))),
+                ElevatedButton.icon(
+                onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Solutionpage()));
+              }, 
+                label: Text(
+                "Press and find some solutions"))
               ],
             ),
-            height: 100,
+            height: 150,
             width: 350,
             decoration: BoxDecoration(
               color: Color.fromARGB(255, 24, 77, 142),
@@ -116,3 +121,4 @@ class Homepage extends StatelessWidget {
     );
   }
 }
+
