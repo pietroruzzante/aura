@@ -106,7 +106,7 @@ class Homepage extends StatelessWidget {
             height: 150,
             width: 350,
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 24, 77, 142),
+              color: Colors.white,
               borderRadius: BorderRadius.circular(
                   20.0), // Applies same radius to all corners
             ),
