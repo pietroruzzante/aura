@@ -35,7 +35,7 @@ class HeadacheScore extends ChangeNotifier {
       [1.0, 200.0],
       [1.0, 200.0]
     ]); //Here we need data request from Impact and from database
-    final file = File('/Users/pietroruzzante/Documents/BWT/Project/stress/assets/classifier_model/stress_model.json');
+    final file = File('stress_model.json');
     final json = await file.readAsString();
     final classifier = DecisionTreeClassifier.fromJson(json);
     final prediction = classifier.predict(data).toMatrix().asFlattenedList;

@@ -30,7 +30,7 @@ class Splash extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             Image.asset(
-              'assets/images/app_logo_nuvolafulmine.jpg',
+              'app_logo_nuvolafulmine.jpg',
               height: 200,
               width: 200,
               ),
