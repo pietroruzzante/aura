@@ -1,7 +1,8 @@
-import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
+import 'package:flutter/services.dart';
 
 
 class HeadacheScore extends ChangeNotifier {
@@ -35,8 +36,7 @@ class HeadacheScore extends ChangeNotifier {
       [1.0, 200.0],
       [1.0, 200.0]
     ]); //Here we need data request from Impact and from database
-    final file = File('stress_model.json');
-    final json = await file.readAsString();
+    final json = await rootBundle.loadString('assets/stress_model.json');
     final classifier = DecisionTreeClassifier.fromJson(json);
     final prediction = classifier.predict(data).toMatrix().asFlattenedList;
     notifyListeners();
@@ -75,3 +75,4 @@ class HeadacheScore extends ChangeNotifier {
   } //getWeather
 
 }
+
