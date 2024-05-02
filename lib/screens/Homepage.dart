@@ -47,14 +47,36 @@ class Homepage extends StatelessWidget {
           )
         ))
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(
+            drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Text('login_flow'),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () => _logout(context),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
             icon: Icon(Icons.health_and_safety), label: 'Headache '),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Settings'),
-      ]),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Settings'),
+        ]
+      )
     );
   }
 }
+
+
+
+
+
 
 class DayButtonWidget extends StatefulWidget {
   final DateTime currentDate;
@@ -261,30 +283,5 @@ class circularHeadache extends StatelessWidget {
   }
 }
 
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: Text('login_flow'),
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () => _logout(context),
-            ),
-          ],
-        ),
-      ),
 
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.health_and_safety), label: 'Headache '),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Settings'),
-        ]
-      ),
-    );
-  }
-}
 
