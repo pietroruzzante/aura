@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stress/screens/Homepage.dart';
+import 'package:stress/screens/Loginpage.dart';
 
 class Splash extends StatelessWidget {
   static const route = '/splash/';
@@ -13,9 +15,24 @@ class Splash extends StatelessWidget {
         .pushReplacement(MaterialPageRoute(builder: ((context) => Homepage())));
   } //_toHomePage
 
+  void _toLoginPage(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: ((context) => LoginPage())));
+  } //_toHomePage
+
+  void _checkAuth(BuildContext context) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  if (isLoggedIn) {
+    _toHomePage(context);
+  } else {
+    _toLoginPage(context);
+  }
+}
+
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 5), () => _toHomePage(context));
+    Future.delayed(const Duration(seconds: 5), () => _checkAuth(context));
     return Material(
       child: Container(
         color: Colors.white,
@@ -33,7 +50,7 @@ class Splash extends StatelessWidget {
               'assets/app_logo_nuvolafulmine.jpg',
               height: 200,
               width: 200,
-              ),
+            ),
           ],
         ),
       ),

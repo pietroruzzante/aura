@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stress/models/headache_score.dart';
+import 'package:stress/screens/Loginpage.dart';
 import 'package:stress/screens/Solutionpage.dart';
 
 
 class Homepage extends StatelessWidget {
 
   final headScore = HeadacheScore().refreshScore();
+  
+  void _logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -123,6 +131,23 @@ class Homepage extends StatelessWidget {
           )
         )
       ),
+
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Text('login_flow'),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () => _logout(context),
+            ),
+          ],
+        ),
+      ),
+
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -133,3 +158,5 @@ class Homepage extends StatelessWidget {
     );
   }
 }
+
+
