@@ -24,14 +24,13 @@ class Homepage extends StatelessWidget {
         width: double.infinity,
         height: double.infinity,
         child: SingleChildScrollView(
-          child: Container(
-            width: 200,
+          child: FittedBox(
             child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                circularHeadache(),
                 DayButtonWidget(currentDate: DateTime.now()),
+                circularHeadache(),
                 headacheForecast(),
                 solutionsHomepage(),
               ],
@@ -63,8 +62,7 @@ class _DayButtonWidgetState extends State<DayButtonWidget> {
   Widget build(BuildContext context) {
     final dayNumbers = _calculateDayNumbers();
 
-    return Flexible(
-        child: Row(
+    return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             for (int i = 0; i < dayNumbers.length; i++)
@@ -82,7 +80,7 @@ class _DayButtonWidgetState extends State<DayButtonWidget> {
             ),
           ],
         )
-    );
+    ;
   }
 
   List<int> _calculateDayNumbers() {
