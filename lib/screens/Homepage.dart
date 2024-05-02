@@ -73,11 +73,6 @@ class Homepage extends StatelessWidget {
   }
 }
 
-
-
-
-
-
 class DayButtonWidget extends StatefulWidget {
   final DateTime currentDate;
 
