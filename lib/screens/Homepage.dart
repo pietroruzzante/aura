@@ -36,7 +36,7 @@ class Homepage extends StatelessWidget {
           child: FittedBox(
             child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 DayButtonWidget(currentDate: DateTime.now()),
                 circularHeadache(),

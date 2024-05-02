@@ -40,16 +40,16 @@ class Splash extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'No Stress',
+              'Aura',
               style: TextStyle(
-                  color: Color.fromARGB(255, 228, 175, 41),
+                  color: Color.fromARGB(255, 6, 40, 73),
                   fontSize: 40,
                   fontWeight: FontWeight.bold),
             ),
             Image.asset(
-              'assets/app_logo_nuvolafulmine.jpg',
-              height: 200,
-              width: 200,
+              'assets/new_logo.png',
+              height: 250,
+              width: 250,
             ),
           ],
         ),
