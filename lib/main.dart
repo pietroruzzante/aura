@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
           colorScheme:
               ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 243, 122, 49)),
           useMaterial3: true,
+          
         ),
         home:  Splash()
       )
