@@ -65,11 +65,10 @@ class Homepage extends StatelessWidget {
               // Utilizza il valore restituito quando la Future è completata
               final List<double> score = snapshot.data!;
               // Ora puoi utilizzare 'score' come una List<double> nel widget
-              return SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                      child: FittedBox(
+              return //SizedBox(
+                  //width: double.infinity,
+                  //height: double.infinity,
+                       FittedBox(
                           child: Center(
                               child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,7 +79,7 @@ class Homepage extends StatelessWidget {
                       headacheForecast(),
                       solutionsHomepage(),
                     ],
-                  )))));
+                  )));
             }));
   }
 }
@@ -110,7 +109,7 @@ class _DayButtonWidgetState extends State<DayButtonWidget> {
             onPressed: () {},
             child: Text(
               dayNumbers[i].toString(),
-              style: const TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: getButtonColor(widget.score[i]),
@@ -189,8 +188,8 @@ class solutionsHomepage extends StatelessWidget {
           Text("What can you do?",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Color.fromARGB(255, 231, 225, 220))),
+                  fontSize: 25,
+                  color: Palette.blue)),
           ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(context,
@@ -199,8 +198,8 @@ class solutionsHomepage extends StatelessWidget {
               label: Text("Press and find some solutions"))
         ],
       ),
-      height: 150,
-      width: 350,
+      height: 300,
+      width: 450,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius:
@@ -225,11 +224,11 @@ class headacheForecast extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
-                  color: Color.fromARGB(255, 231, 225, 220))),
+                  color: Palette.blue)),
         ],
       ),
       height: 50,
-      width: 350,
+      width: 450,
       decoration: BoxDecoration(
         borderRadius:
             BorderRadius.circular(20.0), // Applies same radius to all corners
@@ -246,8 +245,8 @@ class circularHeadache extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: 300,
-        width: 350,
+        height: 400,
+        width: 450,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(20.0),
@@ -258,24 +257,24 @@ class circularHeadache extends StatelessWidget {
             Text(
               "Your headache score:",
               style: TextStyle(
-                  color: Color.fromARGB(255, 243, 122, 49),
+                  color: Palette.blue,
                   fontWeight: FontWeight.w700,
                   fontSize: 20),
             ),
             Consumer<HeadacheScore>(
               builder: (context, headScore, child) {
                 return SemicircularIndicator(
-                  strokeWidth: 20,
-                  radius: 100,
+                  strokeWidth: 30,
+                  radius: 150,
                   progress: (headScore.getScore(3)) / 8,
-                  color: Color.fromARGB(255, 243, 122, 49),
+                  color: Palette.blue,
                   bottomPadding: -20,
                   contain: true,
                   child: Text("${headScore.getScore(3).toInt()}/8",
                       style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w800,
-                          color: Color.fromARGB(255, 243, 122, 49))),
+                          color: Palette.blue)),
                 );
               }, // builder
             ),
@@ -283,7 +282,7 @@ class circularHeadache extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
-                    color: Colors.white)),
+                    color: Palette.blue)),
           ],
         ));
   }
