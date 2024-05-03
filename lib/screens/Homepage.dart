@@ -5,78 +5,92 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stress/models/headache_score.dart';
 import 'package:stress/screens/Loginpage.dart';
 import 'package:stress/screens/Solutionpage.dart';
+import 'package:stress/models/palette.dart';
 
 class Homepage extends StatelessWidget {
-  
-  final headScore = HeadacheScore().refreshScore();
-  
+  final score = HeadacheScore().refreshScore();
+
   void _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Stress level",
+        appBar: AppBar(
+          title: Text(
+            "Aura score",
+          ),
+          titleTextStyle: TextStyle(
+              color: const Color.fromARGB(255, 24, 77, 142),
+              fontWeight: FontWeight.bold,
+              fontSize: 20),
+          backgroundColor: Colors.white,
         ),
-        titleTextStyle: TextStyle(
-            color: const Color.fromARGB(255, 24, 77, 142),
-            fontWeight: FontWeight.bold,
-            fontSize: 20),
-        backgroundColor: Colors.white,
-      ),
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: SingleChildScrollView(
-          child: FittedBox(
-            child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                DayButtonWidget(currentDate: DateTime.now()),
-                circularHeadache(),
-                headacheForecast(),
-                solutionsHomepage(),
-              ],
-            )
-          )
-        ))
-      ),
-            drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              child: Text('login_flow'),
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () => _logout(context),
-            ),
-          ],
+        drawer: Drawer(
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                child: Text('login_flow'),
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text('Logout'),
+                onTap: () => _logout(context),
+              ),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
+        bottomNavigationBar: BottomNavigationBar(items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.health_and_safety), label: 'Headache '),
+              icon: Icon(Icons.health_and_safety), label: 'Headache '),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Settings'),
-        ]
-      )
-    );
+        ]),
+        body: FutureBuilder<List<double>>(
+            future: score,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              if (snapshot.hasError) {
+                return Text(
+                    'Error: ${snapshot.error}'); // Gestisci eventuali errori
+              }
+              // Utilizza il valore restituito quando la Future è completata
+              final List<double> score = snapshot.data!;
+              // Ora puoi utilizzare 'score' come una List<double> nel widget
+              return SizedBox(
+                  width: double.infinity,
+                  height: double.infinity,
+                  child: SingleChildScrollView(
+                      child: FittedBox(
+                          child: Center(
+                              child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DayButtonWidget(
+                          currentDate: DateTime.now(), score: score),
+                      circularHeadache(),
+                      headacheForecast(),
+                      solutionsHomepage(),
+                    ],
+                  )))));
+            }));
   }
 }
 
 class DayButtonWidget extends StatefulWidget {
   final DateTime currentDate;
+  final List<double> score;
 
-  const DayButtonWidget({Key? key, required this.currentDate})
+  const DayButtonWidget(
+      {Key? key, required this.currentDate, required this.score})
       : super(key: key);
 
   @override
@@ -89,24 +103,23 @@ class _DayButtonWidgetState extends State<DayButtonWidget> {
     final dayNumbers = _calculateDayNumbers();
 
     return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            for (int i = 0; i < dayNumbers.length; i++)
-            ElevatedButton(
-              onPressed: () {},
-              child: Text(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        for (int i = 0; i < dayNumbers.length; i++)
+          ElevatedButton(
+            onPressed: () {},
+            child: Text(
               dayNumbers[i].toString(),
               style: const TextStyle(fontSize: 16),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: _getButtonColor(i),
-                shape: const CircleBorder(),
-                padding: const EdgeInsets.all(10),
-              ),
             ),
-          ],
-        )
-    ;
+            style: ElevatedButton.styleFrom(
+              backgroundColor: getButtonColor(widget.score[i]),
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(10),
+            ),
+          ),
+      ],
+    );
   }
 
   List<int> _calculateDayNumbers() {
@@ -131,7 +144,10 @@ class _DayButtonWidgetState extends State<DayButtonWidget> {
         previousMonth = 12;
       }
       */
-      selectedDay = DateTime(widget.currentDate.year, widget.currentDate.month, 0).day + day - subtract;
+      selectedDay =
+          DateTime(widget.currentDate.year, widget.currentDate.month, 0).day +
+              day -
+              subtract;
       return selectedDay;
     } else {
       return selectedDay;
@@ -139,8 +155,12 @@ class _DayButtonWidgetState extends State<DayButtonWidget> {
   }
 
   int _getNextDay(int day, int toAdd) {
-    final lastDayOfMonth = DateTime(widget.currentDate.year, widget.currentDate.month + 1, 0).day; // Get number of days in current month
-    int selectedDay = DateTime(widget.currentDate.year, widget.currentDate.month, day).day + toAdd;
+    final lastDayOfMonth =
+        DateTime(widget.currentDate.year, widget.currentDate.month + 1, 0)
+            .day; // Get number of days in current month
+    int selectedDay =
+        DateTime(widget.currentDate.year, widget.currentDate.month, day).day +
+            toAdd;
     if (selectedDay > lastDayOfMonth) {
       var nextMonth = widget.currentDate.month + 1;
       if (nextMonth > 12) {
@@ -153,15 +173,6 @@ class _DayButtonWidgetState extends State<DayButtonWidget> {
     }
   }
 
-  Color _getButtonColor(int index) {
-    if (index == 3) {
-      return Colors.blue; // Highlight current day
-    } else if (index < 3) {
-      return Colors.green; // Previous days
-    } else {
-      return Colors.green; // Next days
-    }
-  }
 }
 
 class solutionsHomepage extends StatelessWidget {
@@ -278,5 +289,14 @@ class circularHeadache extends StatelessWidget {
   }
 }
 
-
-
+Color getButtonColor(double score) {
+    if (score < 2) {
+      return Palette.lightBlue1;
+    } else if ((score >=2) & (score < 4)) {
+      return Palette.lightBlue4;
+    } else if ((score >=4) & (score < 6)) {
+      return Palette.blue;
+    } else {
+      return Palette.yellow;
+    }
+  }

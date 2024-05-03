@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _icon() {
     return Image.asset(
-              'assets/new_logo.png',
+              'assets/logo.png',
               height: 250,
               width: 250,
             );
