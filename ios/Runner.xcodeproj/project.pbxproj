@@ -15,7 +15,8 @@
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
 		C9D537ABA5CA4C2472355260 /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D6B7418651D40B419FF8DCA /* Pods_RunnerTests.framework */; };
-		F3BC8B1E04DB4E0FFF1BC6CD /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FC8B6CFF472DDE03255F7B /* Pods_Runner.framework */; };
+		FBBBF6502BE4073E007BA503 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27FC8B6CFF472DDE03255F7B /* Pods_Runner.framework */; };
+		FBBBF6512BE4073E007BA503 /* Pods_Runner.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 27FC8B6CFF472DDE03255F7B /* Pods_Runner.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +36,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FBBBF6512BE4073E007BA503 /* Pods_Runner.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -72,7 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3BC8B1E04DB4E0FFF1BC6CD /* Pods_Runner.framework in Frameworks */,
+				FBBBF6502BE4073E007BA503 /* Pods_Runner.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,7 +107,6 @@
 				3F1532BD37353C6BBA39830F /* Pods-RunnerTests.release.xcconfig */,
 				C80FF7CFBA81B4E13D19EBE6 /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
