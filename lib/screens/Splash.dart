@@ -47,9 +47,9 @@ class Splash extends StatelessWidget {
                   fontWeight: FontWeight.bold),
             ),
             Image.asset(
-              'assets/new_logo.png',
-              height: 250,
-              width: 250,
+              'assets/logo.png',
+              height: 200,
+              width: 200,
             ),
           ],
         ),

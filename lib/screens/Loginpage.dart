@@ -89,10 +89,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _icon() {
     return Image.asset(
-      'assets/new_logo.png',
-      height: 250,
-      width: 250,
-    );
+              'assets/logo.png',
+              height: 250,
+              width: 250,
+            );
   }
 
   Widget _inputField(String hintText, TextEditingController controller,
