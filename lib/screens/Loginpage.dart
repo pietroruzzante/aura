@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stress/models/authentication_service.dart';
 import 'package:stress/screens/Homepage.dart';
+import 'package:stress/models/palette.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -46,8 +47,8 @@ class _LoginPageState extends State<LoginPage> {
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
           colors: [
-            Color.fromRGBO(186, 233, 255, 1),
-            Color.fromARGB(255, 0, 83, 151),
+            Palette.white,
+            Palette.blue,
           ],
         ),
       ),
@@ -90,8 +91,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _icon() {
     return Image.asset(
               'assets/logo.png',
-              height: 250,
-              width: 250,
+              height: 200,
+              width: 200,
             );
   }
 

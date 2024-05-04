@@ -25,7 +25,7 @@ class Homepage extends StatelessWidget {
             "Aura score",
           ),
           titleTextStyle: TextStyle(
-              color: const Color.fromARGB(255, 24, 77, 142),
+              color: Palette.blue,
               fontWeight: FontWeight.bold,
               fontSize: 20),
           backgroundColor: Colors.white,
@@ -35,7 +35,7 @@ class Homepage extends StatelessWidget {
             padding: EdgeInsets.zero,
             children: [
               DrawerHeader(
-                child: Text('login_flow'),
+                child: Text('login'),
               ),
               ListTile(
                 leading: Icon(Icons.logout),
@@ -62,16 +62,11 @@ class Homepage extends StatelessWidget {
                 return Text(
                     'Error: ${snapshot.error}'); // Gestisci eventuali errori
               }
-              // Utilizza il valore restituito quando la Future è completata
               final List<double> score = snapshot.data!;
-              // Ora puoi utilizzare 'score' come una List<double> nel widget
-              return //SizedBox(
-                  //width: double.infinity,
-                  //height: double.infinity,
-                       FittedBox(
+              return FittedBox(
                           child: Center(
                               child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       DayButtonWidget(
                           currentDate: DateTime.now(), score: score),
@@ -255,7 +250,7 @@ class circularHeadache extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              "Your headache score:",
+              "Your Aura score:",
               style: TextStyle(
                   color: Palette.blue,
                   fontWeight: FontWeight.w700,
