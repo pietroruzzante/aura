@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider<HeadacheScore>(
       create: (context) => HeadacheScore(),
       child: MaterialApp(
-        title: 'stress',
+        title: 'Aura',
         theme: ThemeData(
           colorScheme:
               ColorScheme.fromSeed(seedColor: Palette.blue),
