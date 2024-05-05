@@ -9,6 +9,7 @@ import 'package:stress/models/palette.dart';
 
 class Homepage extends StatelessWidget {
   final score = HeadacheScore().refreshScore();
+  final day = 5; //set default day to the current day
 
   void _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -60,22 +61,40 @@ class Homepage extends StatelessWidget {
               }
               if (snapshot.hasError) {
                 return Text(
-                    'Error: ${snapshot.error}'); // Gestisci eventuali errori
+                    'Error: ${snapshot.error}');
               }
               final List<double> score = snapshot.data!;
-              return FittedBox(
-                          child: Center(
+              return Center(
+                          child: FittedBox(
                               child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      DayArrows(),
                       DayButtonWidget(
                           currentDate: DateTime.now(), score: score),
-                      circularHeadache(),
-                      headacheForecast(),
+                      circularHeadache(score: score, day:day),
                       solutionsHomepage(),
                     ],
                   )));
             }));
+  }
+}
+
+class DayArrows extends StatelessWidget{
+  const DayArrows({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 450,
+      child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+      IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new, size: 30)),
+      IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios, size: 30))
+    ]));
   }
 }
 
@@ -190,10 +209,10 @@ class solutionsHomepage extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Solutionpage()));
               },
-              label: Text("Press and find some solutions"))
+              label: Text("Press and find some solutions", textScaler: TextScaler.linear(1.4),))
         ],
       ),
-      height: 300,
+      height: 200,
       width: 450,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -204,41 +223,23 @@ class solutionsHomepage extends StatelessWidget {
   }
 }
 
-class headacheForecast extends StatelessWidget {
-  const headacheForecast({
-    super.key,
-  });
+
+class circularHeadache extends StatefulWidget {
+  final List<double> score;
+  final int day; //set default day to the current day
+
+  const circularHeadache(
+      {Key? key, required this.score, required this.day})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text("Headache forecast:",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                  color: Palette.blue)),
-        ],
-      ),
-      height: 50,
-      width: 450,
-      decoration: BoxDecoration(
-        borderRadius:
-            BorderRadius.circular(20.0), // Applies same radius to all corners
-      ),
-    );
-  }
+  State<circularHeadache> createState() => circularHeadacheState();
 }
 
-class circularHeadache extends StatelessWidget {
-  const circularHeadache({
-    super.key,
-  });
-
+class circularHeadacheState extends State<circularHeadache> {
   @override
   Widget build(BuildContext context) {
+
     return Container(
         height: 400,
         width: 450,
@@ -257,15 +258,15 @@ class circularHeadache extends StatelessWidget {
                   fontSize: 20),
             ),
             Consumer<HeadacheScore>(
-              builder: (context, headScore, child) {
+              builder: (context, score, child) {
                 return SemicircularIndicator(
                   strokeWidth: 30,
                   radius: 150,
-                  progress: (headScore.getScore(3)) / 8,
+                  progress: (widget.score[widget.day]) / 8,
                   color: Palette.blue,
                   bottomPadding: -20,
                   contain: true,
-                  child: Text("${headScore.getScore(3).toInt()}/8",
+                  child: Text("${widget.score[widget.day].toInt()}/8",
                       style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.w800,
@@ -273,7 +274,7 @@ class circularHeadache extends StatelessWidget {
                 );
               }, // builder
             ),
-            Text("Your stress level is very high!",
+            Text(getText(widget.score[widget.day]),
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -282,6 +283,7 @@ class circularHeadache extends StatelessWidget {
         ));
   }
 }
+
 
 Color getButtonColor(double score) {
     if (score < 2) {
@@ -292,5 +294,17 @@ Color getButtonColor(double score) {
       return Palette.blue;
     } else {
       return Palette.yellow;
+    }
+  }
+
+  String getText(double score) {
+    if (score < 2) {
+      return "Low level";
+    } else if ((score >=2) & (score < 4)) {
+      return "Medium level";
+    } else if ((score >=4) & (score < 6)) {
+      return "High level";
+    } else {
+      return "Your level is very high!";
     }
   }
