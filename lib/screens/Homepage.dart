@@ -26,9 +26,7 @@ class Homepage extends StatelessWidget {
             "Aura score",
           ),
           titleTextStyle: TextStyle(
-              color: Palette.blue,
-              fontWeight: FontWeight.bold,
-              fontSize: 20),
+              color: Palette.blue, fontWeight: FontWeight.bold, fontSize: 20),
           backgroundColor: Colors.white,
         ),
         drawer: Drawer(
@@ -60,41 +58,87 @@ class Homepage extends StatelessWidget {
                 );
               }
               if (snapshot.hasError) {
-                return Text(
-                    'Error: ${snapshot.error}');
+                return Text('Error: ${snapshot.error}');
               }
               final List<double> score = snapshot.data!;
-              return Center(
-                          child: FittedBox(
-                              child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DayArrows(),
-                      DayButtonWidget(
-                          currentDate: DateTime.now(), score: score),
-                      circularHeadache(score: score, day:day),
-                      solutionsHomepage(),
-                    ],
-                  )));
+              return DailyScore(score: score);
             }));
   }
 }
 
-class DayArrows extends StatelessWidget{
-  const DayArrows({
-    super.key,
+class DailyScore extends StatefulWidget {
+  final List<double> score;
+
+  DailyScore({Key? key, required this.score}) : super(key: key);
+  @override
+  _DailyScoreState createState() => _DailyScoreState();
+}
+
+class _DailyScoreState extends State<DailyScore> {
+  int day = 3;
+
+  void incrementDay() {
+    setState(() {
+      if (day < 6) {
+        day++;
+      }
+    });
+  }
+
+  void decrementDay() {
+    setState(() {
+      if (day > 0) {
+        day--;
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: FittedBox(
+            child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        DayArrows(
+            day: day, incrementDay: incrementDay, decrementDay: decrementDay),
+        DayButtonWidget(currentDate: DateTime.now(), score: widget.score),
+        circularHeadache(score: widget.score, day: day),
+        solutionsHomepage(),
+      ],
+    )));
+  }
+}
+
+class DayArrows extends StatelessWidget {
+  final int day;
+  final VoidCallback incrementDay;
+  final VoidCallback decrementDay;
+
+  DayArrows({
+    required this.day,
+    required this.incrementDay,
+    required this.decrementDay,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 450,
-      child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-      IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios_new, size: 30)),
-      IconButton(onPressed: (){}, icon: Icon(Icons.arrow_forward_ios, size: 30))
-    ]));
+        width: 450,
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              if (day > 0)
+          IconButton(
+              onPressed: decrementDay,
+              icon: Icon(Icons.arrow_back_ios_new, size: 30)),
+              SizedBox(width: 200),
+              if (day < 6)
+          IconButton(
+              onPressed: incrementDay,
+              icon: Icon(Icons.arrow_forward_ios, size: 30)),
+        ]
+        )
+        );
   }
 }
 
@@ -185,7 +229,6 @@ class _DayButtonWidgetState extends State<DayButtonWidget> {
       return selectedDay;
     }
   }
-
 }
 
 class solutionsHomepage extends StatelessWidget {
@@ -209,7 +252,10 @@ class solutionsHomepage extends StatelessWidget {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Solutionpage()));
               },
-              label: Text("Press and find some solutions", textScaler: TextScaler.linear(1.4),))
+              label: Text(
+                "Solutions",
+                textScaler: TextScaler.linear(1.7),
+              ))
         ],
       ),
       height: 200,
@@ -223,13 +269,11 @@ class solutionsHomepage extends StatelessWidget {
   }
 }
 
-
 class circularHeadache extends StatefulWidget {
   final List<double> score;
   final int day; //set default day to the current day
 
-  const circularHeadache(
-      {Key? key, required this.score, required this.day})
+  const circularHeadache({Key? key, required this.score, required this.day})
       : super(key: key);
 
   @override
@@ -239,7 +283,6 @@ class circularHeadache extends StatefulWidget {
 class circularHeadacheState extends State<circularHeadache> {
   @override
   Widget build(BuildContext context) {
-
     return Container(
         height: 400,
         width: 450,
@@ -259,7 +302,8 @@ class circularHeadacheState extends State<circularHeadache> {
             ),
             Consumer<HeadacheScore>(
               builder: (context, score, child) {
-                return SemicircularIndicator(
+                return
+                SemicircularIndicator(
                   strokeWidth: 30,
                   radius: 150,
                   progress: (widget.score[widget.day]) / 8,
@@ -284,27 +328,26 @@ class circularHeadacheState extends State<circularHeadache> {
   }
 }
 
-
 Color getButtonColor(double score) {
-    if (score < 2) {
-      return Palette.lightBlue1;
-    } else if ((score >=2) & (score < 4)) {
-      return Palette.lightBlue4;
-    } else if ((score >=4) & (score < 6)) {
-      return Palette.blue;
-    } else {
-      return Palette.yellow;
-    }
+  if (score < 2) {
+    return Palette.lightBlue1;
+  } else if ((score >= 2) & (score < 4)) {
+    return Palette.lightBlue4;
+  } else if ((score >= 4) & (score < 6)) {
+    return Palette.blue;
+  } else {
+    return Palette.yellow;
   }
+}
 
-  String getText(double score) {
-    if (score < 2) {
-      return "Low level";
-    } else if ((score >=2) & (score < 4)) {
-      return "Medium level";
-    } else if ((score >=4) & (score < 6)) {
-      return "High level";
-    } else {
-      return "Your level is very high!";
-    }
+String getText(double score) {
+  if (score < 2) {
+    return "Low level";
+  } else if ((score >= 2) & (score < 4)) {
+    return "Medium level";
+  } else if ((score >= 4) & (score < 6)) {
+    return "High level";
+  } else {
+    return "Your level is very high!";
   }
+}
