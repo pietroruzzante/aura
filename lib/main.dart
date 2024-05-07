@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:stress/models/headache_score.dart';
-import 'package:stress/models/palette.dart';
-import 'package:stress/screens/Splash.dart';
+import 'package:aura/models/headache_score.dart';
+import 'package:aura/models/palette.dart';
+import 'package:aura/screens/Splash.dart';
 import 'package:provider/provider.dart';
 
 

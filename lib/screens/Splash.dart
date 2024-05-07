@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stress/screens/Homepage.dart';
-import 'package:stress/screens/Loginpage.dart';
+import 'package:aura/screens/Homepage.dart';
+import 'package:aura/screens/Loginpage.dart';
 
 class Splash extends StatelessWidget {
   static const route = '/splash/';

@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:semicircle_indicator/semicircle_indicator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stress/models/headache_score.dart';
-import 'package:stress/screens/Loginpage.dart';
-import 'package:stress/screens/Solutionpage.dart';
-import 'package:stress/models/palette.dart';
+import 'package:aura/models/headache_score.dart';
+import 'package:aura/screens/Loginpage.dart';
+import 'package:aura/screens/Solutionpage.dart';
+import 'package:aura/models/palette.dart';
 
 class Homepage extends StatelessWidget {
   final score = HeadacheScore().refreshScore();
-  final day = 5; //set default day to the current day
-
+  
   void _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
@@ -111,7 +110,7 @@ class _DailyScoreState extends State<DailyScore> {
 }
 
 class DayArrows extends StatelessWidget {
-  final int day;
+  final day;
   final VoidCallback incrementDay;
   final VoidCallback decrementDay;
 
@@ -270,8 +269,9 @@ class solutionsHomepage extends StatelessWidget {
 }
 
 class circularHeadache extends StatefulWidget {
-  final List<double> score;
-  final int day; //set default day to the current day
+
+  final day;
+  final score;
 
   const circularHeadache({Key? key, required this.score, required this.day})
       : super(key: key);
