@@ -41,6 +41,8 @@ dependencies:
   ml_dataframe: ^1.6.0
   ml_preprocessing: ^7.0.2
   provider: ^6.1.2
+  gauge_indicator: ^0.4.3
+  easy_date_timeline: ^1.0.7
 
 
 dev_dependencies:

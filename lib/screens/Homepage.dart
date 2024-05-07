@@ -6,10 +6,12 @@ import 'package:aura/models/headache_score.dart';
 import 'package:aura/screens/Loginpage.dart';
 import 'package:aura/screens/Solutionpage.dart';
 import 'package:aura/models/palette.dart';
+import 'package:gauge_indicator/gauge_indicator.dart';
+import 'package:easy_date_timeline/easy_date_timeline.dart';
 
 class Homepage extends StatelessWidget {
   final score = HeadacheScore().refreshScore();
-  
+
   void _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isLoggedIn', false);
@@ -96,16 +98,42 @@ class _DailyScoreState extends State<DailyScore> {
   Widget build(BuildContext context) {
     return Center(
         child: FittedBox(
+          fit: BoxFit.contain,
             child: Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        DayArrows(
-            day: day, incrementDay: incrementDay, decrementDay: decrementDay),
-        DayButtonWidget(currentDate: DateTime.now(), score: widget.score),
-        circularHeadache(score: widget.score, day: day),
+        DayArrows(day: day, incrementDay: incrementDay, decrementDay: decrementDay),
+        //DayButtonWidget(currentDate: DateTime.now(), score: widget.score),
+        //circularHeadache(score: widget.score, day: day),
+        SevenDayCalendar(),
+        MyGaugeIndicator(score: widget.score, day: day),
         solutionsHomepage(),
       ],
     )));
+  }
+}
+
+class SevenDayCalendar extends StatefulWidget {
+  @override
+  State<SevenDayCalendar> createState() => _SevenDayCalendarState();
+}
+
+class _SevenDayCalendarState extends State<SevenDayCalendar> {
+  DateTime now = DateTime.now();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 50,
+      width: 450,
+      child:
+    EasyInfiniteDateTimeLine(
+        firstDate: now.subtract(Duration(days: 3)),
+        focusDate: now,
+        lastDate: now.add(Duration(days: 3)),
+        timeLineProps: EasyTimeLineProps(),
+        dayProps: EasyDayProps(),
+        ));
   }
 }
 
@@ -126,18 +154,16 @@ class DayArrows extends StatelessWidget {
         width: 450,
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              if (day > 0)
-          IconButton(
-              onPressed: decrementDay,
-              icon: Icon(Icons.arrow_back_ios_new, size: 30)),
-              SizedBox(width: 200),
-              if (day < 6)
-          IconButton(
-              onPressed: incrementDay,
-              icon: Icon(Icons.arrow_forward_ios, size: 30)),
-        ]
-        )
-        );
+          if (day > 0)
+            IconButton(
+                onPressed: decrementDay,
+                icon: Icon(Icons.arrow_back_ios_new, size: 30)),
+          SizedBox(width: 200),
+          if (day < 6)
+            IconButton(
+                onPressed: incrementDay,
+                icon: Icon(Icons.arrow_forward_ios, size: 30)),
+        ]));
   }
 }
 
@@ -269,7 +295,6 @@ class solutionsHomepage extends StatelessWidget {
 }
 
 class circularHeadache extends StatefulWidget {
-
   final day;
   final score;
 
@@ -302,8 +327,7 @@ class circularHeadacheState extends State<circularHeadache> {
             ),
             Consumer<HeadacheScore>(
               builder: (context, score, child) {
-                return
-                SemicircularIndicator(
+                return SemicircularIndicator(
                   strokeWidth: 30,
                   radius: 150,
                   progress: (widget.score[widget.day]) / 8,
@@ -325,6 +349,64 @@ class circularHeadacheState extends State<circularHeadache> {
                     color: Palette.blue)),
           ],
         ));
+  }
+}
+
+class MyGaugeIndicator extends StatelessWidget {
+  final day;
+  final score;
+
+  const MyGaugeIndicator({Key? key, required this.day, required this.score})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        AnimatedRadialGauge(
+          duration: const Duration(seconds: 1),
+          curve: Curves.elasticOut,
+          radius: 200,
+          value: score[day],
+          // ignore: prefer_const_constructors
+          axis: GaugeAxis(
+            min: 0,
+            max: 8,
+            degrees: 180,
+            style: const GaugeAxisStyle(
+              thickness: 30,
+              background: Color(0xFFDFE2EC),
+              segmentSpacing: 4,
+            ),
+            pointer: const GaugePointer.triangle(
+              height: 25,
+              width: 25,
+              borderRadius: 3,
+              color: Color(0xFF193663),
+              position: GaugePointerPosition.surface(offset: Offset(5, 15)),
+            ),
+            // ignore: prefer_const_constructors
+            progressBar:
+                const GaugeProgressBar.rounded(color: Palette.lightBlue4),
+          ),
+        ),
+        Text('${score[day].toInt()}/8',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 40,
+              color: Palette.blue,
+            )),
+        Text(
+          getText(score[day]),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 30,
+            color: Palette.blue,
+          ),
+        ),
+      ],
+    );
   }
 }
 
