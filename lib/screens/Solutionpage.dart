@@ -3,6 +3,22 @@ import 'package:stress/models/palette.dart';
 import 'package:stress/models/solution_card_builder.dart';
 
 class Solutionpage extends StatelessWidget {
+  final bool needSleep;
+  final bool needExercise;
+  final bool isHot;
+  List _fixedSolutions = [
+    'Music',
+    'Elettroshock',
+  ];
+
+  //List _optionaSolutions = optionalSolutions();
+
+  Solutionpage(
+      {super.key,
+      required this.needSleep,
+      required this.needExercise,
+      required this.isHot});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,41 +37,12 @@ class Solutionpage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: //SolutionsListBuilder()
-        ListView(
-          children: [
-            SolutionCard(),
-            SolutionCard(),
-            SolutionCard(),
-            SolutionCard(),
-            SolutionCard(),
-          ],
-        ),
+        child: ListView.builder(
+          itemCount: _fixedSolutions.length,
+          itemBuilder: (BuildContext context, int index) {
+            return SolutionCard(cardTitle: _fixedSolutions[index],);
+          }),
       ),
     );
   }
 }
-
-/*
-class SolutionsListBuilder extends StatelessWidget{
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: ListView.builder(
-        itemBuilder: (BuildContext context, int index) {
-          return Container(
-            height: 200,
-            child: Card(
-              margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-              color: Palette.blue,
-              elevation: 5,
-              shadowColor: Palette.darkBlue,
-            ),
-          );
-        }
-      ),
-    );
-  }
-}
-*/
