@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stress/models/palette.dart';
-import 'package:stress/models/solution_card_builder.dart';
+import 'package:stress/models/SolutionCard.dart';
+import 'package:stress/models/solution.dart';
 
 class Solutionpage extends StatelessWidget {
   final bool needSleep;
   final bool needExercise;
   final bool isHot;
-  List _fixedSolutions = [
-    'Music',
-    'Elettroshock',
-  ];
-
+  List _fixedSolutionsTitles = ['Music','Elettroshock',];
+  List _fixedSolutionsImages = ['assets/music.jpg', 'assets/electrodes.jpg'];
   //List _optionaSolutions = optionalSolutions();
 
   Solutionpage(
@@ -38,9 +36,10 @@ class Solutionpage extends StatelessWidget {
       ),
       body: Center(
         child: ListView.builder(
-          itemCount: _fixedSolutions.length,
+          itemCount: _fixedSolutionsTitles.length,
           itemBuilder: (BuildContext context, int index) {
-            return SolutionCard(cardTitle: _fixedSolutions[index],);
+            Solution solution = Solution(_fixedSolutionsTitles[index], _fixedSolutionsImages[index]);
+            return SolutionCard(solution: solution);
           }),
       ),
     );
