@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:stress/models/palette.dart';
+import 'package:stress/models/solution_card_builder.dart';
 
 class Solutionpage extends StatelessWidget {
   @override
@@ -19,10 +21,41 @@ class Solutionpage extends StatelessWidget {
         ),
       ),
       body: Center(
-        child: Column(
-          children: [Text("Here you can find some tips:")],
+        child: //SolutionsListBuilder()
+        ListView(
+          children: [
+            SolutionCard(),
+            SolutionCard(),
+            SolutionCard(),
+            SolutionCard(),
+            SolutionCard(),
+          ],
         ),
       ),
     );
   }
 }
+
+/*
+class SolutionsListBuilder extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ListView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            height: 200,
+            child: Card(
+              margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
+              color: Palette.blue,
+              elevation: 5,
+              shadowColor: Palette.darkBlue,
+            ),
+          );
+        }
+      ),
+    );
+  }
+}
+*/
