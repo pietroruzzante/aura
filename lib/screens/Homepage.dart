@@ -10,11 +10,6 @@ import 'package:stress/models/palette.dart';
 class Homepage extends StatelessWidget {
   final score = HeadacheScore().refreshScore();
   final day = 5; //set default day to the current day
-  
-  // per debugging solutionPage
-  bool needSleep = false;
-  bool needExercise = false;
-  bool isHot = false;
 
   void _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

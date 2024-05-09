@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:stress/models/palette.dart';
 import 'package:stress/models/SolutionCard.dart';
 import 'package:stress/models/solution.dart';
+import 'package:stress/screens/ElectroSolution.dart';
+import 'package:stress/screens/MusicSolution.dart';
 
 class Solutionpage extends StatelessWidget {
-  final bool needSleep;
-  final bool needExercise;
-  final bool isHot;
+  // per debugging solutionPage
+  bool needSleep = false;
+  bool needExercise = false;
+  bool isHot = false;
+
   List _fixedSolutionsTitles = ['Music','Elettroshock',];
   List _fixedSolutionsImages = ['assets/music.jpg', 'assets/electrodes.jpg'];
+  List _fixedSolutionsRoutes = ['/MusicSolution', '/ElectrodesSolution'];
+  final List<Widget> solutionPages = [MusicSolution(), ElectroSolution()];
   //List _optionaSolutions = optionalSolutions();
 
   Solutionpage(
@@ -38,7 +44,10 @@ class Solutionpage extends StatelessWidget {
         child: ListView.builder(
           itemCount: _fixedSolutionsTitles.length,
           itemBuilder: (BuildContext context, int index) {
-            Solution solution = Solution(_fixedSolutionsTitles[index], _fixedSolutionsImages[index]);
+            Solution solution = Solution(
+              _fixedSolutionsTitles[index], 
+              _fixedSolutionsImages[index],
+              _fixedSolutionsRoutes[index]);
             return SolutionCard(solution: solution);
           }),
       ),
