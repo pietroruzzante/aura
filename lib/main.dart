@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:aura/models/headache_score.dart';
+import 'package:aura/models/day.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/screens/Splash.dart';
 import 'package:provider/provider.dart';
@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<HeadacheScore>(
-      create: (context) => HeadacheScore(),
+    return ChangeNotifierProvider<Day>(
+      create: (context) => Day(),
       child: MaterialApp(
         title: 'Aura',
         theme: ThemeData(

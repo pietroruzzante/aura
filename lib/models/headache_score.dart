@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
 
-class HeadacheScore extends ChangeNotifier {
+class HeadacheScore {
   final List<double> _scores = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
   double operator [](int index) => _scores[index];
@@ -19,7 +18,6 @@ class HeadacheScore extends ChangeNotifier {
     for (int i = 0; i < 6; i++) {
       _scores[i] = stressScore[i] + weatherScore[i];
     }
-    notifyListeners();
     return _scores;
   } //refreshScore
 
@@ -28,18 +26,17 @@ class HeadacheScore extends ChangeNotifier {
     //await Future.delayed(const Duration(seconds: 2));//Provvisorio fino a accesso server
     final data = DataFrame([
       featureNames,
-      [1.0, 80.0],
+      [8.0, 80.0],
       [7.0, 110.0],
       [6.0, 70.0],
       [6.0, 150.0],
-      [1.0, 200.0],
-      [1.0, 200.0],
-      [6.0, 100.0]
+      [6.0, 200.0],
+      [4.0, 100.0],
+      [1.0, 200.0]
     ]); //Here we need data request from Impact and from database
     final json = await rootBundle.loadString('assets/stress_model.json');
     final classifier = DecisionTreeClassifier.fromJson(json);
     final prediction = classifier.predict(data).toMatrix().asFlattenedList;
-    notifyListeners();
     return prediction;
   } //getStress
 
@@ -47,13 +44,13 @@ class HeadacheScore extends ChangeNotifier {
     await Future.delayed(
         const Duration(seconds: 2)); //Provvisorio fino a accesso server
     final pressure = [
-      1003.0,
-      1001.0,
-      1002.0,
+      1015.0,
+      1013.0,
+      1011.0,
       1010.0,
-      1012.0,
-      1008.0,
-      1012.0,
+      1009.0,
+      1005.0,
+      1002.0,
     ]; //Here we need data request from weather API with barometric pressure value and from database
     final weatherScore = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
@@ -71,7 +68,6 @@ class HeadacheScore extends ChangeNotifier {
         weatherScore[i] = 4.0;
       }
     }
-    notifyListeners();
     return weatherScore;
   } //getWeather
 }

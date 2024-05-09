@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:semicircle_indicator/semicircle_indicator.dart';
+import 'package:aura/models/day.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aura/models/headache_score.dart';
@@ -11,6 +11,7 @@ import 'package:easy_date_timeline/easy_date_timeline.dart';
 
 class Homepage extends StatelessWidget {
   final score = HeadacheScore().refreshScore();
+  final day = Day();
 
   void _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -24,7 +25,7 @@ class Homepage extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Aura score",
+            "Aura",
           ),
           titleTextStyle: TextStyle(
               color: Palette.blue, fontWeight: FontWeight.bold, fontSize: 20),
@@ -62,91 +63,85 @@ class Homepage extends StatelessWidget {
                 return Text('Error: ${snapshot.error}');
               }
               final List<double> score = snapshot.data!;
-              return DailyScore(score: score);
+              return DailyScore(score: score, day: day);
             }));
   }
 }
 
-class DailyScore extends StatefulWidget {
+class DailyScore extends StatelessWidget {
   final List<double> score;
+  final Day day;
 
-  DailyScore({Key? key, required this.score}) : super(key: key);
-  @override
-  _DailyScoreState createState() => _DailyScoreState();
-}
-
-class _DailyScoreState extends State<DailyScore> {
-  int day = 3;
-
-  void incrementDay() {
-    setState(() {
-      if (day < 6) {
-        day++;
-      }
-    });
-  }
-
-  void decrementDay() {
-    setState(() {
-      if (day > 0) {
-        day--;
-      }
-    });
-  }
+  DailyScore({
+    required this.score,
+    required this.day,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-        child: FittedBox(
-          fit: BoxFit.contain,
-            child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        DayArrows(day: day, incrementDay: incrementDay, decrementDay: decrementDay),
-        //DayButtonWidget(currentDate: DateTime.now(), score: widget.score),
-        //circularHeadache(score: widget.score, day: day),
-        SevenDayCalendar(),
-        MyGaugeIndicator(score: widget.score, day: day),
-        solutionsHomepage(),
-      ],
-    )));
+    return Center(child:
+    SizedBox(
+      width: 350,
+      child:
+    Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children:
+      [Text(
+        "Welcome, user",
+        style: TextStyle(
+            color: Palette.blue, fontWeight: FontWeight.w500, fontSize: 20),
+      )]),
+      Consumer<Day>(builder: (context, day, child) {
+        return Center(
+            child: FittedBox(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    DayArrows(
+                        incrementDay: day.incrementDay,
+                        decrementDay: day.decrementDay,
+                        day: day),
+                    SevenDayCalendar(day: day),
+                    MyGaugeIndicator(score: score, day: day),
+                    solutionsHomepage(),
+                  ],
+                )));
+      })
+    ])));
   }
 }
 
-class SevenDayCalendar extends StatefulWidget {
-  @override
-  State<SevenDayCalendar> createState() => _SevenDayCalendarState();
-}
+class SevenDayCalendar extends StatelessWidget {
+  final day;
 
-class _SevenDayCalendarState extends State<SevenDayCalendar> {
-  DateTime now = DateTime.now();
+  SevenDayCalendar({required this.day});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
-      width: 450,
-      child:
-    EasyInfiniteDateTimeLine(
-        firstDate: now.subtract(Duration(days: 3)),
-        focusDate: now,
-        lastDate: now.add(Duration(days: 3)),
-        timeLineProps: EasyTimeLineProps(),
-        dayProps: EasyDayProps(),
+        height: 180,
+        width: 500,
+        child: EasyInfiniteDateTimeLine(
+          firstDate: DateTime.now().subtract(Duration(days: 3)),
+          focusDate: DateTime.now(),
+          lastDate: DateTime.now().add(Duration(days: 3)),
+          timeLineProps: EasyTimeLineProps(),
+          dayProps: EasyDayProps(activeDayStyle: DayStyle(decoration: BoxDecoration(color: Palette.blue))),
+          onDateChange: (selectedDate) => day.setDay(selectedDate, DateTime.now().subtract(Duration(days: 4)))
         ));
   }
 }
 
 class DayArrows extends StatelessWidget {
-  final day;
   final VoidCallback incrementDay;
   final VoidCallback decrementDay;
+  final day;
 
-  DayArrows({
-    required this.day,
-    required this.incrementDay,
-    required this.decrementDay,
-  });
+  DayArrows(
+      {required this.incrementDay,
+      required this.decrementDay,
+      required this.day});
 
   @override
   Widget build(BuildContext context) {
@@ -164,95 +159,6 @@ class DayArrows extends StatelessWidget {
                 onPressed: incrementDay,
                 icon: Icon(Icons.arrow_forward_ios, size: 30)),
         ]));
-  }
-}
-
-class DayButtonWidget extends StatefulWidget {
-  final DateTime currentDate;
-  final List<double> score;
-
-  const DayButtonWidget(
-      {Key? key, required this.currentDate, required this.score})
-      : super(key: key);
-
-  @override
-  State<DayButtonWidget> createState() => _DayButtonWidgetState();
-}
-
-class _DayButtonWidgetState extends State<DayButtonWidget> {
-  @override
-  Widget build(BuildContext context) {
-    final dayNumbers = _calculateDayNumbers();
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        for (int i = 0; i < dayNumbers.length; i++)
-          ElevatedButton(
-            onPressed: () {},
-            child: Text(
-              dayNumbers[i].toString(),
-              style: const TextStyle(fontSize: 16, color: Colors.white),
-            ),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: getButtonColor(widget.score[i]),
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(10),
-            ),
-          ),
-      ],
-    );
-  }
-
-  List<int> _calculateDayNumbers() {
-    final dayNumbers = [
-      _getPreviousDay(widget.currentDate.day, 3),
-      _getPreviousDay(widget.currentDate.day, 2),
-      _getPreviousDay(widget.currentDate.day, 1),
-      widget.currentDate.day,
-      _getNextDay(widget.currentDate.day, 1),
-      _getNextDay(widget.currentDate.day, 2),
-      _getNextDay(widget.currentDate.day, 3),
-    ];
-    return dayNumbers;
-  }
-
-  int _getPreviousDay(int day, int subtract) {
-    int selectedDay = day - subtract;
-    if (day - subtract <= 0) {
-      /*    da controllare: come vengono gestiti i giorni di inizio gennaio?
-      int previousMonth = widget.currentDate.month - 1;
-      if (previousMonth < 1) {
-        previousMonth = 12;
-      }
-      */
-      selectedDay =
-          DateTime(widget.currentDate.year, widget.currentDate.month, 0).day +
-              day -
-              subtract;
-      return selectedDay;
-    } else {
-      return selectedDay;
-    }
-  }
-
-  int _getNextDay(int day, int toAdd) {
-    final lastDayOfMonth =
-        DateTime(widget.currentDate.year, widget.currentDate.month + 1, 0)
-            .day; // Get number of days in current month
-    int selectedDay =
-        DateTime(widget.currentDate.year, widget.currentDate.month, day).day +
-            toAdd;
-    if (selectedDay > lastDayOfMonth) {
-      var nextMonth = widget.currentDate.month + 1;
-      if (nextMonth > 12) {
-        nextMonth = 1;
-      }
-      selectedDay = selectedDay - lastDayOfMonth;
-      return selectedDay;
-    } else {
-      return selectedDay;
-    }
   }
 }
 
@@ -283,7 +189,7 @@ class solutionsHomepage extends StatelessWidget {
               ))
         ],
       ),
-      height: 200,
+      height: 150,
       width: 450,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -294,19 +200,12 @@ class solutionsHomepage extends StatelessWidget {
   }
 }
 
-class circularHeadache extends StatefulWidget {
-  final day;
+class MyGaugeIndicator extends StatelessWidget {
   final score;
+  final day;
 
-  const circularHeadache({Key? key, required this.score, required this.day})
-      : super(key: key);
+  MyGaugeIndicator({required this.score, required this.day});
 
-  @override
-  State<circularHeadache> createState() => circularHeadacheState();
-}
-
-class circularHeadacheState extends State<circularHeadache> {
-  @override
   Widget build(BuildContext context) {
     return Container(
         height: 400,
@@ -315,98 +214,61 @@ class circularHeadacheState extends State<circularHeadache> {
           color: Colors.white,
           borderRadius: BorderRadius.circular(20.0),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              "Your Aura score:",
-              style: TextStyle(
-                  color: Palette.blue,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 20),
-            ),
-            Consumer<HeadacheScore>(
-              builder: (context, score, child) {
-                return SemicircularIndicator(
-                  strokeWidth: 30,
-                  radius: 150,
-                  progress: (widget.score[widget.day]) / 8,
-                  color: Palette.blue,
-                  bottomPadding: -20,
-                  contain: true,
-                  child: Text("${widget.score[widget.day].toInt()}/8",
-                      style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w800,
-                          color: Palette.blue)),
-                );
-              }, // builder
-            ),
-            Text(getText(widget.score[widget.day]),
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Palette.blue)),
-          ],
-        ));
-  }
-}
-
-class MyGaugeIndicator extends StatelessWidget {
-  final day;
-  final score;
-
-  const MyGaugeIndicator({Key? key, required this.day, required this.score})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        AnimatedRadialGauge(
-          duration: const Duration(seconds: 1),
-          curve: Curves.elasticOut,
-          radius: 200,
-          value: score[day],
-          // ignore: prefer_const_constructors
-          axis: GaugeAxis(
-            min: 0,
-            max: 8,
-            degrees: 180,
-            style: const GaugeAxisStyle(
-              thickness: 30,
-              background: Color(0xFFDFE2EC),
-              segmentSpacing: 4,
-            ),
-            pointer: const GaugePointer.triangle(
-              height: 25,
-              width: 25,
-              borderRadius: 3,
-              color: Color(0xFF193663),
-              position: GaugePointerPosition.surface(offset: Offset(5, 15)),
-            ),
-            // ignore: prefer_const_constructors
-            progressBar:
-                const GaugeProgressBar.rounded(color: Palette.lightBlue4),
-          ),
-        ),
-        Text('${score[day].toInt()}/8',
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Text(
+            "Your Aura score:",
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 40,
-              color: Palette.blue,
-            )),
-        Text(
-          getText(score[day]),
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-            color: Palette.blue,
+                color: Palette.blue, fontWeight: FontWeight.w700, fontSize: 20),
           ),
-        ),
-      ],
-    );
+      Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                AnimatedRadialGauge(
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.elasticOut,
+                  radius: 200,
+                  value: score[day.toInt()],
+                  // ignore: prefer_const_constructors
+                  axis: GaugeAxis(
+                    min: 0,
+                    max: 8,
+                    degrees: 180,
+                    style: const GaugeAxisStyle(
+                      thickness: 30,
+                      background: Color(0xFFDFE2EC),
+                      segmentSpacing: 4,
+                    ),
+                    pointer: const GaugePointer.triangle(
+                      height: 25,
+                      width: 25,
+                      borderRadius: 3,
+                      color: Color(0xFF193663),
+                      position:
+                          GaugePointerPosition.surface(offset: Offset(5, 15)),
+                    ),
+                    // ignore: prefer_const_constructors
+                    progressBar: const GaugeProgressBar.rounded(
+                        color: Palette.lightBlue4),
+                  ),
+                ),
+                Text('${score[day.toInt()].toInt()}/8',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 40,
+                      color: Palette.blue,
+                    )),
+                Text(
+                  getText(score[day.toInt()]),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30,
+                    color: Palette.blue,
+                  ),
+                ),
+              ],
+            )
+        ]));
   }
 }
 

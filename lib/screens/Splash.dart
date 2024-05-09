@@ -37,7 +37,7 @@ class Splash extends StatelessWidget {
       child: Container(
         color: Colors.white,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
               'Aura',
@@ -51,6 +51,19 @@ class Splash extends StatelessWidget {
               height: 200,
               width: 200,
             ),
+            SizedBox(height: 250),
+            Text('Powered by:',
+            style: TextStyle(
+                  color: Color.fromARGB(255, 6, 40, 73),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400),),
+            Text('DartVaders',
+            style: TextStyle(
+                  color: Color.fromARGB(255, 6, 40, 73),
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400),),
+            SizedBox(height: 50),
+
           ],
         ),
       ),
