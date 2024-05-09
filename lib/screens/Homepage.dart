@@ -10,7 +10,7 @@ import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 
 class Homepage extends StatelessWidget {
-  final score = HeadacheScore().refreshScore();
+  final score = HeadacheScore();
   final day = Day();
 
   void _logout(BuildContext context) async {
@@ -52,7 +52,7 @@ class Homepage extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Settings'),
         ]),
         body: FutureBuilder<List<double>>(
-            future: score,
+            future: score.refreshScore(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
