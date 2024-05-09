@@ -43,6 +43,7 @@ dependencies:
   provider: ^6.1.2
   gauge_indicator: ^0.4.3
   easy_date_timeline: ^1.0.7
+  ionicons: ^0.2.2
 
 
 dev_dependencies:

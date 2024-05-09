@@ -1,3 +1,4 @@
+import 'package:aura/screens/Accountscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
 import 'package:provider/provider.dart';
@@ -9,50 +10,83 @@ import 'package:aura/models/palette.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 
-class Homepage extends StatelessWidget {
-  final score = HeadacheScore();
-  final day = Day();
+class Homepage extends StatefulWidget {
+  const Homepage({Key? key}) : super(key: key);
 
-  void _logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => LoginPage()));
+  @override
+  _HomepageState createState() => _HomepageState();
+}
+
+class _HomepageState extends State<Homepage> {
+  int index = 0;
+  final score = HeadacheScore().refreshScore();
+  final day = Day(); 
+
+  void _onItemTapped(int newIndex) {
+    setState(() {
+      index = newIndex;
+    });
+  }
+
+  List<BottomNavigationBarItem> navBarItems = [
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.health_and_safety),
+      label: 'Headache',
+    ),
+    const BottomNavigationBarItem(
+      icon: Icon(Icons.person),
+      label: 'Settings',
+    ),
+  ];
+
+  Widget _selectPage(int index, HeadacheScore score, Day day) {
+    switch (index) {
+      case 0:
+        return DailyScore(score: score, day: day);
+      case 1:
+        return AccountScreen();
+      default:
+        return DailyScore(score: score, day: day);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            "Aura",
-          ),
-          titleTextStyle: TextStyle(
-              color: Palette.blue, fontWeight: FontWeight.bold, fontSize: 20),
-          backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text(
+          "Aura score",
         ),
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              DrawerHeader(
-                child: Text('login'),
-              ),
-              ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Logout'),
-                onTap: () => _logout(context),
-              ),
-            ],
-          ),
+        titleTextStyle: TextStyle(
+          color: Palette.blue,
+          fontWeight: FontWeight.bold,
+          fontSize: 20,
         ),
-        bottomNavigationBar: BottomNavigationBar(items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.health_and_safety), label: 'Headache '),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Settings'),
-        ]),
-        body: FutureBuilder<List<double>>(
-            future: score.refreshScore(),
+        backgroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Text('login'),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text('Logout'),
+              onTap: () => _logout(context),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFFf5f7f7),
+        items: navBarItems,
+        currentIndex: index,
+        onTap: (index) => _onItemTapped(index),
+      ),
+      body: FutureBuilder<HeadacheScore>(
+            future: score,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(
@@ -62,14 +96,26 @@ class Homepage extends StatelessWidget {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               }
-              final List<double> score = snapshot.data!;
-              return DailyScore(score: score, day: day);
+              final HeadacheScore score = snapshot.data!;
+              return _selectPage(index, score, day);
             }));
+
+  }
+
+  void _logout(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', false);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
   }
 }
 
+
+
 class DailyScore extends StatelessWidget {
-  final List<double> score;
+  final HeadacheScore score;
   final Day day;
 
   DailyScore({

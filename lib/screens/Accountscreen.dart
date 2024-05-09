@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:stress/screens/edit_screen.dart';
-import 'package:stress/setting_widget/forward_button.dart';
-import 'package:stress/setting_widget/setting_item.dart';
-import 'package:stress/setting_widget/setting_switch.dart';
-import 'package:stress/models/palette.dart';
+import 'package:aura/screens/edit_screen.dart';
+import 'package:aura/models/setting_widget/forward_button.dart';
+import 'package:aura/models/setting_widget/setting_item.dart';
+import 'package:aura/models/setting_widget/setting_switch.dart';
+import 'package:aura/models/palette.dart';
 
 
 class AccountScreen extends StatefulWidget {

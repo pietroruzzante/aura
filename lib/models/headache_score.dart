@@ -12,13 +12,13 @@ class HeadacheScore {
     return _scores[day];
   } //getScore
 
-  Future<List<double>> refreshScore() async {
+  Future<HeadacheScore> refreshScore() async {
     final stressScore = await getStress();
     final weatherScore = await getWeather();
     for (int i = 0; i < 6; i++) {
       _scores[i] = stressScore[i] + weatherScore[i];
     }
-    return _scores;
+    return this;
   } //refreshScore
 
   Future<List<double>> getStress() async {
