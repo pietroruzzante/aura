@@ -172,8 +172,9 @@ class SevenDayCalendar extends StatelessWidget {
           firstDate: DateTime.now().subtract(Duration(days: 3)),
           focusDate: DateTime.now(),
           lastDate: DateTime.now().add(Duration(days: 3)),
-          timeLineProps: EasyTimeLineProps(),
-          dayProps: EasyDayProps(activeDayStyle: DayStyle(decoration: BoxDecoration(color: Palette.blue))),
+          timeLineProps: EasyTimeLineProps(separatorPadding: 1.0, margin: EdgeInsets.zero),
+          dayProps: EasyDayProps(),
+          showTimelineHeader: false,
           onDateChange: (selectedDate) => day.setDay(selectedDate, DateTime.now().subtract(Duration(days: 4)))
         ));
   }
