@@ -250,7 +250,7 @@ class solutionsHomepage extends StatelessWidget {
           ElevatedButton.icon(
               onPressed: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Solutionpage()));
+                    MaterialPageRoute(builder: (context) => Solutionpage(needSleep: true, needExercise: true, isHot: false,)));
               },
               label: Text(
                 "Solutions",
