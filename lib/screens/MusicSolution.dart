@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 class MusicSolution extends StatelessWidget {
   const MusicSolution({super.key});
 
-  static const routename = '/MusicSolution';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(MusicSolution.routename),
+        title: Text(
+          'Chill with some tunes'),
       ),
       body: Center(
         child: Column(

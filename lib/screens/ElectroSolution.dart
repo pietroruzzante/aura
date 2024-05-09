@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 class ElectroSolution extends StatelessWidget {
   const ElectroSolution({super.key});
 
-  static const routename = '/ElectroSolution';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(ElectroSolution.routename),
+        title: Text('Get a buzz'),
       ),
       body: Center(
         child: Column(

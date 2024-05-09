@@ -13,8 +13,7 @@ class Solutionpage extends StatelessWidget {
 
   List _fixedSolutionsTitles = ['Music','Elettroshock',];
   List _fixedSolutionsImages = ['assets/music.jpg', 'assets/electrodes.jpg'];
-  List _fixedSolutionsRoutes = ['/MusicSolution', '/ElectrodesSolution'];
-  final List<Widget> solutionPages = [MusicSolution(), ElectroSolution()];
+  final List<Widget> _fixedSolutionsPages = [MusicSolution(), ElectroSolution()];
   //List _optionaSolutions = optionalSolutions();
 
   Solutionpage(
@@ -31,12 +30,12 @@ class Solutionpage extends StatelessWidget {
           "Solutions",
         ),
         titleTextStyle: TextStyle(
-            color: const Color.fromARGB(255, 24, 77, 142),
+            color: Palette.blue,
             fontWeight: FontWeight.bold,
             fontSize: 20),
         backgroundColor: Colors.white,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Palette.darkBlue),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -47,7 +46,7 @@ class Solutionpage extends StatelessWidget {
             Solution solution = Solution(
               _fixedSolutionsTitles[index], 
               _fixedSolutionsImages[index],
-              _fixedSolutionsRoutes[index]);
+              _fixedSolutionsPages[index]);
             return SolutionCard(solution: solution);
           }),
       ),
