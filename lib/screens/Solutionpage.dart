@@ -11,16 +11,17 @@ class Solutionpage extends StatelessWidget {
   bool needExercise = false;
   bool isHot = false;
 
-  List _fixedSolutionsTitles = ['Music','Elettroshock',];
-  List _fixedSolutionsImages = ['assets/spotify.jpg', 'assets/electrodes.jpg'];
-  final List<Widget> _fixedSolutionsPages = [MusicSolution(), ElectroSolution()];
+  List<Solution> _fixedSolutions = [
+  Solution('Music', 'assets/spotify.png', MusicSolution()),
+  Solution('Elettroshock', 'assets/electrodes.jpg', ElectroSolution()),
+  ];
+
   //List _optionaSolutions = optionalSolutions();
 
   Solutionpage(
-      {super.key,
-      required this.needSleep,
+      {required this.needSleep,
       required this.needExercise,
-      required this.isHot});
+      required this.isHot,});
 
   @override
   Widget build(BuildContext context) {
@@ -41,12 +42,9 @@ class Solutionpage extends StatelessWidget {
       ),
       body: Center(
         child: ListView.builder(
-          itemCount: _fixedSolutionsTitles.length,
+          itemCount: _fixedSolutions.length,
           itemBuilder: (BuildContext context, int index) {
-            Solution solution = Solution(
-              _fixedSolutionsTitles[index], 
-              _fixedSolutionsImages[index],
-              _fixedSolutionsPages[index]);
+            Solution solution = _fixedSolutions[index];
             return SolutionCard(solution: solution);
           }),
       ),
