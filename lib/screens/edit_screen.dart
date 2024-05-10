@@ -33,6 +33,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         nameController.text = name;
         ageController.text = age;
         addressController.text = address;
+        gender = prefs.getString('gender')??'man';
       });
     }
   }
@@ -42,6 +43,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
     await prefs.setString('name', name);
     await prefs.setString('age', age);
     await prefs.setString('address', address);
+    await prefs.setString('gender', gender);
   }
 
   @override
