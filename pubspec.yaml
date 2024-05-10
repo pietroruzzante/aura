@@ -76,7 +76,7 @@ flutter:
   assets:
   - assets/stress_model.json
   - assets/logo.png
-  - assets/music.jpg
+  - assets/spotify.jpg
   - assets/electrodes.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see

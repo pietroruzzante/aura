@@ -12,7 +12,7 @@ class Solutionpage extends StatelessWidget {
   bool isHot = false;
 
   List _fixedSolutionsTitles = ['Music','Elettroshock',];
-  List _fixedSolutionsImages = ['assets/music.jpg', 'assets/electrodes.jpg'];
+  List _fixedSolutionsImages = ['assets/spotify.jpg', 'assets/electrodes.jpg'];
   final List<Widget> _fixedSolutionsPages = [MusicSolution(), ElectroSolution()];
   //List _optionaSolutions = optionalSolutions();
 
