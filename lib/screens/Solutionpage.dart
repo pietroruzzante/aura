@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:stress/models/palette.dart';
-import 'package:stress/models/SolutionCard.dart';
-import 'package:stress/models/solution.dart';
-import 'package:stress/screens/ElectroSolution.dart';
-import 'package:stress/screens/MusicSolution.dart';
+import 'package:aura/models/palette.dart';
+import 'package:aura/models/SolutionCard.dart';
+import 'package:aura/models/solution.dart';
+import 'package:aura/screens/ElectroSolution.dart';
+import 'package:aura/screens/MusicSolution.dart';
 
 class Solutionpage extends StatelessWidget {
   // per debugging solutionPage

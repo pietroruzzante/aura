@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:stress/models/palette.dart';
-import 'package:stress/models/solution.dart';
+import 'package:aura/models/palette.dart';
+import 'package:aura/models/solution.dart';
 
 class SolutionCard extends StatelessWidget {
   Solution solution;
