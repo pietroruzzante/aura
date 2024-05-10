@@ -1,4 +1,4 @@
-name: stress
+name: aura
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -41,7 +41,12 @@ dependencies:
   ml_dataframe: ^1.6.0
   ml_preprocessing: ^7.0.2
   provider: ^6.1.2
+
+  gauge_indicator: ^0.4.3
+  easy_date_timeline: ^1.0.7
+  ionicons: ^0.2.2
   flutter_launcher_icons: ^0.13.1
+
 
 
 dev_dependencies:

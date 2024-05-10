@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stress/models/authentication_service.dart';
-import 'package:stress/screens/Homepage.dart';
-import 'package:stress/models/palette.dart';
+import 'package:aura/models/authentication_service.dart';
+import 'package:aura/screens/Homepage.dart';
+import 'package:aura/models/palette.dart';
 
 class LoginPage extends StatefulWidget {
   @override
