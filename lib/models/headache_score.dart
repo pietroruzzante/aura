@@ -1,3 +1,4 @@
+import 'package:aura/services/openWeather.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
@@ -41,21 +42,22 @@ class HeadacheScore {
   } //getStress
 
   Future<List<double>> getWeather() async {
-    await Future.delayed(
-        const Duration(seconds: 2)); //Provvisorio fino a accesso server
-    final pressure = [
-      1015.0,
-      1013.0,
-      1011.0,
-      1010.0,
-      1009.0,
-      1005.0,
-      1002.0,
-    ]; //Here we need data request from weather API with barometric pressure value and from database
+    //await Future.delayed(
+        //const Duration(seconds: 2)); //Provvisorio fino a accesso server
+    final decodedResponse = await Openweather().getData();
+    final pressures = [];
+    final dates = unixDates();
+
+    for (int timestamp in dates) {
+      double pressure = getPressureForTimestamp(timestamp, decodedResponse);
+      pressures.add(pressure);
+    }
+
+  //Here we need data request from weather API with barometric pressure value and from database
     final weatherScore = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
 
     for (int i = 0; i < 6; i++) {
-      final tmp = pressure[i];
+      final tmp = pressures[i];
       if (tmp >= 1013.0) {
         weatherScore[i] = 0.0;
       } else if ((tmp < 1013) & (tmp >= 1007)) {
@@ -71,3 +73,34 @@ class HeadacheScore {
     return weatherScore;
   } //getWeather
 }
+
+
+double getPressureForTimestamp(int timestamp, Map<String, dynamic> decodedResponse) {
+    final forecasts = decodedResponse['list'];
+    double pressure = 0.0; // Valore di default
+    for (final forecast in forecasts) {
+      final forecastTimestamp = forecast['dt'];
+      if (forecastTimestamp == timestamp) {
+        pressure = forecast['main']['pressure'].toDouble();
+        break; // Esci dal ciclo una volta trovata la previsione per il timestamp desiderato
+      }
+    }
+    return pressure;
+}
+
+List<int> unixDates(){
+  List<DateTime> dates = List<DateTime>.filled(6, DateTime.now());
+
+  for (int i = 0; i < 6; i++) {
+    dates[i] = DateTime.now().subtract(Duration(days: 3)).add(Duration(days: i));
+  }
+  List<int> unixTimestamps = [];
+  for (int i = 0; i < dates.length; i++) {
+    DateTime noonDate = DateTime(dates[i].year, dates[i].month, dates[i].day, 12, 0, 0);
+    int unixTimestamp = noonDate.millisecondsSinceEpoch ~/ 1000;
+    unixTimestamps.add(unixTimestamp);
+  }
+  return unixTimestamps;
+}
+
+
