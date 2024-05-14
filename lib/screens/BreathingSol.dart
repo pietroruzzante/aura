@@ -1,14 +1,15 @@
 import 'package:aura/models/palette.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 class BreathingSol extends StatefulWidget {
   const BreathingSol({super.key});
 
   @override
-  State<BreathingSol> createState() => __BreathingSolState();
+  State<BreathingSol> createState() => _BreathingSolState();
 }
 
-class __BreathingSolState extends State<BreathingSol> {
+class _BreathingSolState extends State<BreathingSol> {
   bool _isCycleActive = false;
 
   void _startCycle() {
@@ -24,9 +25,17 @@ class __BreathingSolState extends State<BreathingSol> {
   }
 
   @override
+  void dispose() {
+    if (_isCycleActive) {
+      _stopCycle();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+      color: Palette.white,
       child: _isCycleActive
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -100,6 +109,8 @@ class _StateCycleState extends State<StateCycle> {
     Duration(seconds: 8),
   ];
 
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
@@ -107,41 +118,55 @@ class _StateCycleState extends State<StateCycle> {
   }
 
   void _startCycle() {
+  _timer = Timer.periodic(Duration(seconds: 1), (timer) {
     if (_currentStateIndex < _phases.length) {
-      Future.delayed(_durations[_currentStateIndex], () {
-        setState(() {
-          _currentStateIndex = (_currentStateIndex + 1) % _phases.length;
-          _startCycle();
-          if (_currentStateIndex == 0) {
-            widget.onCycleEnd();
+      setState(() {
+        if (_timer != null) {
+          if (_timer!.tick == _durations[_currentStateIndex].inSeconds) {
+            _currentStateIndex = (_currentStateIndex + 1) % _phases.length;
+            _timer!.cancel(); // Cancel the current timer
+            _startCycle(); // Start the next cycle with the new duration
           }
-        });
+        }
       });
     }
+  });
+}
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Card(
-          color: Palette.darkBlue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Center(
-                child: Container(
+    try {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Card(
+            color: Palette.darkBlue,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20))),
+            child: Center(
+              child: Container(
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(
-                      _phases[_currentStateIndex],
-                      style: TextStyle(color: Palette.white),
-                      textAlign: TextAlign.justify,
-                    ),
-                  )
+                padding: const EdgeInsets.all(15.0),
+                child: Text(
+                  _phases[_currentStateIndex % _phases.length],
+                  style: TextStyle(color: Palette.white),
+                  textAlign: TextAlign.justify,
                 ),
-              ),
-        )
-      ],
-    );
+              )),
+            ),
+          )
+        ],
+      );
+    } catch (e, stackTrace) {
+      print('Error: $e');
+      print('Stack Trace: $stackTrace');
+      return Container();
+    }
   }
 }
