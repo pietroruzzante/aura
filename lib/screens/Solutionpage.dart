@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/models/SolutionCard.dart';
 import 'package:aura/models/solution.dart';
-import 'package:aura/screens/ElectroSolution.dart';
-import 'package:aura/screens/MusicSolution.dart';
+import 'package:aura/screens/BreathingSol.dart';
+import 'package:aura/screens/SpotifySol.dart';
 
 class Solutionpage extends StatelessWidget {
   // per debugging solutionPage
@@ -12,8 +12,8 @@ class Solutionpage extends StatelessWidget {
   bool isHot = false;
 
   List<Solution> _fixedSolutions = [
-  Solution('Music', 'assets/spotify.png', MusicSolution()),
-  Solution('Elettroshock', 'assets/electrodes.jpg', ElectroSolution()),
+  Solution('Spotify', 'assets/spotify.png', SpotifySol()),
+  Solution('Breathing', 'assets/electrodes.jpg', BreathingSol()),
   ];
 
   //List _optionaSolutions = optionalSolutions();

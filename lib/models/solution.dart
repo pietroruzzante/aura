@@ -1,5 +1,5 @@
-import 'package:aura/screens/ElectroSolution.dart';
-import 'package:aura/screens/MusicSolution.dart';
+import 'package:aura/screens/BreathingSol.dart';
+import 'package:aura/screens/SpotifySol.dart';
 import 'package:flutter/material.dart';
 
 class Solution {
