@@ -1,3 +1,4 @@
+import 'package:aura/services/impact.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aura/models/authentication_service.dart';
@@ -12,6 +13,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final Impact impact = Impact();
   bool _isLoading = false;
   String _errorMessage = '';
   bool _passwordVisible = false;
