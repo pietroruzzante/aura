@@ -33,7 +33,11 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
         nameController.text = name;
         ageController.text = age;
         addressController.text = address;
-        gender = prefs.getString('gender')??'man';
+        gender = prefs.getString('gender') ?? 'man';
+      });
+    } else if (address != null) {
+      setState(() {
+        addressController.text = address;
       });
     }
   }
@@ -107,7 +111,8 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                       style: TextStyle(fontSize: 24),
                     ),
                   ),
-                ), controller: TextEditingController(),
+                ),
+                controller: TextEditingController(),
               ),
               EditItem(
                 title: "Name",

@@ -1,3 +1,5 @@
+
+import 'package:aura/screens/CAP_onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aura/models/authentication_service.dart';
@@ -30,7 +32,22 @@ class _LoginPageState extends State<LoginPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setBool('isLoggedIn', true);
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Homepage()));
+        context, MaterialPageRoute(builder: (context) => OnboardingPage()));
+      
+      /*
+      final result = await impact.getAndStoreTokens(
+        userController.text, passwordController.text);
+      if (result == 200) {
+        final sp = await SharedPreferences.getInstance();
+        await sp.setString('username', userController.text);
+        await sp.setString(
+            'password', passwordController.text);
+        await impact.getPatient();
+        if (sp.getString('purpleAirKey') != null) {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const Home())); */
+
     } else {
       setState(() {
         _errorMessage = 'Invalid email or password';
