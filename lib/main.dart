@@ -5,7 +5,7 @@ import 'package:aura/screens/Splash.dart';
 import 'package:provider/provider.dart';
 
 
-void main() async {
+void main() {
   runApp(const MyApp());
 }
 
