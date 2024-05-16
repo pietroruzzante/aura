@@ -11,6 +11,9 @@ class Impact {
   static String tokenEndpoint = 'gate/v1/token/';
   static String refreshEndpoint = 'gate/v1/refresh/';
 
+  static String username = 'qWgEn2F4fj';
+  static String password = '12345678!';
+
   //This method allows to check if the IMPACT backend is up
   Future<bool> isImpactUp() async {
     //Create the request
@@ -40,9 +43,9 @@ class Impact {
       final sp = await SharedPreferences.getInstance();
       await sp.setString('access', decodedResponse['access']);
       await sp.setString('refresh', decodedResponse['refresh']);
-    } //if
-
-    //Just return the status code
+    } 
+    
+    //Return the status code
     return response.statusCode;
   } //_getAndStoreTokens
 
@@ -137,12 +140,12 @@ class Impact {
     List<dynamic> data = jsonDecode(r.body)['data'];
     List<double> durations = [];
     for (var sleepEntry in data) {
-      double duration = sleepEntry['duration'] / 3600000; // Convert milliseconds to hours
+      double duration =
+          sleepEntry['duration'] / 3600000; // Convert milliseconds to hours
       durations.add(duration);
     }
     return durations;
   }
-
 
   Future<List<double>> getRestingHeartRatesFromDay(DateTime startTime) async {
     final sp = await SharedPreferences.getInstance();
@@ -167,3 +170,4 @@ class Impact {
     return restingHeartRates;
   }
 } //Impact
+

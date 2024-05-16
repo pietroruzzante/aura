@@ -1,7 +1,6 @@
 import 'package:aura/services/impact.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:aura/models/authentication_service.dart';
 import 'package:aura/screens/Homepage.dart';
 import 'package:aura/models/palette.dart';
 
@@ -21,21 +20,40 @@ class _LoginPageState extends State<LoginPage> {
   void _login() async {
     setState(() {
       _isLoading = true;
+      _errorMessage = ''; // Clear any previous error message
     });
 
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    bool isLoggedIn = await AuthenticationService.login(email, password);
-
-    if (isLoggedIn) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isLoggedIn', true);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => Homepage()));
+    // Directly check if the email and password are not empty
+    if (_emailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
+      try {
+        final result = await impact.getAndStoreTokens(
+            _emailController.text, _passwordController.text);
+        if (result == 200) { // The credentials are correct, navigate to the Homepage
+          final sp = await SharedPreferences.getInstance();
+          await sp.setString('username', _emailController.text);
+          await sp.setString('password', _passwordController.text);
+          //await impact.getPatient();
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => Homepage()));
+        } else {
+          // The credentials are incorrect, show an error message
+          setState(() {
+            _errorMessage = 'Incorrect email or password';
+            _isLoading = false;
+          });
+        }
+      } catch (e) {
+        // An exception occurred, show an error message
+        setState(() {
+          _errorMessage = 'An error occurred during login: $e';
+          _isLoading = false;
+        });
+      }
     } else {
+      // Email or password fields are empty, show an error message
       setState(() {
-        _errorMessage = 'Invalid email or password';
+        _errorMessage = 'Please enter both email and password';
         _isLoading = false;
       });
     }
@@ -92,10 +110,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _icon() {
     return Image.asset(
-              'assets/logo.png',
-              height: 200,
-              width: 200,
-            );
+      'assets/logo.png',
+      height: 200,
+      width: 200,
+    );
   }
 
   Widget _inputField(String hintText, TextEditingController controller,
