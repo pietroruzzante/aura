@@ -77,7 +77,7 @@ flutter:
   - assets/stress_model.json
   - assets/logo.png
   - assets/spotify.png
-  - assets/electrodes.jpg
+  - assets/breathing.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -90,7 +90,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: WorkSans
+      fonts:
+        - asset: assets/fonts/WorkSans/WorkSans-Regular.ttf
+        - asset: assets/fonts/WorkSans/WorkSans-Bold.ttf
+        - asset: assets/fonts/WorkSans/WorkSans-Light.ttf
+        - asset: assets/fonts/WorkSans/WorkSans-Medium.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf

@@ -5,7 +5,7 @@ class SpotifySol extends StatelessWidget {
   const SpotifySol({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {    
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -24,7 +24,7 @@ class SpotifySol extends StatelessWidget {
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
                       'Sai che ascoltare musica può dare una mano quando hai un brutto mal di testa? Sembra strano, ma è vero! La musica riesce a distrarti dal dolore, e può persino rilassare i muscoli tesi.',
-                      style: TextStyle(color: Palette.white),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.white),
                       textAlign: TextAlign.justify,
                     ),
                   )

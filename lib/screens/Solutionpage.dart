@@ -13,7 +13,7 @@ class Solutionpage extends StatelessWidget {
 
   List<Solution> _fixedSolutions = [
   Solution('Spotify', 'assets/spotify.png', SpotifySol()),
-  Solution('Breathing', 'assets/electrodes.jpg', BreathingSol()),
+  Solution('Breathing', 'assets/breathing.png', BreathingSol()),
   ];
 
   //List _optionaSolutions = optionalSolutions();
@@ -28,7 +28,7 @@ class Solutionpage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Solutions",
+          "What can you do?",
         ),
         titleTextStyle: TextStyle(
             color: Palette.blue,
