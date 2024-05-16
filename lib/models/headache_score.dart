@@ -64,7 +64,7 @@ class HeadacheScore {
       if(i==3){selected = 'current';}
 
       pressure = getPressureFromTimestamp(timestamp, decodedResponse, selected);
-      print('i=$i: pressure:$pressure');
+      print('i=$i: pressure value for timestamp $timestamp: pressure=$pressure hPa');
       pressures[i] = pressure;
 
     }
@@ -103,6 +103,7 @@ double getPressureFromTimestamp(int timestamp, Map<String, dynamic> decodedRespo
   if (selected == 'current') {
     if (decodedResponse['current'] != null && decodedResponse['current']['pressure_mb'] != null) {
       pressure = decodedResponse['current']['pressure_mb'];
+      print('current timestamp found');
     } else {
       print("Error: 'current' or 'pressure_mb' is null in decodedResponse");
     }
@@ -115,7 +116,7 @@ double getPressureFromTimestamp(int timestamp, Map<String, dynamic> decodedRespo
             if (forecastTimestamp == timestamp) {
               if (value['pressure_mb'] != null) {
                 pressure = value['pressure_mb'].toDouble();
-                print('timestamp found');
+                print('timestamp $timestamp found');
               } else {
                 print("Error: 'pressure_mb' is null for timestamp: $timestamp");
               }
