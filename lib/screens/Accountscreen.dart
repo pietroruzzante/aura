@@ -5,7 +5,7 @@ import 'package:aura/models/setting_widget/forward_button.dart';
 import 'package:aura/models/setting_widget/setting_item.dart';
 import 'package:aura/models/setting_widget/setting_switch.dart';
 import 'package:aura/models/palette.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
@@ -16,6 +16,20 @@ class AccountScreen extends StatefulWidget {
 
 class _AccountScreenState extends State<AccountScreen> {
   bool isDarkMode = false;
+  String name = 'User';
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserName();
+  }
+
+  Future<void> loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name') ?? 'User';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +69,11 @@ class _AccountScreenState extends State<AccountScreen> {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "User",
+                          name,
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w500,
