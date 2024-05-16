@@ -5,11 +5,11 @@ import 'package:aura/models/solution.dart';
 class SolutionCard extends StatelessWidget {
   Solution solution;
 
-  SolutionCard({super.key, required this.solution});
+  SolutionCard({required this.solution});
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         Navigator.push(
           context, MaterialPageRoute(builder: (context) => solution.pageRoute));
@@ -22,19 +22,24 @@ class SolutionCard extends StatelessWidget {
           margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
-          color: Colors.transparent,
+          color: Palette.white,
           elevation: 5,
           shadowColor: Palette.darkBlue,
-          child: Column(children: [
-            Image.asset(
-              solution.imagePath,
-              fit: BoxFit.fill,
+          child: Center(
+            child: Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                    solution.imagePath,
+                    fit: BoxFit.contain,
+                ),
+              ),
             ),
-              /*Text(
-              solution.name,
-              style: const TextStyle(fontSize: 16, color: Colors.white),
-            ),*/
-          ]),
+                /*Text(
+                solution.name,
+                style: const TextStyle(fontSize: 16, color: Colors.white),
+              ),*/
+          ),
         )
       ),
     );
