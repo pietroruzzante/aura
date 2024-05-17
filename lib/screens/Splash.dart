@@ -1,3 +1,4 @@
+import 'package:aura/services/impact.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aura/screens/Homepage.dart';
@@ -20,6 +21,7 @@ class Splash extends StatelessWidget {
         MaterialPageRoute(builder: ((context) => LoginPage())));
   } //_toHomePage
 
+/*
   void _checkAuth(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
@@ -29,9 +31,8 @@ class Splash extends StatelessWidget {
       _toLoginPage(context);
     }
   }
-
-// Change the checkLogin method !!!!!!!
-/* 
+*/
+ 
   void _checkLogin(BuildContext context) async {
     final result = await Impact().refreshTokens();
     if (result == 200) {
@@ -40,11 +41,11 @@ class Splash extends StatelessWidget {
       _toLoginPage(context);
     }
   }
-  */
+
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 5), () => _checkAuth(context));
+    Future.delayed(const Duration(seconds: 5), () => _checkLogin(context));
     return Material(
       child: Container(
         color: Colors.white,

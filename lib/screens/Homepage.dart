@@ -75,14 +75,6 @@ class _HomepageState extends State<Homepage>{
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Palette.blue),
                 ),
             ),
-            ListTile(
-              leading: Icon(Icons.logout, color: Palette.blue,),
-              title: Text(
-                'Logout',
-                style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Palette.blue),
-                ),
-              onTap: () => _logout(context),
-            ),
           ],
         ),
       ),
@@ -109,14 +101,6 @@ class _HomepageState extends State<Homepage>{
 
   }
 
-  void _logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
 }
 
 class DailyScore extends StatelessWidget {

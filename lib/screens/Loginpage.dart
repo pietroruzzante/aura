@@ -1,9 +1,7 @@
-<<<<<<< HEAD
 
 import 'package:aura/screens/CAP_onboarding.dart';
-=======
+
 import 'package:aura/services/impact.dart';
->>>>>>> impact_request
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aura/screens/Homepage.dart';
@@ -27,34 +25,7 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
       _errorMessage = ''; // Clear any previous error message
     });
-
-<<<<<<< HEAD
-    String email = _emailController.text;
-    String password = _passwordController.text;
-
-    bool isLoggedIn = await AuthenticationService.login(email, password);
-
-    if (isLoggedIn) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isLoggedIn', true);
-      Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => OnboardingPage()));
-      
-      /*
-      final result = await impact.getAndStoreTokens(
-        userController.text, passwordController.text);
-      if (result == 200) {
-        final sp = await SharedPreferences.getInstance();
-        await sp.setString('username', userController.text);
-        await sp.setString(
-            'password', passwordController.text);
-        await impact.getPatient();
-        if (sp.getString('purpleAirKey') != null) {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                  builder: (context) => const Home())); */
-
-=======
+    
     // Directly check if the email and password are not empty
     if (_emailController.text.isNotEmpty &&
         _passwordController.text.isNotEmpty) {
@@ -67,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           await sp.setString('password', _passwordController.text);
           //await impact.getPatient();
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => Homepage()));
+              MaterialPageRoute(builder: (context) => OnboardingPage()));
         } else {
           // The credentials are incorrect, show an error message
           setState(() {
@@ -82,7 +53,6 @@ class _LoginPageState extends State<LoginPage> {
           _isLoading = false;
         });
       }
->>>>>>> impact_request
     } else {
       // Email or password fields are empty, show an error message
       setState(() {

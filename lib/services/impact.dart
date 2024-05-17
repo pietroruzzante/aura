@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:aura/models/heart_rate.dart';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -131,7 +130,6 @@ class Impact {
     if (r.statusCode != 200) return [];
 
     final Map<String, dynamic> sleepData = jsonDecode(r.body);
-    print('Sleep Data: $sleepData');
     double duration = sleepData['data']['data']['duration'];
     print(duration);
     double durationInHours = duration / 3600000;
