@@ -87,7 +87,7 @@ class _BreathingSolState extends State<BreathingPhases> {
                       ),
                       SizedBox(height: 20),
                       ElevatedButton(
-                        child: Text('Try other solutions'),
+                        child: Text('Other solutions'),
                         onPressed: () {
                           Navigator.pop(context);
                         },

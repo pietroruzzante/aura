@@ -1,3 +1,4 @@
+import 'package:aura/screens/MichaelSol.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/models/SolutionCard.dart';
@@ -14,6 +15,7 @@ class Solutionpage extends StatelessWidget {
   List<Solution> _fixedSolutions = [
   Solution('Spotify', 'assets/spotify.png', SpotifySol()),
   Solution('Breathing', 'assets/breathing.png', BreathingSol()),
+  Solution('Michael', 'assets/michaelsolution.png', MichaelSol()),
   ];
 
   //List _optionaSolutions = optionalSolutions();
