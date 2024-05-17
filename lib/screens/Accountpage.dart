@@ -7,14 +7,14 @@ import 'package:aura/models/setting_widget/setting_switch.dart';
 import 'package:aura/models/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AccountScreen extends StatefulWidget {
-  const AccountScreen({super.key});
+class Accountpage extends StatefulWidget {
+  const Accountpage({super.key});
 
   @override
-  State<AccountScreen> createState() => _AccountScreenState();
+  State<Accountpage> createState() => _AccountpageState();
 }
 
-class _AccountScreenState extends State<AccountScreen> {
+class _AccountpageState extends State<Accountpage> {
   bool isDarkMode = false;
   String name = 'User';
 
@@ -33,101 +33,108 @@ class _AccountScreenState extends State<AccountScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Settings",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              SizedBox(height: 40),
-              Text(
-                "Account",style: Theme.of(context).textTheme.titleSmall,
-              ),
-              SizedBox(height: 20),
-              SizedBox(
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      radius: 35,
-                      backgroundColor: Palette.lightBlue1, // Placeholder color
-                      child: Text(
-                        "U", // Initials or placeholder text
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                    ),
-                    SizedBox(width: 10),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Palette.darkBlue),
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "test@example.com",
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade600),
-                        )
-                      ],
-                    ),
-                    Spacer(),
-                    ForwardButton(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditAccountScreen(),
-                          ),
-                        );
-                      },
-                    )
-                  ],
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Palette.white,
+            Palette.softBlue1,
+          ],
+        ),
+      ),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Account",style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ),
-              SizedBox(height: 40),
-              Text(
-                "Settings",
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              SizedBox(height: 20),
-              SettingItem(
-                title: Text('Notifications',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
-                icon: Ionicons.notifications,
-                bgColor: Colors.blue.shade100,
-                iconColor: Colors.blue,
-                onTap: () {},
-              ),
-              const SizedBox(height: 20),
-              SettingSwitch(
-                title: Text('Dark Mode',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
-                icon: Ionicons.earth,
-                bgColor: Colors.purple.shade100,
-                iconColor: Colors.purple,
-                value: isDarkMode,
-                onTap: (value) {
-                  setState(() {
-                    isDarkMode = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              SettingItem(
-                title: Text('Help',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
-                icon: Ionicons.nuclear,
-                bgColor: Colors.red.shade100,
-                iconColor: Colors.red,
-                onTap: () {},
-              ),
-            ],
+                SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 35,
+                        backgroundColor: Palette.lightBlue1, // Placeholder color
+                        child: Text(
+                          "U", // Initials or placeholder text
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            name,
+                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Palette.darkBlue),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            "test@example.com",
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade600),
+                          )
+                        ],
+                      ),
+                      Spacer(),
+                      ForwardButton(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditAccountScreen(),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 40),
+                Text(
+                  "Settings",
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                SizedBox(height: 20),
+                SettingItem(
+                  title: Text('Notifications',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
+                  icon: Ionicons.notifications,
+                  bgColor: Colors.blue.shade100,
+                  iconColor: Colors.blue,
+                  onTap: () {},
+                ),
+                const SizedBox(height: 20),
+                SettingSwitch(
+                  title: Text('Dark Mode',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
+                  icon: Ionicons.earth,
+                  bgColor: Colors.purple.shade100,
+                  iconColor: Colors.purple,
+                  value: isDarkMode,
+                  onTap: (value) {
+                    setState(() {
+                      isDarkMode = value;
+                    });
+                  },
+                ),
+                const SizedBox(height: 20),
+                SettingItem(
+                  title: Text('Help',
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
+                  icon: Ionicons.nuclear,
+                  bgColor: Colors.red.shade100,
+                  iconColor: Colors.red,
+                  onTap: () {},
+                ),
+              ],
+            ),
           ),
         ),
       ),
