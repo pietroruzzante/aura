@@ -5,7 +5,6 @@ import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:hive/hive.dart';
 
 
 class HeadacheScore {
@@ -87,6 +86,9 @@ class HeadacheScore {
     final json = await rootBundle.loadString('assets/stress_model.json');
     final classifier = DecisionTreeClassifier.fromJson(json);
     final prediction = classifier.predict(data).toMatrix().asFlattenedList;
+    for (int i=4;i<6;i++){
+      prediction[i] = prediction[3];
+    }
     print('prediction:$prediction');
     return prediction;
     
