@@ -7,10 +7,8 @@ import 'package:aura/screens/BreathingSol.dart';
 import 'package:aura/screens/SpotifySol.dart';
 
 class Solutionpage extends StatelessWidget {
-  // per debugging solutionPage
   bool needSleep = false;
   bool needExercise = false;
-  bool isHot = false;
 
   List<Solution> _fixedSolutions = [
   Solution('Spotify', 'assets/spotify.png', SpotifySol()),
@@ -18,38 +16,53 @@ class Solutionpage extends StatelessWidget {
   Solution('Michael', 'assets/michaelsolution.png', MichaelSol()),
   ];
 
-  //List _optionaSolutions = optionalSolutions();
+  List<Solution> _optionaSolutions = [
+  ];
 
   Solutionpage(
       {required this.needSleep,
       required this.needExercise,
-      required this.isHot,});
+      });
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "What can you do?",
-          style: Theme.of(context).textTheme.titleSmall
-        ),
-        titleTextStyle: TextStyle(
-            color: Palette.blue,
-            fontWeight: FontWeight.bold,
-            fontSize: 20),
-        backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Palette.darkBlue),
-          onPressed: () => Navigator.pop(context),
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Palette.white,
+            Palette.blue,
+          ],
         ),
       ),
-      body: Center(
-        child: ListView.builder(
-          itemCount: _fixedSolutions.length,
-          itemBuilder: (BuildContext context, int index) {
-            Solution solution = _fixedSolutions[index];
-            return SolutionCard(solution: solution);
-          }),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            "What can you do?",
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
+          /*
+          titleTextStyle: TextStyle(
+              color: Palette.blue,
+              fontWeight: FontWeight.bold,
+              fontSize: 20),
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Palette.darkBlue),
+            onPressed: () => Navigator.pop(context),
+          ),
+          */
+        ),
+        body: Center(
+          child: ListView.builder(
+            itemCount: _fixedSolutions.length,
+            itemBuilder: (BuildContext context, int index) {
+              Solution solution = _fixedSolutions[index];
+              return SolutionCard(solution: solution);
+            }),
+        ),
       ),
     );
   }
