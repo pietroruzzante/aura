@@ -1,11 +1,20 @@
+<<<<<<< HEAD
 import 'package:aura/services/openWeather.dart';
+=======
+import 'package:aura/services/impact.dart';
+>>>>>>> impact_request
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HeadacheScore {
+<<<<<<< HEAD
   final List<double> _scores = List<double>.filled(7, 0.0);
+=======
+  final List<double> _scores = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+  final impact = Impact();
+>>>>>>> impact_request
 
   double operator [](int index) => _scores[index];
 
@@ -30,6 +39,7 @@ class HeadacheScore {
     //await Future.delayed(const Duration(seconds: 2));//Provvisorio fino a accesso server
     final data = DataFrame([
       featureNames,
+<<<<<<< HEAD
       [8.0, 80.0],
       [7.0, 90.0],
       [6.0, 70.0],
@@ -37,11 +47,22 @@ class HeadacheScore {
       [6.0, 80.0],
       [8.0, 75.0],
       [7.0, 90.0]
+=======
+      [0.0, 0.0], 
+      [0.0, 0.0], 
+      [0.0, 0.0], 
+      await impact.getSleepHR(),
+      [0.0, 0.0], 
+      [0.0, 0.0],
+      [0.0, 0.0], 
+>>>>>>> impact_request
     ]); //Here we need data request from Impact and from database
     final json = await rootBundle.loadString('assets/stress_model.json');
     final classifier = DecisionTreeClassifier.fromJson(json);
     final prediction = classifier.predict(data).toMatrix().asFlattenedList;
+    print('prediction:$prediction');
     return prediction;
+    
   } //getStress
 
   Future<List<double>> getWeather() async {

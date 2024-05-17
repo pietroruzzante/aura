@@ -239,7 +239,19 @@ packages:
       sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "4.9.0"
+=======
+    version: "4.8.1"
+  jwt_decoder:
+    dependency: "direct main"
+    description:
+      name: jwt_decoder
+      sha256: "54774aebf83f2923b99e6416b4ea915d47af3bde56884eb622de85feabbc559f"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
+>>>>>>> impact_request
   leak_tracker:
     dependency: transitive
     description:
