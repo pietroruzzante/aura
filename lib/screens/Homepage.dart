@@ -1,4 +1,4 @@
-import 'package:aura/screens/Accountscreen.dart';
+import 'package:aura/screens/Accountpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +17,10 @@ class Homepage extends StatefulWidget {
   _HomepageState createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
+class _HomepageState extends State<Homepage>{
   int index = 0;
   final score = HeadacheScore().refreshScore();
-  final day = Day(); 
+  final day = Day();
 
   void _onItemTapped(int newIndex) {
     setState(() {
@@ -56,6 +56,7 @@ class _HomepageState extends State<Homepage> {
       appBar: AppBar(
         title: Text(
           "Aura score",
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         titleTextStyle: TextStyle(
           color: Palette.blue,
@@ -69,18 +70,16 @@ class _HomepageState extends State<Homepage> {
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
-              child: Text('login'),
-            ),
-            ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
-              onTap: () => _logout(context),
+              child: Text(
+                'login',
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Palette.blue),
+                ),
             ),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFFf5f7f7),
+        backgroundColor: Palette.softBlue1,
         items: navBarItems,
         currentIndex: index,
         onTap: (index) => _onItemTapped(index),
@@ -102,17 +101,7 @@ class _HomepageState extends State<Homepage> {
 
   }
 
-  void _logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
 }
-
-
 
 class DailyScore extends StatelessWidget {
   final HeadacheScore score;
@@ -133,10 +122,12 @@ class DailyScore extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children:
-      [Text(
-        "Welcome, user",
-        style: TextStyle(
-            color: Palette.blue, fontWeight: FontWeight.w500, fontSize: 20),
+      [Padding(
+        padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+        child: Text(
+          "Welcome, user",
+          style: Theme.of(context).textTheme.headlineMedium,
+        ),
       )]),
       Consumer<Day>(builder: (context, day, child) {
         return Center(

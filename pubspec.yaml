@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.2.3
+  jwt_decoder: ^2.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -47,9 +48,15 @@ dependencies:
   ionicons: ^0.2.2
   flutter_launcher_icons: ^0.13.1
   external_app_launcher: ^4.0.0
+
   path_provider: ^2.1.3
   sembast: ^3.7.1
   hive: ^2.2.3
+
+
+  http: ^1.2.1
+  url_launcher: ^6.2.6
+  youtube_player_flutter: ^9.0.1
 
 
 
@@ -82,6 +89,7 @@ flutter:
   - assets/logo.png
   - assets/spotify.png
   - assets/breathing.png
+  - assets/michaelsolution.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

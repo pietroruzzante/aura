@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:aura/models/setting_widget/forward_button.dart';
 
 class SettingItem extends StatelessWidget {
-  final String title;
+  final Text title;
   final Color bgColor;
   final Color iconColor;
   final IconData icon;
@@ -37,13 +37,7 @@ class SettingItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          title,
           const Spacer(),
           value != null
               ? Text(
