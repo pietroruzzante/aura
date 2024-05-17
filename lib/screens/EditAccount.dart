@@ -25,17 +25,15 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
 
   Future<void> loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? name = prefs.getString('name');
+    String? name = prefs.getString('name') ?? 'User';
     String? age = prefs.getString('age');
     String? address = prefs.getString('address');
-    if (name != null && age != null && address != null) {
-      setState(() {
-        nameController.text = name;
-        ageController.text = age;
-        addressController.text = address;
-        gender = prefs.getString('gender')??'man';
-      });
-    }
+    setState(() {
+      nameController.text = name;
+      if (age != null) ageController.text = age;
+      if (address != null) addressController.text = address;
+      gender = prefs.getString('gender') ?? 'man';
+    });
   }
 
   Future<void> saveUserInfo(String name, String age, String address) async {
@@ -86,12 +84,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Account",
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 40),
               EditItem(
@@ -102,12 +97,13 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   child: CircleAvatar(
                     radius: 40,
                     backgroundColor: Palette.lightBlue1,
-                    child: const Text(
+                    child: Text(
                       "U",
-                      style: TextStyle(fontSize: 24),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
-                ), controller: TextEditingController(),
+                ),
+                controller: TextEditingController(),
               ),
               EditItem(
                 title: "Name",
@@ -172,7 +168,7 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
               ),
               const SizedBox(height: 40),
               EditItem(
-                title: "Address",
+                title: "CAP",
                 widget: TextField(
                   controller: addressController,
                 ),

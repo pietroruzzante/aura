@@ -21,14 +21,26 @@ class Splash extends StatelessWidget {
   } //_toHomePage
 
   void _checkAuth(BuildContext context) async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-  if (isLoggedIn) {
-    _toHomePage(context);
-  } else {
-    _toLoginPage(context);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    if (isLoggedIn) {
+      _toHomePage(context);
+    } else {
+      _toLoginPage(context);
+    }
   }
-}
+
+// Change the checkLogin method !!!!!!!
+/* 
+  void _checkLogin(BuildContext context) async {
+    final result = await Impact().refreshTokens();
+    if (result == 200) {
+      _toHomePage(context);
+    } else {
+      _toLoginPage(context);
+    }
+  }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -52,18 +64,21 @@ class Splash extends StatelessWidget {
               width: 200,
             ),
             SizedBox(height: 250),
-            Text('Powered by:',
-            style: TextStyle(
+            Text(
+              'Powered by:',
+              style: TextStyle(
                   color: Color.fromARGB(255, 6, 40, 73),
                   fontSize: 15,
-                  fontWeight: FontWeight.w400),),
-            Text('DartVaders',
-            style: TextStyle(
+                  fontWeight: FontWeight.w400),
+            ),
+            Text(
+              'DartVaders',
+              style: TextStyle(
                   color: Color.fromARGB(255, 6, 40, 73),
                   fontSize: 15,
-                  fontWeight: FontWeight.w400),),
+                  fontWeight: FontWeight.w400),
+            ),
             SizedBox(height: 50),
-
           ],
         ),
       ),
