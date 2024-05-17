@@ -3,8 +3,11 @@ import 'package:aura/services/openWeather.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
+import 'package:sembast/sembast_io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sembast/sembast.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class HeadacheScore {
   final List<double> _scores = List<double>.filled(7, 0.0);
@@ -21,15 +24,18 @@ class HeadacheScore {
     print('today: $today');
     DateTime yesterday = today.subtract(Duration(days: 1));
 
-    MyDatabase db = MyDatabase();
-    await db.init();
-
-    print('database: ${db.getAllRecords()}');
+    var dir = await getApplicationDocumentsDirectory();
+    DatabaseFactory dbFactory = databaseFactoryIo;
+    await dir.create(recursive: true);
+    var dbPath = join(dir.path, 'my_database.db');
+    Database db = await dbFactory.openDatabase(dbPath);
+    print('database: $db');
+    
 
     for (int i = 3; i < 6; i++) {
       _scores[i] = stressScore[i] + weatherScore[i];
     }
-
+    /*
     if (db.dateEquals(db.getRecord('day3')[0],today)){
       print('db day 3: ${db['day3'][0]}');
       print('caso1');
@@ -49,6 +55,7 @@ class HeadacheScore {
           _scores[i] = db['day$i'][1];
          } 
     }
+    */
     print('final scores: $_scores');
     return this;
   } //refreshScore
