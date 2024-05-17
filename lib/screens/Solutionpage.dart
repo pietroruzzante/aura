@@ -29,6 +29,7 @@ class Solutionpage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "What can you do?",
+          style: Theme.of(context).textTheme.titleSmall
         ),
         titleTextStyle: TextStyle(
             color: Palette.blue,

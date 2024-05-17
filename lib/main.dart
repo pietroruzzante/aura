@@ -20,13 +20,13 @@ class MyApp extends StatelessWidget {
         title: 'Aura',
         theme: ThemeData(
           textTheme: TextTheme(
-            displayMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 42, fontWeight: FontWeight.w300),
-            titleLarge: TextStyle(fontFamily: 'WorkSans', fontSize: 34, fontWeight: FontWeight.bold),
-            titleMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 28, fontWeight: FontWeight.w300),
-            titleSmall: TextStyle(fontFamily: 'WorkSans', fontSize: 22, fontWeight: FontWeight.w300),
-            headlineMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 20, fontWeight: FontWeight.normal),
-            bodyMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 13, fontWeight: FontWeight.normal),
-            labelMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 10, fontWeight: FontWeight.normal),
+            displayMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 42, fontWeight: FontWeight.w300, color: Palette.blue),
+            titleLarge: TextStyle(fontFamily: 'WorkSans', fontSize: 34, fontWeight: FontWeight.bold, color: Palette.blue),
+            titleMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 28, fontWeight: FontWeight.bold, color: Palette.blue),
+            titleSmall: TextStyle(fontFamily: 'WorkSans', fontSize: 22, fontWeight: FontWeight.bold, color: Palette.blue),
+            headlineMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 20, fontWeight: FontWeight.normal, color: Palette.blue),
+            bodyMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 13, fontWeight: FontWeight.normal, color: Palette.white),
+            labelMedium: TextStyle(fontFamily: 'WorkSans', fontSize: 10, fontWeight: FontWeight.normal, color: Palette.white),
           ),
           colorScheme:
               ColorScheme.fromSeed(seedColor: Palette.blue),

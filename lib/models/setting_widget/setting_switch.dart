@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SettingSwitch extends StatelessWidget {
-  final String title;
+  final Text title;
   final Color bgColor;
   final Color iconColor;
   final IconData icon;
@@ -38,17 +38,11 @@ class SettingSwitch extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 20),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+          title,
           const Spacer(),
           Text(
             value ? "On" : "Off",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               color: Colors.grey,
             ),

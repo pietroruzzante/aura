@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:aura/screens/edit_screen.dart';
+import 'package:aura/screens/EditAccount.dart';
 import 'package:aura/models/setting_widget/forward_button.dart';
 import 'package:aura/models/setting_widget/setting_item.dart';
 import 'package:aura/models/setting_widget/setting_switch.dart';
@@ -40,22 +40,15 @@ class _AccountScreenState extends State<AccountScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Settings",
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-              const SizedBox(height: 40),
-              const Text(
-                "Account",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
+              SizedBox(height: 40),
+              Text(
+                "Account",style: Theme.of(context).textTheme.titleSmall,
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
                 child: Row(
@@ -63,39 +56,33 @@ class _AccountScreenState extends State<AccountScreen> {
                     CircleAvatar(
                       radius: 35,
                       backgroundColor: Palette.lightBlue1, // Placeholder color
-                      child: const Text(
+                      child: Text(
                         "U", // Initials or placeholder text
-                        style: TextStyle(fontSize: 24),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           name,
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Palette.darkBlue),
                         ),
                         SizedBox(height: 10),
                         Text(
                           "test@example.com",
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade600),
                         )
                       ],
                     ),
-                    const Spacer(),
+                    Spacer(),
                     ForwardButton(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const EditAccountScreen(),
+                            builder: (context) => EditAccountScreen(),
                           ),
                         );
                       },
@@ -103,26 +90,15 @@ class _AccountScreenState extends State<AccountScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 40),
-              const Text(
+              SizedBox(height: 40),
+              Text(
                 "Settings",
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20),
               SettingItem(
-                title: "Language",
-                icon: Ionicons.earth,
-                bgColor: Colors.orange.shade100,
-                iconColor: Colors.orange,
-                value: "English",
-                onTap: () {},
-              ),
-              const SizedBox(height: 20),
-              SettingItem(
-                title: "Notifications",
+                title: Text('Notifications',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
                 icon: Ionicons.notifications,
                 bgColor: Colors.blue.shade100,
                 iconColor: Colors.blue,
@@ -130,7 +106,8 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               const SizedBox(height: 20),
               SettingSwitch(
-                title: "Dark Mode",
+                title: Text('Dark Mode',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
                 icon: Ionicons.earth,
                 bgColor: Colors.purple.shade100,
                 iconColor: Colors.purple,
@@ -143,7 +120,8 @@ class _AccountScreenState extends State<AccountScreen> {
               ),
               const SizedBox(height: 20),
               SettingItem(
-                title: "Help",
+                title: Text('Help',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
                 icon: Ionicons.nuclear,
                 bgColor: Colors.red.shade100,
                 iconColor: Colors.red,
