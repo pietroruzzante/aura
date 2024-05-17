@@ -14,6 +14,8 @@ class Impact {
   static String username = 'qWgEn2F4fj';
   static String password = '12345678!';
 
+  static String patientUsername = 'Jpefaq6m58';
+
   //This method allows to check if the IMPACT backend is up
   Future<bool> isImpactUp() async {
     //Create the request
@@ -43,8 +45,8 @@ class Impact {
       final sp = await SharedPreferences.getInstance();
       await sp.setString('access', decodedResponse['access']);
       await sp.setString('refresh', decodedResponse['refresh']);
-    } 
-    
+    }
+
     //Return the status code
     return response.statusCode;
   } //_getAndStoreTokens
@@ -110,64 +112,44 @@ class Impact {
 
     return {'Authorization': 'Bearer $token'};
   }
-
-  Future<void> getPatient() async {
+  
+  Future<List<double>> getSleepHR() async {
     var header = await getBearer();
-    final r = await http.get(
-        Uri.parse('${Impact.baseUrl}study/v1/patients/active'),
-        headers: header);
+    var day = DateFormat('yyyy-MM-dd')
+        .format(DateTime(2024, 4, 10)); // set the day !!!!
+    final urlSleep =
+        '${Impact.baseUrl}data/v1/sleep/patients/$patientUsername/day/$day/';
+    final urlRestHR =
+        '${Impact.baseUrl}data/v1/resting_heart_rate/patients/$patientUsername/day/$day/';
+    print('urlSleep:$urlSleep');
+    print('urlRestHR:$urlRestHR');
 
-    final decodedResponse = jsonDecode(r.body);
-    final sp = await SharedPreferences.getInstance();
-
-    sp.setString('impactPatient', decodedResponse['data'][0]['username']);
-  }
-
-  Future<List<double>> getSleepDurationsFromDay(DateTime startTime) async {
-    final sp = await SharedPreferences.getInstance();
-    String? user = sp.getString('impactPatient');
-    var header = await getBearer();
-    var end = DateFormat('MM-dd').format(startTime);
-    var start =
-        DateFormat('MM-dd').format(startTime.subtract(const Duration(days: 1)));
     var r = await http.get(
-      Uri.parse(
-          '${Impact.baseUrl}data/v1/sleep/patients/$user/daterange/start_date/$start/end_date/$end/'),
+      Uri.parse(urlSleep),
       headers: header,
     );
     if (r.statusCode != 200) return [];
 
-    List<dynamic> data = jsonDecode(r.body)['data'];
-    List<double> durations = [];
-    for (var sleepEntry in data) {
-      double duration =
-          sleepEntry['duration'] / 3600000; // Convert milliseconds to hours
-      durations.add(duration);
-    }
-    return durations;
-  }
+    final Map<String, dynamic> sleepData = jsonDecode(r.body);
+    print('Sleep Data: $sleepData');
+    double duration = sleepData['data']['data']['duration'];
+    print(duration);
+    double durationInHours = duration / 3600000;
+    List<double> data = [durationInHours];
 
-  Future<List<double>> getRestingHeartRatesFromDay(DateTime startTime) async {
-    final sp = await SharedPreferences.getInstance();
-    String? user = sp.getString('impactPatient');
-    var header = await getBearer();
-    var end = DateFormat('MM-dd').format(startTime);
-    var start =
-        DateFormat('MM-dd').format(startTime.subtract(const Duration(days: 1)));
-    var r = await http.get(
-      Uri.parse(
-          '${Impact.baseUrl}data/v1/heart_rate/patients/$user/daterange/start_date/$start/end_date/$end/'),
+    var j = await http.get(  
+      Uri.parse(urlRestHR),
       headers: header,
     );
-    if (r.statusCode != 200) return [];
+    if (j.statusCode != 200) return [];
 
-    List<dynamic> data = jsonDecode(r.body)['data'];
-    List<double> restingHeartRates = [];
-    for (var heartRateEntry in data) {
-      double value = heartRateEntry['value'];
-      restingHeartRates.add(value);
-    }
-    return restingHeartRates;
+    final Map<String, dynamic> restHRData = jsonDecode(j.body);
+    double restHR = restHRData['data']['data']['value'];
+    data.add(restHR.toDouble());
+
+    print('datalist:$data');
+
+    return data;
   }
 } //Impact
 
