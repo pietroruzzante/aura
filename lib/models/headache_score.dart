@@ -1,13 +1,10 @@
-import 'package:aura/models/database.dart';
 import 'package:aura/services/openWeather.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
-import 'package:sembast/sembast_io.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sembast/sembast.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
+import 'package:hive/hive.dart';
+
 
 class HeadacheScore {
   final List<double> _scores = List<double>.filled(7, 0.0);
@@ -15,6 +12,7 @@ class HeadacheScore {
   double operator [](int index) => _scores[index];
 
   Future<HeadacheScore> refreshScore() async {
+
     final stressScore = await getStress();
     final weatherScore = await getWeather();
     print('weatherScore:${weatherScore}');
@@ -24,38 +22,47 @@ class HeadacheScore {
     print('today: $today');
     DateTime yesterday = today.subtract(Duration(days: 1));
 
-    var dir = await getApplicationDocumentsDirectory();
-    DatabaseFactory dbFactory = databaseFactoryIo;
-    await dir.create(recursive: true);
-    var dbPath = join(dir.path, 'my_database.db');
-    Database db = await dbFactory.openDatabase(dbPath);
-    print('database: $db');
-    
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    final keys = sp.getKeys();
+    print('keys: $keys');
 
+    for (int i=0;i<2;i++){
+      print(sp.getDouble('day$i'));
+    }
+    print('lastDayRefreshed: ${sp.getString('lastDayRefreshed')}');
+    
     for (int i = 3; i < 6; i++) {
       _scores[i] = stressScore[i] + weatherScore[i];
     }
-    /*
-    if (db.dateEquals(db.getRecord('day3')[0],today)){
-      print('db day 3: ${db['day3'][0]}');
+
+    if (equalDates(DateTime.parse(sp.getString('lastDayRefreshed')!),today)){
+      print('db day 3: ${sp.getDouble('day3')}');
       print('caso1');
       for (int i = 0; i < 2; i++) {
-         _scores[i] = db['day$i'][1];
+         _scores[i] = sp.getDouble('day$i')!;
       }
-    } else if (db.dateEquals(db['day3'][0],yesterday)){
+    } else if (equalDates(DateTime.parse(sp.getString('lastDayRefreshed')!),yesterday)){
       print('caso2');
-      db.updateDatabase(today, _scores[3]);
-        for (int i = 0; i < 2; i++) {
-        _scores[i] = db['day$i'][1];
-        }
+
+      sp.setDouble('day0', sp.getDouble('day1')!);
+      sp.setDouble('day1', sp.getDouble('day2')!);
+      sp.setDouble('day2', sp.getDouble('day3')!);
+      sp.setDouble('day3', _scores[3]);
+      sp.setString('lastDayRefreshed', today.toIso8601String());
+
+      for (int i = 0; i < 2; i++) {
+        _scores[i] = sp.getDouble('day$i')!;
+      }
     } else {
         print('caso3');
-        db.resetDatabase(today, _scores[3]);
-         for (int i = 0; i < 2; i++) {
-          _scores[i] = db['day$i'][1];
-         } 
+        sp.setDouble('day0', 0.0);
+        sp.setDouble('day1', 0.0);
+        sp.setDouble('day2', 0.0);
+        sp.setDouble('day3', _scores[3]);
+        sp.setString('lastDayRefreshed', today.toIso8601String());
     }
-    */
+    
+
     print('final scores: $_scores');
     return this;
   } //refreshScore
@@ -185,5 +192,14 @@ List<int> unixDates(){
   }
   return unixTimestamps;
 }
+
+bool equalDates(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+         date1.month == date2.month &&
+         date1.day == date2.day;
+}
+
+
+
 
 
