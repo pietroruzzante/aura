@@ -2,14 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
 import 'dart:async';
 
-class BreathingSol extends StatefulWidget {
-  const BreathingSol({super.key});
-
+class BreathingSol extends StatelessWidget {
   @override
-  State<BreathingSol> createState() => _BreathingSolState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Take a deep breath',
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
+      ),
+      body: BreathingPhases(),
+    );
+  }
 }
 
-class _BreathingSolState extends State<BreathingSol> {
+class BreathingPhases extends StatefulWidget {
+  const BreathingPhases({super.key});
+
+  @override
+  State<BreathingPhases> createState() => _BreathingSolState();
+}
+
+class _BreathingSolState extends State<BreathingPhases> {
   bool _isCycleActive = false;
 
   void _startCycle() {

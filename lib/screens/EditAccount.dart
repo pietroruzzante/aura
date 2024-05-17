@@ -84,12 +84,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Account",
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               const SizedBox(height: 40),
               EditItem(
@@ -100,9 +97,9 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                   child: CircleAvatar(
                     radius: 40,
                     backgroundColor: Palette.lightBlue1,
-                    child: const Text(
+                    child: Text(
                       "U",
-                      style: TextStyle(fontSize: 24),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                 ),
