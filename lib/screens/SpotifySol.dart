@@ -1,5 +1,4 @@
 import 'package:aura/models/palette.dart';
-import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -53,21 +52,13 @@ class SpotifySol extends StatelessWidget {
             ),
             ElevatedButton(
               child: Text('Open Spotify'),
-              /*
-              onPressed: () async {
-                await LaunchApp.openApp(
-                  androidPackageName: 'com.spotify.music',
-                  iosUrlScheme: 'spotify://',
-                );
-              },
-              */
               onPressed: ()  => _launchUrl(toLaunch),
             ),
             SizedBox(
               height: 20,
             ),
             ElevatedButton(
-              child: Text('To the home'),
+              child: Text('Other solutions'),
               onPressed: () {
                 Navigator.pop(context);
               },
