@@ -1,27 +1,72 @@
+
 import 'package:aura/services/openWeather.dart';
+import 'package:aura/services/impact.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
 class HeadacheScore {
+
   final List<double> _scores = List<double>.filled(7, 0.0);
+  final impact = Impact();
 
   double operator [](int index) => _scores[index];
 
-  double getScore(int day) {
-    refreshScore();
-    return _scores[day];
-  } //getScore
-
   Future<HeadacheScore> refreshScore() async {
+
     final stressScore = await getStress();
     final weatherScore = await getWeather();
     print('weatherScore:${weatherScore}');
     print('stressScore:${stressScore}');
-    for (int i = 0; i < 6; i++) {
+
+    DateTime today = DateTime.now();
+    print('today: $today');
+    DateTime yesterday = today.subtract(Duration(days: 1));
+
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    final keys = sp.getKeys();
+    print('keys: $keys');
+
+    for (int i=0;i<2;i++){
+      print(sp.getDouble('day$i'));
+    }
+    print('lastDayRefreshed: ${sp.getString('lastDayRefreshed')}');
+    
+    for (int i = 3; i < 6; i++) {
       _scores[i] = stressScore[i] + weatherScore[i];
     }
+
+    if (equalDates(DateTime.parse(sp.getString('lastDayRefreshed')!),today)){
+      print('db day 3: ${sp.getDouble('day3')}');
+      print('caso1');
+      for (int i = 0; i < 2; i++) {
+         _scores[i] = sp.getDouble('day$i')!;
+      }
+    } else if (equalDates(DateTime.parse(sp.getString('lastDayRefreshed')!),yesterday)){
+      print('caso2');
+
+      sp.setDouble('day0', sp.getDouble('day1')!);
+      sp.setDouble('day1', sp.getDouble('day2')!);
+      sp.setDouble('day2', sp.getDouble('day3')!);
+      sp.setDouble('day3', _scores[3]);
+      sp.setString('lastDayRefreshed', today.toIso8601String());
+
+      for (int i = 0; i < 2; i++) {
+        _scores[i] = sp.getDouble('day$i')!;
+      }
+    } else {
+        print('caso3');
+        sp.setDouble('day0', 0.0);
+        sp.setDouble('day1', 0.0);
+        sp.setDouble('day2', 0.0);
+        sp.setDouble('day3', _scores[3]);
+        sp.setString('lastDayRefreshed', today.toIso8601String());
+    }
+    
+
+    print('final scores: $_scores');
     return this;
   } //refreshScore
 
@@ -30,18 +75,23 @@ class HeadacheScore {
     //await Future.delayed(const Duration(seconds: 2));//Provvisorio fino a accesso server
     final data = DataFrame([
       featureNames,
-      [8.0, 80.0],
-      [7.0, 90.0],
-      [6.0, 70.0],
-      [6.0, 90.0],
-      [6.0, 80.0],
-      [8.0, 75.0],
-      [7.0, 90.0]
+      [0.0, 0.0], 
+      [0.0, 0.0], 
+      [0.0, 0.0], 
+      await impact.getSleepHR(),
+      [0.0, 0.0], 
+      [0.0, 0.0],
+      [0.0, 0.0], 
     ]); //Here we need data request from Impact and from database
     final json = await rootBundle.loadString('assets/stress_model.json');
     final classifier = DecisionTreeClassifier.fromJson(json);
     final prediction = classifier.predict(data).toMatrix().asFlattenedList;
+    for (int i=4;i<6;i++){
+      prediction[i] = prediction[3];
+    }
+    print('prediction:$prediction');
     return prediction;
+    
   } //getStress
 
   Future<List<double>> getWeather() async {
@@ -50,9 +100,9 @@ class HeadacheScore {
     print('dates: $dates');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int zip = 35137;
+    //int zip = 35137;
 
-    //zip = int.parse(prefs.getString('address')!);
+    int zip = int.parse(prefs.getString('address')!);
 
     final coordinates = await Openweather().getCoordinates(zip);
     final decodedResponse = await Openweather().getData(coordinates);
@@ -150,5 +200,14 @@ List<int> unixDates(){
   }
   return unixTimestamps;
 }
+
+bool equalDates(DateTime date1, DateTime date2) {
+  return date1.year == date2.year &&
+         date1.month == date2.month &&
+         date1.day == date2.day;
+}
+
+
+
 
 

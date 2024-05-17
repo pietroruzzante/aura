@@ -185,14 +185,6 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  void _logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', false);
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-    );
-  }
 }
 
 class DailyScore extends StatelessWidget {
