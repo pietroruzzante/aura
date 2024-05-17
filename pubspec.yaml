@@ -42,15 +42,22 @@ dependencies:
   ml_dataframe: ^1.6.0
   ml_preprocessing: ^7.0.2
   provider: ^6.1.2
-
+  http: ^1.2.1
   gauge_indicator: ^0.4.3
   easy_date_timeline: ^1.0.7
   ionicons: ^0.2.2
   flutter_launcher_icons: ^0.13.1
   external_app_launcher: ^4.0.0
+
+  path_provider: ^2.1.3
+  sembast: ^3.7.1
+  hive: ^2.2.3
+
+
   http: ^1.2.1
   url_launcher: ^6.2.6
   youtube_player_flutter: ^9.0.1
+
 
 
 
