@@ -1,27 +1,55 @@
+import 'package:aura/models/database.dart';
 import 'package:aura/services/openWeather.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sembast/sembast.dart';
 
 class HeadacheScore {
   final List<double> _scores = List<double>.filled(7, 0.0);
 
   double operator [](int index) => _scores[index];
 
-  double getScore(int day) {
-    refreshScore();
-    return _scores[day];
-  } //getScore
-
   Future<HeadacheScore> refreshScore() async {
     final stressScore = await getStress();
     final weatherScore = await getWeather();
     print('weatherScore:${weatherScore}');
     print('stressScore:${stressScore}');
-    for (int i = 0; i < 6; i++) {
+
+    DateTime today = DateTime.now();
+    print('today: $today');
+    DateTime yesterday = today.subtract(Duration(days: 1));
+
+    MyDatabase db = MyDatabase();
+    await db.init();
+
+    print('database: ${db.getAllRecords()}');
+
+    for (int i = 3; i < 6; i++) {
       _scores[i] = stressScore[i] + weatherScore[i];
     }
+
+    if (db.dateEquals(db.getRecord('day3')[0],today)){
+      print('db day 3: ${db['day3'][0]}');
+      print('caso1');
+      for (int i = 0; i < 2; i++) {
+         _scores[i] = db['day$i'][1];
+      }
+    } else if (db.dateEquals(db['day3'][0],yesterday)){
+      print('caso2');
+      db.updateDatabase(today, _scores[3]);
+        for (int i = 0; i < 2; i++) {
+        _scores[i] = db['day$i'][1];
+        }
+    } else {
+        print('caso3');
+        db.resetDatabase(today, _scores[3]);
+         for (int i = 0; i < 2; i++) {
+          _scores[i] = db['day$i'][1];
+         } 
+    }
+    print('final scores: $_scores');
     return this;
   } //refreshScore
 
@@ -30,13 +58,13 @@ class HeadacheScore {
     //await Future.delayed(const Duration(seconds: 2));//Provvisorio fino a accesso server
     final data = DataFrame([
       featureNames,
-      [8.0, 80.0],
-      [7.0, 90.0],
-      [6.0, 70.0],
+      [0.0, 0.0],
+      [0.0, 0.0],
+      [0.0, 0.0],
       [6.0, 90.0],
-      [6.0, 80.0],
-      [8.0, 75.0],
-      [7.0, 90.0]
+      [0.0, 0.0],
+      [0.0, 0.0],
+      [0.0, 0.0]
     ]); //Here we need data request from Impact and from database
     final json = await rootBundle.loadString('assets/stress_model.json');
     final classifier = DecisionTreeClassifier.fromJson(json);
@@ -50,9 +78,9 @@ class HeadacheScore {
     print('dates: $dates');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int zip = 35137;
+    //int zip = 35137;
 
-    //zip = int.parse(prefs.getString('address')!);
+    int zip = int.parse(prefs.getString('address')!);
 
     final coordinates = await Openweather().getCoordinates(zip);
     final decodedResponse = await Openweather().getData(coordinates);
