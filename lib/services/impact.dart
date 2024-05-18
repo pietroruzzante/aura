@@ -149,34 +149,5 @@ class Impact {
 
     return data;
   }
-
-
-  Future<DateTime> getLastExerciseDate() async{
-
-  //https://impact.dei.unipd.it/bwthw/data/v1/exercise/patients/Jpefaq6m58/daterange/start_date/2024-05-14/end_date/2024-05-17/
-
-  var header = await getBearer();
-    var day = DateFormat('yyyy-MM-dd')
-        .format(DateTime(2024, 4, 10)); // set the day !!!!
-    final urlSleep =
-        '${Impact.baseUrl}data/v1/sleep/patients/$patientUsername/day/$day/';
-
-    print('urlSleep:$urlSleep');
-
-    var r = await http.get(
-      Uri.parse(urlSleep),
-      headers: header,
-    );
-    if (r.statusCode != 200) return DateTime.now();
-
-    final Map<String, dynamic> sleepData = jsonDecode(r.body);
-    double duration = sleepData['data']['data']['duration'];
-    print(duration);
-    double durationInHours = duration / 3600000;
-    List<double> data = [durationInHours];
-  
-  return DateTime.now();
-
-}
 } //Impact
 
