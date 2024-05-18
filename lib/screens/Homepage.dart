@@ -103,7 +103,6 @@ class _HomepageState extends State<Homepage> {
                     )
                   ]),
                   SizedBox(height: 20,),
-                  /*
                   ListTile(
                     leading: Icon(
                       Icons.health_and_safety,
@@ -114,7 +113,7 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Homepage()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homepage()));
                     },
                   ),
                   ListTile(
@@ -127,7 +126,7 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Metricspage()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Metricspage()));
                     },
                   ),
                   ListTile(
@@ -140,10 +139,9 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Accountpage()));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Accountpage()));
                     },
                   ),
-                  */
                   Divider(),
                   ListTile(
                     leading: Icon(
@@ -154,7 +152,7 @@ class _HomepageState extends State<Homepage> {
                       'Logout',
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    onTap: () => _logout(context),
+                    onTap: () => {},
                   ),
                 ],
               ),
