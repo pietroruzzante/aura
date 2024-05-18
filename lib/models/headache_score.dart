@@ -29,19 +29,19 @@ class HeadacheScore {
     final keys = sp.getKeys();
     print('keys: $keys');
 
-    for (int i=0;i<2;i++){
-      print(sp.getDouble('day$i'));
+    for (int i=0;i<3;i++){
+      print(sp.getDouble('db value for day$i = ${sp.getDouble('day$i')}'));
     }
     print('lastDayRefreshed: ${sp.getString('lastDayRefreshed')}');
     
-    for (int i = 3; i < 6; i++) {
+    for (int i = 3; i < 7; i++) {
       _scores[i] = stressScore[i] + weatherScore[i];
     }
 
     if (equalDates(DateTime.parse(sp.getString('lastDayRefreshed')!),today)){
       print('db day 3: ${sp.getDouble('day3')}');
       print('caso1');
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < 3; i++) {
          _scores[i] = sp.getDouble('day$i')!;
       }
     } else if (equalDates(DateTime.parse(sp.getString('lastDayRefreshed')!),yesterday)){
@@ -53,7 +53,7 @@ class HeadacheScore {
       sp.setDouble('day3', _scores[3]);
       sp.setString('lastDayRefreshed', today.toIso8601String());
 
-      for (int i = 0; i < 2; i++) {
+      for (int i = 0; i < 3; i++) {
         _scores[i] = sp.getDouble('day$i')!;
       }
     } else {
