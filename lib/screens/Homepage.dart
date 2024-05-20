@@ -113,7 +113,8 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homepage()));
+                      _onItemTapped(0);
+                      Navigator.pop(context); 
                     },
                   ),
                   ListTile(
@@ -126,7 +127,8 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Metricspage()));
+                      _onItemTapped(1);
+                      Navigator.pop(context); 
                     },
                   ),
                   ListTile(
@@ -139,7 +141,8 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Accountpage()));
+                      _onItemTapped(2);
+                      Navigator.pop(context); 
                     },
                   ),
                   Divider(),
