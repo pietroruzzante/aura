@@ -6,6 +6,7 @@ int day = 3;
     void decrementDay() {
       if (day > 0) {
           day--;
+      print('day:$day');
       notifyListeners();
       }
     }
@@ -13,6 +14,7 @@ int day = 3;
     void incrementDay() {
       if (day < 6) {
         day++;
+      print('day:$day');
       notifyListeners();
       }
     }
@@ -22,6 +24,7 @@ int day = 3;
         day = difference;
         notifyListeners();
     }
+
 
   // Definizione degli operatori di confronto
   bool operator <(int other) => day < other;

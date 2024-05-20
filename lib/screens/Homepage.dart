@@ -9,7 +9,7 @@ import 'package:aura/screens/Solutionpage.dart';
 import 'package:aura/models/palette.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
-
+import 'package:intl/intl.dart';
 import 'Metricspage.dart';
 
 class Homepage extends StatefulWidget {
@@ -242,9 +242,9 @@ class DailyScore extends StatelessWidget {
 
 class SevenDayCalendar extends StatelessWidget {
   final day;
+  DateTime selectedDate = DateTime.now();
 
   SevenDayCalendar({required this.day});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -263,6 +263,7 @@ class SevenDayCalendar extends StatelessWidget {
           activeColor: Palette.deepBlue,
         ));
   }
+
 }
 
 class DayArrows extends StatelessWidget {
@@ -277,21 +278,24 @@ class DayArrows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    DateTime associatedDate = getDateForValue(day.toInt());
+    String formattedDate = DateFormat('dd MM yyyy').format(associatedDate);
+    String dayOfWeek = DateFormat('EEEE', 'en_IT').format(associatedDate);
+
     return Container(
       width: 450,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if (day > 0)
           IconButton(
             onPressed: decrementDay,
-            icon: Icon(Icons.arrow_back_ios_new, size: 30)
+            icon: Icon(Icons.arrow_back_ios_new, size: 30, color: day.toInt() == 0 ? Palette.transparent : Colors.black)
           ),
-          SizedBox(width: 200),
-          if (day < 6)
+          Text('$dayOfWeek, $formattedDate', style: TextStyle(color: Palette.blue, fontSize: 20),),
           IconButton(
             onPressed: incrementDay,
-            icon: Icon(Icons.arrow_forward_ios, size: 30)
+            icon: Icon(Icons.arrow_forward_ios, size: 30, color: day.toInt() == 6 ? Palette.transparent : Colors.black)
           ),
         ]
       )
@@ -426,3 +430,12 @@ String getText(double score) {
     return "Your level is very high!";
   }
 }
+
+DateTime getDateForValue(int value) {
+    DateTime now = DateTime.now();
+    int difference = value - 3; // 3 è il valore centrale che rappresenta oggi
+    return now.add(Duration(days: difference));
+}
+
+
+
