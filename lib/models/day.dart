@@ -35,6 +35,11 @@ int day = 3;
   int toInt() {
     return day;
   }
+
+  double toDouble() {
+    double dayDouble = day.toDouble();
+    return dayDouble;
+  }
 }
 
 
