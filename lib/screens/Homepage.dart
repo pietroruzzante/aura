@@ -24,11 +24,7 @@ class _HomepageState extends State<Homepage> {
   final score = HeadacheScore().refreshScore();
   final day = Day();
 
-  void _onItemTapped(int newIndex) {
-    setState(() {
-      index = newIndex;
-    });
-  }
+  
 
   List<BottomNavigationBarItem> navBarItems = [
     BottomNavigationBarItem(
@@ -44,6 +40,12 @@ class _HomepageState extends State<Homepage> {
       label: 'Account',
     ),
   ];
+
+  void _onItemTapped(int newIndex) {
+    setState(() {
+      index = newIndex;
+    });
+  }
 
   Widget _selectPage(int index, HeadacheScore score, Day day) {
     switch (index) {
@@ -81,10 +83,10 @@ class _HomepageState extends State<Homepage> {
                   ?.copyWith(color: Palette.deepBlue),
             ),
           ),
-    // Drawer
+          // Drawer
           drawer: Drawer(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20,50,20,20),
+              padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
@@ -102,7 +104,9 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.titleSmall,
                     )
                   ]),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   ListTile(
                     leading: Icon(
                       Icons.health_and_safety,
@@ -114,7 +118,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                     onTap: () {
                       _onItemTapped(0);
-                      Navigator.pop(context); 
+                      Navigator.pop(context);
                     },
                   ),
                   ListTile(
@@ -128,7 +132,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                     onTap: () {
                       _onItemTapped(1);
-                      Navigator.pop(context); 
+                      Navigator.pop(context);
                     },
                   ),
                   ListTile(
@@ -142,7 +146,7 @@ class _HomepageState extends State<Homepage> {
                     ),
                     onTap: () {
                       _onItemTapped(2);
-                      Navigator.pop(context); 
+                      Navigator.pop(context);
                     },
                   ),
                   Divider(),
@@ -161,14 +165,14 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ),
-    // NavigationBar
+          // NavigationBar
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Palette.softBlue1,
             items: navBarItems,
             currentIndex: index,
             onTap: (index) => _onItemTapped(index),
           ),
-    // Body
+          // Body
           body: FutureBuilder<HeadacheScore>(
               future: score,
               builder: (context, snapshot) {
@@ -185,7 +189,6 @@ class _HomepageState extends State<Homepage> {
               })),
     );
   }
-
 }
 
 class DailyScore extends StatelessWidget {
@@ -200,46 +203,38 @@ class DailyScore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
-        width: 350,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                  child: Text(
-                    "Welcome",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                )
-              ]
-            ),
-            Consumer<Day>(builder: (context, day, child) {
-              return Center(
-                child: FittedBox(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DayArrows(
-                        incrementDay: day.incrementDay,
-                        decrementDay: day.decrementDay,
-                        day: day
+        child: SizedBox(
+            width: 350,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                      child: Text(
+                        "Welcome",
+                        style: Theme.of(context).textTheme.displaySmall,
                       ),
-                      SevenDayCalendar(day: day),
-                      MyGaugeIndicator(score: score, day: day),
-                      solutionsHomepage(),
-                    ],
-                  )
-                )
-              );
-            })
-          ]
-        )
-      )
-    );
+                    )
+                  ]),
+                  Consumer<Day>(builder: (context, day, child) {
+                    return Center(
+                        child: FittedBox(
+                            child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        DayArrows(
+                            incrementDay: day.incrementDay,
+                            decrementDay: day.decrementDay,
+                            day: day),
+                        SizedBox(height: 30),
+                        SevenDayCalendar(day: day),
+                        MyGaugeIndicator(score: score, day: day),
+                        solutionsHomepage(),
+                      ],
+                    )));
+                  })
+                ])));
   }
 }
 
@@ -266,7 +261,6 @@ class SevenDayCalendar extends StatelessWidget {
           activeColor: Palette.deepBlue,
         ));
   }
-
 }
 
 class DayArrows extends StatelessWidget {
@@ -281,28 +275,31 @@ class DayArrows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     DateTime associatedDate = getDateForValue(day.toInt());
     String formattedDate = DateFormat('dd MM yyyy').format(associatedDate);
     String dayOfWeek = DateFormat('EEEE', 'en_IT').format(associatedDate);
 
     return Container(
-      width: 450,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
+        width: 450,
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           IconButton(
-            onPressed: decrementDay,
-            icon: Icon(Icons.arrow_back_ios_new, size: 30, color: day.toInt() == 0 ? Palette.transparent : Colors.black)
+              onPressed: decrementDay,
+              icon: Icon(Icons.arrow_back_ios_new,
+                  size: 30,
+                  color:
+                      day.toInt() == 0 ? Palette.transparent : Colors.black)),
+          Text(
+            '$dayOfWeek, $formattedDate',
+            style: Theme.of(context).textTheme.titleSmall,
           ),
-          Text('$dayOfWeek, $formattedDate', style: TextStyle(color: Palette.blue, fontSize: 20),),
           IconButton(
-            onPressed: incrementDay,
-            icon: Icon(Icons.arrow_forward_ios, size: 30, color: day.toInt() == 6 ? Palette.transparent : Colors.black)
-          ),
-        ]
-      )
-    );
+              onPressed: incrementDay,
+              icon: Icon(Icons.arrow_forward_ios,
+                  size: 30,
+                  color:
+                      day.toInt() == 6 ? Palette.transparent : Colors.black)),
+        ]));
   }
 }
 
@@ -351,21 +348,26 @@ class MyGaugeIndicator extends StatelessWidget {
   final score;
   final day;
 
-  MyGaugeIndicator({required this.score, required this.day});
+  MyGaugeIndicator({
+    required this.score,
+    required this.day,
+  });
 
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      //onTap: ,
+      child: Container(
         height: 400,
         width: 450,
         decoration: BoxDecoration(
           color: Palette.transparent,
           borderRadius: BorderRadius.circular(20.0),
         ),
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
           Text(
             "Your Aura score:",
-            style: Theme.of(context).textTheme.titleSmall,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -375,7 +377,6 @@ class MyGaugeIndicator extends StatelessWidget {
                 curve: Curves.elasticOut,
                 radius: 200,
                 value: score[day.toInt()],
-                // ignore: prefer_const_constructors
                 axis: GaugeAxis(
                   min: 0,
                   max: 8,
@@ -390,26 +391,97 @@ class MyGaugeIndicator extends StatelessWidget {
                     width: 25,
                     borderRadius: 3,
                     color: Color(0xFF193663),
-                    position:
-                        GaugePointerPosition.surface(offset: Offset(5, 15)),
+                    position: GaugePointerPosition.surface(offset: Offset(5, 15)),
                   ),
-                  // ignore: prefer_const_constructors
-                  progressBar:
-                      const GaugeProgressBar.rounded(color: Palette.lightBlue4),
+                  progressBar: const GaugeProgressBar.rounded(color: Palette.lightBlue4),
+                ),
+                child: Center(
+                  child: Text('${score[day.toInt()]}/8', style: TextStyle(color: Palette.deepBlue)),
                 ),
               ),
-              Text('${score[day.toInt()].toInt()}/8',
-                  style: Theme.of(context).textTheme.titleLarge),
+              Text(getText(score[day.toInt()]), style: Theme.of(context).textTheme.titleLarge),
+            ],
+          ),
+        ]),
+      ),
+    );
+  }
+}
+
+
+/*class MyGaugeIndicator extends StatelessWidget {
+  final score;
+  final day;
+
+  MyGaugeIndicator({required this.score, required this.day});
+
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {},
+    child:Container(
+        height: 400,
+        width: 450,
+        decoration: BoxDecoration(
+          color: Palette.transparent,
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          Text(
+            "Your Aura score:",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              AnimatedRadialGauge(
+                  duration: const Duration(seconds: 1),
+                  curve: Curves.elasticOut,
+                  radius: 200,
+                  value: score[day.toInt()],
+                  // ignore: prefer_const_constructors
+                  axis: GaugeAxis(
+                    min: 0,
+                    max: 8,
+                    degrees: 180,
+                    style: const GaugeAxisStyle(
+                      thickness: 30,
+                      background: Color(0xFFDFE2EC),
+                      segmentSpacing: 4,
+                    ),
+                    pointer: const GaugePointer.triangle(
+                      height: 25,
+                      width: 25,
+                      borderRadius: 3,
+                      color: Color(0xFF193663),
+                      position:
+                          GaugePointerPosition.surface(offset: Offset(5, 15)),
+                    ),
+                    // ignore: prefer_const_constructors
+                    progressBar: const GaugeProgressBar.rounded(
+                        color: Palette.lightBlue4),
+                  ),
+                  child: Center(child:Text('${score[day.toInt()]}/8', style: TextStyle(color: Palette.deepBlue))),
+                  /*builder: (context, child, value) => RadialGaugeLabel(
+                        value: value,
+                        style: TextStyle(
+                          color: Palette.deepBlue,
+                          fontSize: 46,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )*/),
+              /*Text('${score[day.toInt()].toInt()}/8',
+                  style: Theme.of(context).textTheme.titleLarge),*/
               Text(
                 getText(score[day.toInt()]),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
             ],
           )
-        ]));
+        ])));
   }
 }
-
+*/
 Color getButtonColor(double score) {
   if (score < 2) {
     return Palette.lightBlue1;
@@ -435,10 +507,8 @@ String getText(double score) {
 }
 
 DateTime getDateForValue(int value) {
-    DateTime now = DateTime.now();
-    int difference = value - 3; // 3 è il valore centrale che rappresenta oggi
-    return now.add(Duration(days: difference));
+  DateTime now = DateTime.now();
+  int difference = value - 3; // 3 è il valore centrale che rappresenta oggi
+  return now.add(Duration(days: difference));
 }
-
-
 
