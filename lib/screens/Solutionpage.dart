@@ -33,7 +33,7 @@ class Solutionpage extends StatelessWidget {
           end: Alignment.bottomLeft,
           colors: [
             Palette.white,
-            Palette.blue,
+            Palette.softBlue1,
           ],
         ),
       ),
