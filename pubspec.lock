@@ -101,10 +101,10 @@ packages:
     dependency: "direct main"
     description:
       name: easy_date_timeline
-      sha256: "9700dd3489dabdb2275e8107fdab7ea24ab15b0b9c9c2970b323529d825099bc"
+      sha256: "02dcc6437f4b2c08c8b7ee9e335a47f7fbdd0c1c34cc54cec9110235ca15cef9"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.7"
+    version: "1.1.1"
   equatable:
     dependency: transitive
     description:
@@ -617,10 +617,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_android
-      sha256: "360a6ed2027f18b73c8d98e159dda67a61b7f2e0f6ec26e86c3ada33b0621775"
+      sha256: "17cd5e205ea615e2c6ea7a77323a11712dffa0720a8a90540db57a01347f9ad9"
       url: "https://pub.dev"
     source: hosted
-    version: "6.3.1"
+    version: "6.3.2"
   url_launcher_ios:
     dependency: transitive
     description:
