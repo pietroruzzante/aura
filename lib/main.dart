@@ -4,9 +4,11 @@ import 'package:aura/models/day.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/screens/Splash.dart';
 import 'package:flutter_launcher_icons/xml_templates.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  initializeDateFormatting('en_US', null);
   runApp(const MyApp());
 }
 

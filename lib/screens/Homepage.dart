@@ -9,7 +9,9 @@ import 'package:aura/screens/Solutionpage.dart';
 import 'package:aura/models/palette.dart';
 import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
+import 'package:intl/intl.dart';
 import 'Metricspage.dart';
+import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -22,12 +24,6 @@ class _HomepageState extends State<Homepage> {
   int index = 0;
   final score = HeadacheScore().refreshScore();
   final day = Day();
-
-  void _onItemTapped(int newIndex) {
-    setState(() {
-      index = newIndex;
-    });
-  }
 
   List<BottomNavigationBarItem> navBarItems = [
     BottomNavigationBarItem(
@@ -44,16 +40,22 @@ class _HomepageState extends State<Homepage> {
     ),
   ];
 
+  void _onItemTapped(int newIndex) {
+    setState(() {
+      index = newIndex;
+    });
+  }
+
   Widget _selectPage(int index, HeadacheScore score, Day day) {
     switch (index) {
       case 0:
-        return DailyScore(score: score, day: day);
+        return DailyScore(score: score, day: day, onItemTapped: _onItemTapped);
       case 1:
         return Metricspage();
       case 2:
         return Accountpage();
       default:
-        return DailyScore(score: score, day: day);
+        return DailyScore(score: score, day: day, onItemTapped: _onItemTapped);
     }
   }
 
@@ -81,10 +83,10 @@ class _HomepageState extends State<Homepage> {
                   ?.copyWith(color: Palette.deepBlue),
             ),
           ),
-    // Drawer
+          // Drawer
           drawer: Drawer(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20,50,20,20),
+              padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
               child: ListView(
                 padding: EdgeInsets.zero,
                 children: [
@@ -102,7 +104,9 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.titleSmall,
                     )
                   ]),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   ListTile(
                     leading: Icon(
                       Icons.health_and_safety,
@@ -113,7 +117,8 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homepage()));
+                      _onItemTapped(0);
+                      Navigator.pop(context);
                     },
                   ),
                   ListTile(
@@ -126,7 +131,8 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Metricspage()));
+                      _onItemTapped(1);
+                      Navigator.pop(context);
                     },
                   ),
                   ListTile(
@@ -139,7 +145,8 @@ class _HomepageState extends State<Homepage> {
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     onTap: () {
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Accountpage()));
+                      _onItemTapped(2);
+                      Navigator.pop(context);
                     },
                   ),
                   Divider(),
@@ -158,14 +165,14 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ),
-    // NavigationBar
+          // NavigationBar
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Palette.softBlue1,
             items: navBarItems,
             currentIndex: index,
             onTap: (index) => _onItemTapped(index),
           ),
-    // Body
+          // Body
           body: FutureBuilder<HeadacheScore>(
               future: score,
               builder: (context, snapshot) {
@@ -186,69 +193,64 @@ class _HomepageState extends State<Homepage> {
               /*),
     );*/
   }
-
 }
 
 class DailyScore extends StatelessWidget {
   final HeadacheScore score;
   final Day day;
+  final Function(int) onItemTapped;
 
   DailyScore({
     required this.score,
     required this.day,
+    required this.onItemTapped,
   });
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: SizedBox(
-        width: 350,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                  child: Text(
-                    "Welcome",
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                )
-              ]
-            ),
-            Consumer<Day>(builder: (context, day, child) {
-              return Center(
-                child: FittedBox(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      DayArrows(
-                        incrementDay: day.incrementDay,
-                        decrementDay: day.decrementDay,
-                        day: day
+        child: SizedBox(
+            width: 350,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                      child: Text(
+                        "Welcome",
+                        style: Theme.of(context).textTheme.displaySmall,
                       ),
-                      SevenDayCalendar(day: day),
-                      MyGaugeIndicator(score: score, day: day),
-                      solutionsHomepage(),
-                    ],
-                  )
-                )
-              );
-            })
-          ]
-        )
-      )
-    );
+                    )
+                  ]),
+                  Consumer<Day>(builder: (context, day, child) {
+                    return Center(
+                        child: FittedBox(
+                            child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        DayArrows(
+                            incrementDay: day.incrementDay,
+                            decrementDay: day.decrementDay,
+                            day: day),
+                        SevenDayCalendar(day: day),
+                        MyGaugeIndicator(
+                            score: score,
+                            day: day,
+                            onTap: () => onItemTapped(1)),
+                        solutionsHomepage(),
+                      ],
+                    )));
+                  })
+                ])));
   }
 }
 
 class SevenDayCalendar extends StatelessWidget {
   final day;
+  DateTime selectedDate = DateTime.now();
 
   SevenDayCalendar({required this.day});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -281,25 +283,31 @@ class DayArrows extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime associatedDate = getDateForValue(day.toInt());
+    String formattedDate = DateFormat('dd MM yyyy').format(associatedDate);
+    String dayOfWeek = DateFormat('EEEE', 'en_IT').format(associatedDate);
+
     return Container(
-      width: 450,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (day > 0)
+        width: 450,
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           IconButton(
-            onPressed: decrementDay,
-            icon: Icon(Icons.arrow_back_ios_new, size: 30)
+              onPressed: decrementDay,
+              icon: Icon(Icons.arrow_back_ios_new,
+                  size: 30,
+                  color:
+                      day.toInt() == 0 ? Palette.transparent : Colors.black)),
+          Text(
+            '$dayOfWeek, $formattedDate',
+            style: Theme.of(context).textTheme.titleSmall,
           ),
-          SizedBox(width: 200),
-          if (day < 6)
           IconButton(
-            onPressed: incrementDay,
-            icon: Icon(Icons.arrow_forward_ios, size: 30)
-          ),
-        ]
-      )
-    );
+              onPressed: incrementDay,
+              icon: Icon(Icons.arrow_forward_ios,
+                  size: 30,
+                  color:
+                      day.toInt() == 6 ? Palette.transparent : Colors.black)),
+        ]));
   }
 }
 
@@ -334,7 +342,7 @@ class solutionsHomepage extends StatelessWidget {
               ))
         ],
       ),
-      height: 150,
+      height: 100,
       width: 450,
       decoration: BoxDecoration(
         color: Palette.transparent,
@@ -347,66 +355,82 @@ class solutionsHomepage extends StatelessWidget {
 class MyGaugeIndicator extends StatelessWidget {
   final score;
   final day;
+  final VoidCallback onTap;
 
-  MyGaugeIndicator({required this.score, required this.day});
+  MyGaugeIndicator({
+    required this.score,
+    required this.day,
+    required this.onTap,
+  });
 
+  @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 400,
-        width: 450,
-        decoration: BoxDecoration(
-          color: Palette.transparent,
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        child:
-            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-          Text(
-            "Your Aura score:",
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              AnimatedRadialGauge(
-                duration: const Duration(seconds: 1),
-                curve: Curves.elasticOut,
-                radius: 200,
-                value: score[day.toInt()],
-                // ignore: prefer_const_constructors
-                axis: GaugeAxis(
-                  min: 0,
-                  max: 8,
-                  degrees: 180,
-                  style: const GaugeAxisStyle(
-                    thickness: 30,
-                    background: Color(0xFFDFE2EC),
-                    segmentSpacing: 4,
+    final ValueNotifier<double> _valueNotifier = ValueNotifier(score[day.toInt()]);
+    return GestureDetector(
+        onTap: onTap,
+        child: Container(
+            height: 450,
+            width: 350,
+            decoration: BoxDecoration(
+              color: Palette.transparent,
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Your Aura score:",
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  pointer: const GaugePointer.triangle(
-                    height: 25,
-                    width: 25,
-                    borderRadius: 3,
-                    color: Color(0xFF193663),
-                    position:
-                        GaugePointerPosition.surface(offset: Offset(5, 15)),
-                  ),
-                  // ignore: prefer_const_constructors
-                  progressBar:
-                      const GaugeProgressBar.rounded(color: Palette.lightBlue4),
-                ),
-              ),
-              Text('${score[day.toInt()].toInt()}/8',
-                  style: Theme.of(context).textTheme.titleLarge),
-              Text(
-                getText(score[day.toInt()]),
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ],
-          )
-        ]));
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DashedCircularProgressBar.aspectRatio(
+                          aspectRatio: 1.2, 
+                          valueNotifier: _valueNotifier,
+                          progress: score[day.toInt()],
+                          maxProgress: 8,
+                          startAngle: 225,
+                          sweepAngle: 270,
+                          foregroundColor: Palette.deepBlue,
+                          backgroundColor: const Color(0xffeeeeee),
+                          foregroundStrokeWidth: 15,
+                          backgroundStrokeWidth: 15,
+                          animation: true,
+                          animationDuration: Duration(milliseconds: 500),
+                          animationCurve: Easing.standardDecelerate,
+                          seekSize: 10,
+                          seekColor: const Color(0xffeeeeee),
+                          child: Center(
+                            child: ValueListenableBuilder(
+                                valueListenable: _valueNotifier,
+                                builder: (_, double value, __) => Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          '${value.toInt()}/8',
+                                          style: const TextStyle(
+                                              color: Palette.deepBlue,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 60),
+                                        ),
+                                        Text(
+                                          getText(score[day.toInt()]),
+                                          style: const TextStyle(
+                                              color: Palette.deepBlue,
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 30),
+                                        ),
+                                      ],
+                                    )),
+                          ),
+                        )
+                      ])
+                ])));
   }
 }
 
+  
 Color getButtonColor(double score) {
   if (score < 2) {
     return Palette.lightBlue1;
@@ -429,4 +453,10 @@ String getText(double score) {
   } else {
     return "Your level is very high!";
   }
+}
+
+DateTime getDateForValue(int value) {
+  DateTime now = DateTime.now();
+  int difference = value - 3; // 3 è il valore centrale che rappresenta oggi
+  return now.add(Duration(days: difference));
 }

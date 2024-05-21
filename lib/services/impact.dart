@@ -151,32 +151,37 @@ class Impact {
   }
 
 
-  Future<DateTime> getLastExerciseDate() async{
-
+  Future<String> getLastExerciseDate() async{
+    String lastDate = '2024-05-17';
   //https://impact.dei.unipd.it/bwthw/data/v1/exercise/patients/Jpefaq6m58/daterange/start_date/2024-05-14/end_date/2024-05-17/
 
   var header = await getBearer();
-    var day = DateFormat('yyyy-MM-dd')
-        .format(DateTime(2024, 4, 10)); // set the day !!!!
-    final urlSleep =
-        '${Impact.baseUrl}data/v1/sleep/patients/$patientUsername/day/$day/';
+    var start_date = DateFormat('yyyy-MM-dd')
+        .format(DateTime(2024, 5, 10));
+    var end_date = DateFormat('yyyy-MM-dd')
+        .format(DateTime(2024, 5, 11));
+    final urlExercise =
+        '${Impact.baseUrl}data/v1/exercise/patients/$patientUsername/daterange/start_date/$start_date/end_date/$end_date/';
 
-    print('urlSleep:$urlSleep');
+    print('urlExercise:$urlExercise');
 
     var r = await http.get(
-      Uri.parse(urlSleep),
+      Uri.parse(urlExercise),
       headers: header,
     );
-    if (r.statusCode != 200) return DateTime.now();
 
-    final Map<String, dynamic> sleepData = jsonDecode(r.body);
-    double duration = sleepData['data']['data']['duration'];
-    print(duration);
-    double durationInHours = duration / 3600000;
-    List<double> data = [durationInHours];
-  
-  return DateTime.now();
+    if (r.statusCode != 200) return 'NoDataFound';
 
-}
+    final Map<String, dynamic> exerciseData = jsonDecode(r.body);
+    final dataForEachDate = exerciseData['data'];
+    for (var entry in dataForEachDate){
+      if (entry['data'].isNotEmpty){
+        lastDate = entry['date'];
+      }
+    }
+    print('lastDate: $lastDate');
+    return lastDate;
+
+  }
 } //Impact
 
