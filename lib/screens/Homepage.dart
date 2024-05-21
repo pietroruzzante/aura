@@ -61,7 +61,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return /*Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topRight,
@@ -72,7 +72,8 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
-      child: Scaffold(
+      child:*/ Scaffold(
+        backgroundColor: Palette.white,
           appBar: AppBar(
             title: Text(
               "Aura",
@@ -181,12 +182,16 @@ class _HomepageState extends State<Homepage> {
                   );
                 }
                 if (snapshot.hasError) {
+                  print('has error');
+                  print(snapshot.error);
                   return Text('Error: ${snapshot.error}');
                 }
                 final HeadacheScore score = snapshot.data!;
+                print('no error');
                 return _selectPage(index, score, day);
-              })),
-    );
+              }));
+              /*),
+    );*/
   }
 }
 

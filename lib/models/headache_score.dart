@@ -27,6 +27,15 @@ class HeadacheScore {
 
     final SharedPreferences sp = await SharedPreferences.getInstance();
     final keys = sp.getKeys();
+    
+    if((!keys.contains('lastDayRefreshed'))){
+      sp.setString('lastDayRefreshed', today.toIso8601String());
+      sp.setDouble('day0', 0.0);
+      sp.setDouble('day1', 0.0);
+      sp.setDouble('day2', 0.0);
+      sp.setDouble('day3', 0.0);
+    }
+
     print('keys: $keys');
 
     for (int i=0;i<3;i++){
