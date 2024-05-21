@@ -50,13 +50,13 @@ class _HomepageState extends State<Homepage> {
   Widget _selectPage(int index, HeadacheScore score, Day day) {
     switch (index) {
       case 0:
-        return DailyScore(score: score, day: day);
+        return DailyScore(score: score, day: day, onItemTapped: _onItemTapped);
       case 1:
         return Metricspage();
       case 2:
         return Accountpage();
       default:
-        return DailyScore(score: score, day: day);
+        return DailyScore(score: score, day: day, onItemTapped: _onItemTapped);
     }
   }
 
@@ -194,10 +194,12 @@ class _HomepageState extends State<Homepage> {
 class DailyScore extends StatelessWidget {
   final HeadacheScore score;
   final Day day;
+  final Function(int) onItemTapped;
 
   DailyScore({
     required this.score,
     required this.day,
+    required this.onItemTapped,
   });
 
   @override
@@ -229,7 +231,7 @@ class DailyScore extends StatelessWidget {
                             day: day),
                         SizedBox(height: 30),
                         SevenDayCalendar(day: day),
-                        MyGaugeIndicator(score: score, day: day),
+                        MyGaugeIndicator(score: score, day: day, onTap: () => onItemTapped(1)),
                         solutionsHomepage(),
                       ],
                     )));
@@ -347,16 +349,18 @@ class solutionsHomepage extends StatelessWidget {
 class MyGaugeIndicator extends StatelessWidget {
   final score;
   final day;
+  final VoidCallback onTap;
 
   MyGaugeIndicator({
     required this.score,
     required this.day,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      //onTap: ,
+      onTap: onTap,
       child: Container(
         height: 400,
         width: 450,
