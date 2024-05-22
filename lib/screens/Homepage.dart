@@ -1,17 +1,16 @@
+import 'package:aura/models/workSans.dart';
 import 'package:aura/screens/Accountpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aura/models/headache_score.dart';
-import 'package:aura/screens/Loginpage.dart';
 import 'package:aura/screens/Solutionpage.dart';
+import 'package:aura/screens/Metricspage.dart';
 import 'package:aura/models/palette.dart';
-import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:intl/intl.dart';
-import 'Metricspage.dart';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
+import 'package:timeline_calendar/calendar/timeline_calendar.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -20,8 +19,10 @@ class Homepage extends StatefulWidget {
   _HomepageState createState() => _HomepageState();
 }
 
-class _HomepageState extends State<Homepage> {
-  int index = 0;
+class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
+  int currentIndex = 0;
+  late TabController tabController;
+
   final score = HeadacheScore().refreshScore();
   final day = Day();
 
@@ -40,10 +41,30 @@ class _HomepageState extends State<Homepage> {
     ),
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    tabController = TabController(length: 3, vsync: this);
+    tabController.addListener(() {
+      if (!tabController.indexIsChanging) {
+        setState(() {
+          currentIndex = tabController.index;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
   void _onItemTapped(int newIndex) {
     setState(() {
-      index = newIndex;
+      currentIndex = newIndex;
     });
+    tabController.animateTo(newIndex);
   }
 
   Widget _selectPage(int index, HeadacheScore score, Day day) {
@@ -165,14 +186,6 @@ class _HomepageState extends State<Homepage> {
               ),
             ),
           ),
-          // NavigationBar
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Palette.softBlue1,
-            items: navBarItems,
-            currentIndex: index,
-            onTap: (index) => _onItemTapped(index),
-          ),
-          // Body
           body: FutureBuilder<HeadacheScore>(
               future: score,
               builder: (context, snapshot) {
@@ -182,14 +195,55 @@ class _HomepageState extends State<Homepage> {
                   );
                 }
                 if (snapshot.hasError) {
-                  print('has error');
                   print(snapshot.error);
                   return Text('Error: ${snapshot.error}');
                 }
                 final HeadacheScore score = snapshot.data!;
-                print('no error');
-                return _selectPage(index, score, day);
-              })));
+                return Stack(
+                  children: [
+                    TabBarView(
+                      controller: tabController,
+                      children: [
+                        DailyScore(
+                            score: score,
+                            day: day,
+                            onItemTapped: _onItemTapped),
+                        Metricspage(),
+                        Accountpage(),
+                      ],
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Palette.white,
+                          borderRadius: BorderRadius.circular(30.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.blueGrey,
+                              blurRadius: 10.0,
+                              offset: Offset(0, -2),
+                            ),
+                          ],
+                        ),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        child: BottomNavigationBar(
+                          currentIndex: currentIndex,
+                          onTap: _onItemTapped,
+                          items: navBarItems,
+                          backgroundColor: Palette.transparent,
+                          elevation: 0,
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+                //return _selectPage(index, score, day);
+              })),
+    );
   }
 }
 
@@ -209,38 +263,37 @@ class DailyScore extends StatelessWidget {
     return Center(
         child: SizedBox(
             width: 350,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                      child: Text(
-                        "Welcome",
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                    )
-                  ]),
-                  Consumer<Day>(builder: (context, day, child) {
-                    return Center(
-                        child: FittedBox(
-                            child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DayArrows(
-                            incrementDay: day.incrementDay,
-                            decrementDay: day.decrementDay,
-                            day: day),
-                        SevenDayCalendar(day: day),
-                        MyGaugeIndicator(
-                            score: score,
-                            day: day,
-                            onTap: () => onItemTapped(1)),
-                        solutionsHomepage(),
-                      ],
-                    )));
-                  })
-                ])));
+            child: Column(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                  child: Text(
+                    "Welcome",
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                )
+              ]),
+              SizedBox(
+                height: 10,
+              ),
+              Consumer<Day>(builder: (context, day, child) {
+                return Center(
+                    child: FittedBox(
+                        child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DayArrows(
+                        incrementDay: day.incrementDay,
+                        decrementDay: day.decrementDay,
+                        day: day),
+                    SevenDayCalendar(day: day),
+                    MyGaugeIndicator(
+                        score: score, day: day, onTap: () => onItemTapped(1)),
+                    solutionsHomepage(),
+                  ],
+                )));
+              })
+            ])));
   }
 }
 
@@ -291,13 +344,14 @@ class DayArrows extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           IconButton(
               onPressed: decrementDay,
-              icon: Icon(Icons.arrow_back_ios_new,
-                  size: 30,
-                  color:
-                      day.toInt() == 0 ? Palette.transparent : Colors.black)),
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                size: 30,
+                color: day.toInt() == 0 ? Palette.transparent : Colors.black,
+              )),
           Text(
             '$dayOfWeek, $formattedDate',
-            style: Theme.of(context).textTheme.titleSmall,
+            style: WorkSans.titleSmall,
           ),
           IconButton(
               onPressed: incrementDay,
@@ -363,14 +417,21 @@ class MyGaugeIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<double> _valueNotifier = ValueNotifier(score[day.toInt()]);
+    final ValueNotifier<double> _valueNotifier =
+        ValueNotifier(score[day.toInt()]);
     return GestureDetector(
         onTap: onTap,
         child: Container(
             height: 450,
-            width: 350,
+            width: 480,
             decoration: BoxDecoration(
-              color: Palette.transparent,
+              boxShadow: [
+                BoxShadow(
+                  color: Palette.softBlue1,
+                  blurRadius: 10,
+                )
+              ],
+              color: Palette.white,
               borderRadius: BorderRadius.circular(20.0),
             ),
             child: Column(
@@ -378,27 +439,27 @@ class MyGaugeIndicator extends StatelessWidget {
                 children: [
                   Text(
                     "Your Aura score:",
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: WorkSans.titleMedium,
                   ),
                   Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         DashedCircularProgressBar.aspectRatio(
-                          aspectRatio: 1.2, 
+                          aspectRatio: 1.5,
                           valueNotifier: _valueNotifier,
                           progress: score[day.toInt()],
                           maxProgress: 8,
                           startAngle: 225,
                           sweepAngle: 270,
                           foregroundColor: Palette.deepBlue,
-                          backgroundColor: const Color(0xffeeeeee),
+                          backgroundColor: Palette.white,
                           foregroundStrokeWidth: 15,
                           backgroundStrokeWidth: 15,
                           animation: true,
                           animationDuration: Duration(milliseconds: 500),
                           animationCurve: Easing.standardDecelerate,
                           seekSize: 10,
-                          seekColor: const Color(0xffeeeeee),
+                          seekColor: Palette.white,
                           child: Center(
                             child: ValueListenableBuilder(
                                 valueListenable: _valueNotifier,
@@ -407,14 +468,15 @@ class MyGaugeIndicator extends StatelessWidget {
                                       children: [
                                         Text(
                                           '${value.toInt()}/8',
-                                          style: const TextStyle(
-                                              color: Palette.deepBlue,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 60),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .displayMedium
+                                              ?.copyWith(
+                                                  fontWeight: FontWeight.bold),
                                         ),
                                         Text(
                                           getText(score[day.toInt()]),
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               color: Palette.deepBlue,
                                               fontWeight: FontWeight.w400,
                                               fontSize: 30),
@@ -428,7 +490,6 @@ class MyGaugeIndicator extends StatelessWidget {
   }
 }
 
-  
 Color getButtonColor(double score) {
   if (score < 2) {
     return Palette.lightBlue1;

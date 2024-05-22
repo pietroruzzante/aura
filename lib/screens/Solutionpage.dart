@@ -1,10 +1,10 @@
-import 'package:aura/screens/MichaelSol.dart';
+import 'package:aura/screens/solution_screens/MichaelSol.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
-import 'package:aura/models/SolutionCard.dart';
+import 'package:aura/models/solutionCard.dart';
 import 'package:aura/models/solution.dart';
-import 'package:aura/screens/BreathingSol.dart';
-import 'package:aura/screens/SpotifySol.dart';
+import 'package:aura/screens/solution_screens/BreathingSol.dart';
+import 'package:aura/screens/solution_screens/SpotifySol.dart';
 
 class Solutionpage extends StatelessWidget {
   bool needSleep = false;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Palette{
   static const Color white = Colors.white;
+  static const Color black = Colors.black;
   static const Color softBlue1 = Color.fromARGB(255, 231, 244, 255);
   static const Color softBlue2 = Color.fromARGB(255, 197, 229, 255);
   static const Color lightBlue1 = Color.fromARGB(255, 118, 236, 248);
