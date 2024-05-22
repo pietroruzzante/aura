@@ -245,18 +245,18 @@ class DailyScore extends StatelessWidget {
 }
 
 class SevenDayCalendar extends StatelessWidget {
-  final day;
-  DateTime selectedDate = DateTime.now();
+  Day day;
 
   SevenDayCalendar({required this.day});
   @override
   Widget build(BuildContext context) {
+  DateTime selectedDate = getDateForValue(day.toInt());
     return Container(
         height: 120,
         width: 500,
         child: EasyInfiniteDateTimeLine(
           firstDate: DateTime.now().subtract(Duration(days: 3)),
-          focusDate: DateTime.now(),
+          focusDate: selectedDate,
           lastDate: DateTime.now().add(Duration(days: 3)),
           timeLineProps:
               EasyTimeLineProps(separatorPadding: 1.0, margin: EdgeInsets.zero),
