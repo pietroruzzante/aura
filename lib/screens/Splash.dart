@@ -20,18 +20,7 @@ class Splash extends StatelessWidget {
     Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: ((context) => LoginPage())));
   } //_toHomePage
-
-/*
-  void _checkAuth(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-    if (isLoggedIn) {
-      _toHomePage(context);
-    } else {
-      _toLoginPage(context);
-    }
-  }
-*/
+  
  
   void _checkLogin(BuildContext context) async {
     final result = await Impact().refreshTokens();

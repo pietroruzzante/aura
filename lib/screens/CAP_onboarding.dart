@@ -10,16 +10,19 @@ class OnboardingPage extends StatefulWidget {
 
 class _OnboardingPageState extends State<OnboardingPage> {
   final TextEditingController _capController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
   bool _isLoading = false;
   String _errorMessage = '';
 
-  void _submitCap() async {
+  void _submitInfo() async {
     setState(() {
       _errorMessage = '';
     });
 
     String cap = _capController.text;
+    String age = _ageController.text;
 
+    // CAP VALIDATION
     if (cap.isEmpty) {
       setState(() {
         _errorMessage = 'CAP is neccessary';
@@ -44,12 +47,39 @@ class _OnboardingPageState extends State<OnboardingPage> {
       return;
     }
 
+    // AGE VALIDATION
+    if (age.isEmpty) {
+      setState(() {
+        _errorMessage = 'Age is necessary';
+        _isLoading = false;
+      });
+      return;
+    }
+
+    if (!RegExp(r'^[0-9]+$').hasMatch(age)) {
+      setState(() {
+        _errorMessage = 'Age must contain only numbers';
+        _isLoading = false;
+      });
+      return;
+    }
+
+    int ageValue = int.parse(age);
+    if (ageValue < 0 || ageValue > 120) {
+      setState(() {
+        _errorMessage = 'Age must be between 0 and 120';
+        _isLoading = false;
+      });
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('address', cap);
+    await prefs.setString('age', age);
 
     Navigator.pushReplacement(
       context,
@@ -78,7 +108,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Enter your CAP', style: TextStyle(fontSize: 24)),
+                Text('Enter your CAP and Age', style: TextStyle(fontSize: 24)),
                 SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
@@ -99,6 +129,26 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   ),
                 ),
                 SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.3),
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  child: TextField(
+                    controller: _ageController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      labelText: 'Age',
+                      labelStyle: TextStyle(color: Colors.white, fontSize: 15),
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                    ),
+                    keyboardType: TextInputType.number,
+                  ),
+                ),
+                SizedBox(height: 20),
                 _errorMessage.isNotEmpty
                     ? Text(
                         _errorMessage,
@@ -109,7 +159,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                 _isLoading
                     ? CircularProgressIndicator()
                     : ElevatedButton(
-                        onPressed: _submitCap,
+                        onPressed: _submitInfo,
                         child: Text('Submit'),
                       ),
               ],

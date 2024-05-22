@@ -72,125 +72,132 @@ class _HomepageState extends State<Homepage> {
           ],
         ),
       ),
-      child:*/ Scaffold(
-        backgroundColor: Palette.white,
-          appBar: AppBar(
-            title: Text(
-              "Aura",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(color: Palette.deepBlue),
-            ),
-          ),
-          // Drawer
-          drawer: Drawer(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  Row(children: [
-                    Image.asset(
-                      'assets/logo.png',
-                      height: 50,
-                      width: 50,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Aura',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    )
-                  ]),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.health_and_safety,
-                      color: Palette.deepBlue,
-                    ),
-                    title: Text(
-                      'Aura Score',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    onTap: () {
-                      _onItemTapped(0);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.query_stats,
-                      color: Palette.deepBlue,
-                    ),
-                    title: Text(
-                      'Metrics',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    onTap: () {
-                      _onItemTapped(1);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.person,
-                      color: Palette.deepBlue,
-                    ),
-                    title: Text(
-                      'Account',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    onTap: () {
-                      _onItemTapped(2);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(
-                      Icons.logout,
-                      color: Palette.deepBlue,
-                    ),
-                    title: Text(
-                      'Logout',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    onTap: () => {},
-                  ),
-                ],
+      child:*/
+        Scaffold(
+            backgroundColor: Palette.white,
+            appBar: AppBar(
+              title: Text(
+                "Aura",
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: Palette.deepBlue),
               ),
             ),
-          ),
-          // NavigationBar
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: Palette.softBlue1,
-            items: navBarItems,
-            currentIndex: index,
-            onTap: (index) => _onItemTapped(index),
-          ),
-          // Body
-          body: FutureBuilder<HeadacheScore>(
-              future: score,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasError) {
-                  print('has error');
-                  print(snapshot.error);
-                  return Text('Error: ${snapshot.error}');
-                }
-                final HeadacheScore score = snapshot.data!;
-                print('no error');
-                return _selectPage(index, score, day);
-              }));
-              /*),
+            // Drawer
+            drawer: Drawer(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Row(children: [
+                      Image.asset(
+                        'assets/logo.png',
+                        height: 50,
+                        width: 50,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        'Aura',
+                        style: Theme.of(context).textTheme.titleSmall,
+                      )
+                    ]),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.health_and_safety,
+                        color: Palette.deepBlue,
+                      ),
+                      title: Text(
+                        'Aura Score',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      onTap: () {
+                        _onItemTapped(0);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.query_stats,
+                        color: Palette.deepBlue,
+                      ),
+                      title: Text(
+                        'Metrics',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      onTap: () {
+                        _onItemTapped(1);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.person,
+                        color: Palette.deepBlue,
+                      ),
+                      title: Text(
+                        'Account',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      onTap: () {
+                        _onItemTapped(2);
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Divider(),
+                    ListTile(
+                      leading: Icon(
+                        Icons.logout,
+                        color: Palette.deepBlue,
+                      ),
+                      title: Text(
+                        'Logout',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      onTap: () async {
+                        final sp = await SharedPreferences.getInstance();
+                        await sp.remove('access');
+                        await sp.remove('refresh');
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: ((context) => LoginPage())));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            // NavigationBar
+            bottomNavigationBar: BottomNavigationBar(
+              backgroundColor: Palette.softBlue1,
+              items: navBarItems,
+              currentIndex: index,
+              onTap: (index) => _onItemTapped(index),
+            ),
+            // Body
+            body: FutureBuilder<HeadacheScore>(
+                future: score,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    print('has error');
+                    print(snapshot.error);
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  final HeadacheScore score = snapshot.data!;
+                  print('no error');
+                  return _selectPage(index, score, day);
+                }));
+    /*),
     );*/
   }
 }
@@ -211,38 +218,35 @@ class DailyScore extends StatelessWidget {
     return Center(
         child: SizedBox(
             width: 350,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                      child: Text(
-                        "Welcome",
-                        style: Theme.of(context).textTheme.displaySmall,
-                      ),
-                    )
-                  ]),
-                  Consumer<Day>(builder: (context, day, child) {
-                    return Center(
-                        child: FittedBox(
-                            child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        DayArrows(
-                            incrementDay: day.incrementDay,
-                            decrementDay: day.decrementDay,
-                            day: day),
-                        SevenDayCalendar(day: day),
-                        MyGaugeIndicator(
-                            score: score,
-                            day: day,
-                            onTap: () => onItemTapped(1)),
-                        solutionsHomepage(),
-                      ],
-                    )));
-                  })
-                ])));
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                  child: Text(
+                    "Welcome",
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                )
+              ]),
+              Consumer<Day>(builder: (context, day, child) {
+                return Center(
+                    child: FittedBox(
+                        child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    DayArrows(
+                        incrementDay: day.incrementDay,
+                        decrementDay: day.decrementDay,
+                        day: day),
+                    SevenDayCalendar(day: day),
+                    MyGaugeIndicator(
+                        score: score, day: day, onTap: () => onItemTapped(1)),
+                    solutionsHomepage(),
+                  ],
+                )));
+              })
+            ])));
   }
 }
 
@@ -365,7 +369,8 @@ class MyGaugeIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ValueNotifier<double> _valueNotifier = ValueNotifier(score[day.toInt()]);
+    final ValueNotifier<double> _valueNotifier =
+        ValueNotifier(score[day.toInt()]);
     return GestureDetector(
         onTap: onTap,
         child: Container(
@@ -386,7 +391,7 @@ class MyGaugeIndicator extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         DashedCircularProgressBar.aspectRatio(
-                          aspectRatio: 1.2, 
+                          aspectRatio: 1.2,
                           valueNotifier: _valueNotifier,
                           progress: score[day.toInt()],
                           maxProgress: 8,
@@ -430,7 +435,6 @@ class MyGaugeIndicator extends StatelessWidget {
   }
 }
 
-  
 Color getButtonColor(double score) {
   if (score < 2) {
     return Palette.lightBlue1;
