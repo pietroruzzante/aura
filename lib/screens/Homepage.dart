@@ -10,7 +10,6 @@ import 'package:aura/models/palette.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:intl/intl.dart';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
-import 'package:timeline_calendar/calendar/timeline_calendar.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);

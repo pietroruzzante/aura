@@ -2,7 +2,6 @@ import 'package:aura/models/headache_score.dart';
 import 'package:aura/models/palette.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/services/impact.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 class Metricspage extends StatelessWidget {
   final impact = Impact();
