@@ -150,6 +150,11 @@ class Impact {
     return data;
   }
 
+  Future<double> getTodaySleep() async {
+    final todayData = await getSleepHR();
+    final todaySleep = todayData[0];
+    return todaySleep;
+  }
 
   Future<String> getLastExerciseDate() async{
     String lastDate = '2024-05-17';
