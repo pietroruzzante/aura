@@ -41,9 +41,9 @@ class Impact {
     //If response is OK, decode it and store the tokens. Otherwise do nothing.
     if (response.statusCode == 200) {
       final decodedResponse = jsonDecode(response.body);
-      final sp = await SharedPreferences.getInstance();
-      await sp.setString('access', decodedResponse['access']);
-      await sp.setString('refresh', decodedResponse['refresh']);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('access', decodedResponse['access']);
+      await prefs.setString('refresh', decodedResponse['refresh']);
     }
 
     //Return the status code
@@ -54,8 +54,8 @@ class Impact {
   Future<int> refreshTokens() async {
     //Create the request
     final url = Impact.baseUrl + Impact.refreshEndpoint;
-    final sp = await SharedPreferences.getInstance();
-    final refresh = sp.getString('refresh');
+    final prefs = await SharedPreferences.getInstance();
+    final refresh = prefs.getString('refresh');
     if (refresh != null) {
       final body = {'refresh': refresh};
 
@@ -66,9 +66,9 @@ class Impact {
       //If the response is OK, set the tokens in SharedPreferences to the new values
       if (response.statusCode == 200) {
         final decodedResponse = jsonDecode(response.body);
-        final sp = await SharedPreferences.getInstance();
-        await sp.setString('access', decodedResponse['access']);
-        await sp.setString('refresh', decodedResponse['refresh']);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('access', decodedResponse['access']);
+        await prefs.setString('refresh', decodedResponse['refresh']);
       } //if
 
       //Just return the status code
@@ -79,8 +79,8 @@ class Impact {
 
   //This method checks if the saved token is still valid
   Future<bool> checkSavedToken({bool refresh = false}) async {
-    final sp = await SharedPreferences.getInstance();
-    final token = sp.getString(refresh ? 'refresh' : 'access');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString(refresh ? 'refresh' : 'access');
 
     //Check if there is a token
     if (token == null) {
@@ -106,8 +106,8 @@ class Impact {
     if (!await checkSavedToken()) {
       await refreshTokens();
     }
-    final sp = await SharedPreferences.getInstance();
-    final token = sp.getString('access');
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('access');
 
     return {'Authorization': 'Bearer $token'};
   }
