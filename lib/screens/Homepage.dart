@@ -1,4 +1,4 @@
-import 'package:aura/models/workSans.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Accountpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
@@ -235,7 +235,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                             ),
                           ],
                         ),
-                        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: BottomNavigationBar(
                           currentIndex: currentIndex,
                           onTap: _onItemTapped,
@@ -261,7 +262,8 @@ class TopSemiCircleClipper extends CustomClipper<Path> {
   Path getClip(Size size) {
     var path = Path();
     path.lineTo(0, size.height);
-    path.quadraticBezierTo(size.width * 0.5, size.height * 0.8, size.width, size.height);
+    path.quadraticBezierTo(
+        size.width * 0.5, size.height * 0.8, size.width, size.height);
     path.lineTo(size.width, 0);
     path.close();
     return path;
@@ -315,7 +317,10 @@ class DailyScore extends StatelessWidget {
                     SevenDayCalendar(day: day),
                     AuraScoreIndicator(
                         score: score, day: day, onTap: () => onItemTapped(1)),
-                    solutionsHomepage(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    FindSolutions(),
                   ],
                 )));
               })
@@ -330,38 +335,59 @@ class SevenDayCalendar extends StatelessWidget {
   SevenDayCalendar({required this.day});
   @override
   Widget build(BuildContext context) {
-  DateTime selectedDate = getDateForValue(day.toInt());
+    DateTime selectedDate = getDateForValue(day.toInt());
     return Container(
-        height: 120,
+        height: 150,
         width: 500,
-        child: EasyInfiniteDateTimeLine(
-          firstDate: DateTime.now().subtract(Duration(days: 3)),
-          focusDate: selectedDate,
-          lastDate: DateTime.now().add(Duration(days: 3)),
-          timeLineProps:
-              EasyTimeLineProps(separatorPadding: 1.0, margin: EdgeInsets.zero),
-          dayProps: EasyDayProps(
-            inactiveDayStyle: DayStyle(
-              decoration: BoxDecoration(
-                color: Palette.white,
-                borderRadius: BorderRadius.circular(20),
-              )
-            ),
-            todayStyle: DayStyle(
-              decoration: BoxDecoration(
-                color: Palette.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(
-                  color: Palette.blue,
-                  width: 3,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0,5,0,5),
+          child: EasyInfiniteDateTimeLine(
+            firstDate: DateTime.now().subtract(Duration(days: 3)),
+            focusDate: selectedDate,
+            lastDate: DateTime.now().add(Duration(days: 3)),
+            timeLineProps:
+                EasyTimeLineProps(separatorPadding: 1.0, margin: EdgeInsets.zero),
+            dayProps: EasyDayProps(
+              inactiveDayStyle: DayStyle(
+                decoration: BoxDecoration(
+                  color: Palette.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border(
+                    bottom: BorderSide(width: 2, color: Palette.blue,),
+                  ),
                 ),
-              )
+              ),
+              todayStyle: DayStyle(
+                monthStrStyle: TextStyle(
+                  color: Palette.blue
+                ),
+                dayNumStyle: TextStyle(
+                  color: Palette.blue,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20
+                ),
+                dayStrStyle: TextStyle(
+                  color: Palette.blue
+                ),
+                decoration: BoxDecoration(
+                  color: Palette.white,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border(
+                    bottom: BorderSide(width: 2, color: Palette.blue,),
+                  ),
+                ),
+              ),
+              activeDayStyle: DayStyle(
+                decoration: BoxDecoration(
+                  color: Palette.deepBlue,
+                  borderRadius: BorderRadius.circular(20),
+                )
+              ),
             ),
+            showTimelineHeader: false,
+            onDateChange: (selectedDate) => day.setDay(
+                selectedDate, DateTime.now().subtract(Duration(days: 4))),
           ),
-          showTimelineHeader: false,
-          onDateChange: (selectedDate) => day.setDay(
-              selectedDate, DateTime.now().subtract(Duration(days: 4))),
-          activeColor: Palette.deepBlue,
         ));
   }
 }
@@ -408,47 +434,6 @@ class DayArrows extends StatelessWidget {
   }
 }
 
-class solutionsHomepage extends StatelessWidget {
-  const solutionsHomepage({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Text(
-            "What can you do?",
-            style: Theme.of(context).textTheme.titleSmall,
-          ),
-          ElevatedButton.icon(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Solutionpage(
-                              needSleep: true,
-                              needExercise: true,
-                            )));
-              },
-              label: Text(
-                "Solutions",
-                textScaler: TextScaler.linear(1.7),
-              ))
-        ],
-      ),
-      height: 100,
-      width: 450,
-      decoration: BoxDecoration(
-        color: Palette.transparent,
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-    );
-  }
-}
-
 // Aura score box indicator, updated on day selection
 class AuraScoreIndicator extends StatelessWidget {
   final score;
@@ -475,8 +460,8 @@ class AuraScoreIndicator extends StatelessWidget {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Palette.softBlue1,
-              blurRadius: 10,
+              color: Palette.softBlue2,
+              blurRadius: 15,
             ),
           ],
           color: Palette.white,
@@ -541,7 +526,8 @@ class AuraScoreIndicator extends StatelessWidget {
               right: 10,
               child: InfoWidget(
                 infoText: "Aura Score for coming days is...",
-                infoTextStyle: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                infoTextStyle:
+                    WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
                 iconData: Icons.info,
                 iconColor: Palette.blue,
               ),
@@ -587,6 +573,54 @@ class AuraScoreIndicator extends StatelessWidget {
 }
 }
 
+class FindSolutions extends StatelessWidget {
+  const FindSolutions({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 480,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Palette.softBlue2,
+            blurRadius: 15,
+          ),
+        ],
+        color: Palette.white,
+        borderRadius: BorderRadius.circular(20.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              "What can you do?",
+              style: WorkSans.titleSmall,
+            ),
+            ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Solutionpage(
+                                needSleep: true,
+                                needExercise: true,
+                              )));
+                },
+                label: Text(
+                  "Solutions",
+                  textScaler: TextScaler.linear(1.7),
+                ))
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 String getText(double score) {
   if (score < 2) {

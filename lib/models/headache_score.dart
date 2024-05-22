@@ -18,8 +18,8 @@ class HeadacheScore {
 
     final stressScore = await getStress();
     final weatherScore = await getWeather();
-    print('weatherScore:${weatherScore}');
-    print('stressScore:${stressScore}');
+    print('weatherScore:$weatherScore');
+    print('stressScore:$stressScore');
 
     DateTime today = DateTime.now();
     print('today: $today');
