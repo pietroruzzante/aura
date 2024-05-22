@@ -1,4 +1,4 @@
-import 'package:aura/models/workSans.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:aura/screens/EditAccount.dart';

@@ -1,5 +1,5 @@
 import 'package:aura/models/palette.dart';
-import 'package:aura/models/workSans.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/services/impact.dart';
 
