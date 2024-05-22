@@ -2,6 +2,7 @@ import 'package:aura/models/workSans.dart';
 import 'package:aura/screens/Accountpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
+import 'package:info_widget/info_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:aura/models/headache_score.dart';
 import 'package:aura/screens/Solutionpage.dart';
@@ -10,6 +11,7 @@ import 'package:aura/models/palette.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:intl/intl.dart';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -24,6 +26,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   final score = HeadacheScore().refreshScore();
   final day = Day();
+
+  String name = 'User';
 
   List<BottomNavigationBarItem> navBarItems = [
     BottomNavigationBarItem(
@@ -51,6 +55,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         });
       }
     });
+    loadUserName();
+  }
+
+  Future<void> loadUserName() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      name = prefs.getString('name') ?? 'User';
+    });
   }
 
   @override
@@ -66,19 +78,6 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     tabController.animateTo(newIndex);
   }
 
-  Widget _selectPage(int index, HeadacheScore score, Day day) {
-    switch (index) {
-      case 0:
-        return DailyScore(score: score, day: day, onItemTapped: _onItemTapped);
-      case 1:
-        return Metricspage();
-      case 2:
-        return Accountpage();
-      default:
-        return DailyScore(score: score, day: day, onItemTapped: _onItemTapped);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -91,11 +90,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         ),
         // Drawer
         drawer: Drawer(
+          backgroundColor: Palette.softBlue1,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
+                // Logo
                 Row(children: [
                   Image.asset(
                     'assets/logo.png',
@@ -107,12 +108,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   Text(
                     'Aura',
-                    style: Theme.of(context).textTheme.titleSmall,
+                    style: WorkSans.titleSmall,
                   )
                 ]),
                 SizedBox(
                   height: 20,
                 ),
+                // To Homepage
                 ListTile(
                   leading: Icon(
                     Icons.health_and_safety,
@@ -120,13 +122,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   title: Text(
                     'Aura Score',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: WorkSans.headlineSmall,
                   ),
                   onTap: () {
                     _onItemTapped(0);
                     Navigator.pop(context);
                   },
                 ),
+                // To Metricspage
                 ListTile(
                   leading: Icon(
                     Icons.query_stats,
@@ -134,13 +137,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   title: Text(
                     'Metrics',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: WorkSans.headlineSmall,
                   ),
                   onTap: () {
                     _onItemTapped(1);
                     Navigator.pop(context);
                   },
                 ),
+                // To Accountpage
                 ListTile(
                   leading: Icon(
                     Icons.person,
@@ -148,7 +152,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   title: Text(
                     'Account',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: WorkSans.headlineSmall,
                   ),
                   onTap: () {
                     _onItemTapped(2);
@@ -156,6 +160,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   },
                 ),
                 Divider(),
+                // Logout
                 ListTile(
                   leading: Icon(
                     Icons.logout,
@@ -163,7 +168,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   title: Text(
                     'Logout',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: WorkSans.headlineSmall,
                   ),
                   onTap: () => {},
                 ),
@@ -173,7 +178,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
         ),
         body: Stack(
           children: [
-            // Semicerchio dietro lo scaffold
+            // Semicircle behind Scaffold
             Positioned(
               top: 0,
               left: 0,
@@ -181,12 +186,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
               child: ClipPath(
                 clipper: TopSemiCircleClipper(),
                 child: Container(
-                  height: MediaQuery.of(context).size.height * 0.2, // Altezza personalizzabile
+                  // sets height of top panel
+                  height: MediaQuery.of(context).size.height * 0.16,
                   color: Palette.blue,
                 ),
               ),
             ),
-            // Resto del contenuto della homepage
+            // Homepage elements
             Positioned.fill(
               child: FutureBuilder<HeadacheScore>(
                 future: score,
@@ -211,6 +217,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                               score: score,
                               day: day,
                               onItemTapped: _onItemTapped,
+                              name: name,
                             ),
                             Metricspage(),
                             Accountpage(),
@@ -224,8 +231,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.blueGrey,
-                              blurRadius: 10.0,
-                              offset: Offset(0, -2),
+                              blurRadius: 8.0,
                             ),
                           ],
                         ),
@@ -269,11 +275,13 @@ class DailyScore extends StatelessWidget {
   final HeadacheScore score;
   final Day day;
   final Function(int) onItemTapped;
+  final name;
 
   DailyScore({
     required this.score,
     required this.day,
     required this.onItemTapped,
+    this.name,
   });
 
   @override
@@ -286,8 +294,8 @@ class DailyScore extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                   child: Text(
-                    "Welcome",
-                    style: WorkSans.displaySmall?.copyWith(color: Palette.white),
+                    "Welcome, $name",
+                    style: WorkSans.displaySmall.copyWith(color: Palette.white),
                   ),
                 )
               ]),
@@ -305,7 +313,7 @@ class DailyScore extends StatelessWidget {
                         decrementDay: day.decrementDay,
                         day: day),
                     SevenDayCalendar(day: day),
-                    MyGaugeIndicator(
+                    AuraScoreIndicator(
                         score: score, day: day, onTap: () => onItemTapped(1)),
                     solutionsHomepage(),
                   ],
@@ -315,6 +323,7 @@ class DailyScore extends StatelessWidget {
   }
 }
 
+// Sevend day clickable calendar, sets day for AuraScoreIndicator
 class SevenDayCalendar extends StatelessWidget {
   Day day;
 
@@ -331,7 +340,24 @@ class SevenDayCalendar extends StatelessWidget {
           lastDate: DateTime.now().add(Duration(days: 3)),
           timeLineProps:
               EasyTimeLineProps(separatorPadding: 1.0, margin: EdgeInsets.zero),
-          dayProps: EasyDayProps(),
+          dayProps: EasyDayProps(
+            inactiveDayStyle: DayStyle(
+              decoration: BoxDecoration(
+                color: Palette.white,
+                borderRadius: BorderRadius.circular(20),
+              )
+            ),
+            todayStyle: DayStyle(
+              decoration: BoxDecoration(
+                color: Palette.white,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Palette.blue,
+                  width: 3,
+                ),
+              )
+            ),
+          ),
           showTimelineHeader: false,
           onDateChange: (selectedDate) => day.setDay(
               selectedDate, DateTime.now().subtract(Duration(days: 4))),
@@ -340,6 +366,7 @@ class SevenDayCalendar extends StatelessWidget {
   }
 }
 
+// Navigates between days in SevenDayCalendar
 class DayArrows extends StatelessWidget {
   final VoidCallback incrementDay;
   final VoidCallback decrementDay;
@@ -353,7 +380,7 @@ class DayArrows extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DateTime associatedDate = getDateForValue(day.toInt());
-    String formattedDate = DateFormat('dd MM yyyy').format(associatedDate);
+    String formattedDate = DateFormat('dd/MM/yyyy').format(associatedDate);
     String dayOfWeek = DateFormat('EEEE', 'en_IT').format(associatedDate);
 
     return Container(
@@ -365,18 +392,18 @@ class DayArrows extends StatelessWidget {
               icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 30,
-                color: day.toInt() == 0 ? Palette.transparent : Colors.black,
+                color: day.toInt() == 0 ? Palette.transparent : Palette.white,
               )),
           Text(
             '$dayOfWeek, $formattedDate',
-            style: WorkSans.titleSmall,
+            style: WorkSans.titleSmall.copyWith(color: Palette.white),
           ),
           IconButton(
               onPressed: incrementDay,
               icon: Icon(Icons.arrow_forward_ios,
                   size: 30,
                   color:
-                      day.toInt() == 6 ? Palette.transparent : Colors.black)),
+                      day.toInt() == 6 ? Palette.transparent : Palette.white)),
         ]));
   }
 }
@@ -422,12 +449,13 @@ class solutionsHomepage extends StatelessWidget {
   }
 }
 
-class MyGaugeIndicator extends StatelessWidget {
+// Aura score box indicator, updated on day selection
+class AuraScoreIndicator extends StatelessWidget {
   final score;
   final day;
   final VoidCallback onTap;
 
-  MyGaugeIndicator({
+  AuraScoreIndicator({
     required this.score,
     required this.day,
     required this.onTap,
@@ -437,76 +465,97 @@ class MyGaugeIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final ValueNotifier<double> _valueNotifier =
         ValueNotifier(score[day.toInt()]);
+
     return GestureDetector(
-        onTap: onTap,
-        child: Container(
-            height: 450,
-            width: 480,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: Palette.softBlue1,
-                  blurRadius: 10,
-                )
-              ],
-              color: Palette.white,
-              borderRadius: BorderRadius.circular(20.0),
+      onTap: onTap,
+      child: Container(
+        height: 450,
+        width: 480,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Palette.softBlue1,
+              blurRadius: 10,
             ),
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    "Your Aura score:",
-                    style: WorkSans.titleMedium,
-                  ),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        DashedCircularProgressBar.aspectRatio(
-                          aspectRatio: 1.5,
-                          valueNotifier: _valueNotifier,
-                          progress: score[day.toInt()],
-                          maxProgress: 8,
-                          startAngle: 225,
-                          sweepAngle: 270,
-                          foregroundColor: Palette.deepBlue,
-                          backgroundColor: Palette.white,
-                          foregroundStrokeWidth: 15,
-                          backgroundStrokeWidth: 15,
-                          animation: true,
-                          animationDuration: Duration(milliseconds: 500),
-                          animationCurve: Easing.standardDecelerate,
-                          seekSize: 10,
-                          seekColor: Palette.white,
-                          child: Center(
-                            child: ValueListenableBuilder(
-                                valueListenable: _valueNotifier,
-                                builder: (_, double value, __) => Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Text(
-                                          '${value.toInt()}/8',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .displayMedium
-                                              ?.copyWith(
-                                                  fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(
-                                          getText(score[day.toInt()]),
-                                          style: TextStyle(
-                                              color: Palette.deepBlue,
-                                              fontWeight: FontWeight.w400,
-                                              fontSize: 30),
-                                        ),
-                                      ],
-                                    )),
+          ],
+          color: Palette.white,
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "Your Aura score:",
+                  style: WorkSans.titleMedium,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    DashedCircularProgressBar.aspectRatio(
+                      aspectRatio: 1.5,
+                      valueNotifier: _valueNotifier,
+                      progress: score[day.toInt()],
+                      maxProgress: 8,
+                      startAngle: 225,
+                      sweepAngle: 270,
+                      foregroundColor: Palette.deepBlue,
+                      backgroundColor: Palette.white,
+                      foregroundStrokeWidth: 15,
+                      backgroundStrokeWidth: 15,
+                      animation: true,
+                      animationDuration: Duration(milliseconds: 500),
+                      animationCurve: Easing.standardDecelerate,
+                      seekSize: 10,
+                      seekColor: Palette.white,
+                      child: Center(
+                        child: ValueListenableBuilder(
+                          valueListenable: _valueNotifier,
+                          builder: (_, double value, __) => Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '${value.toInt()}/8',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                getText(score[day.toInt()]),
+                                style: TextStyle(
+                                  color: Palette.deepBlue,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 30,
+                                ),
+                              ),
+                            ],
                           ),
-                        )
-                      ])
-                ])));
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            Positioned(
+              top: 10,
+              right: 10,
+              child: InfoWidget(
+                infoText: "Aura Score for coming days is...",
+                infoTextStyle: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                iconData: Icons.info,
+                iconColor: Palette.blue,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
+
 
 String getText(double score) {
   if (score < 2) {

@@ -1,3 +1,4 @@
+import 'package:aura/models/workSans.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:aura/screens/EditAccount.dart';
@@ -33,19 +34,17 @@ class _AccountpageState extends State<Accountpage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Palette.white,
-      child: Scaffold(
-        body: SingleChildScrollView(
+    return SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(30),
+            padding: const EdgeInsets.fromLTRB(30, 15, 30, 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Account",style: Theme.of(context).textTheme.titleMedium,
+                  "Account",
+                  style: WorkSans.titleMedium.copyWith(color: Palette.white),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: Row(
@@ -58,22 +57,22 @@ class _AccountpageState extends State<Accountpage> {
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             name,
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Palette.darkBlue),
+                            style: WorkSans.headlineMedium.copyWith(color: Palette.white),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             "test@example.com",
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.grey.shade600),
+                            style: WorkSans.bodyMedium.copyWith(color: Colors.blueGrey),
                           )
                         ],
                       ),
-                      Spacer(),
+                      const Spacer(),
                       ForwardButton(
                         onTap: () {
                           Navigator.push(
@@ -127,8 +126,6 @@ class _AccountpageState extends State<Accountpage> {
               ],
             ),
           ),
-        ),
-      ),
-    );
+        );
   }
 }
