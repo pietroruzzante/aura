@@ -1,5 +1,5 @@
-import 'package:aura/models/headache_score.dart';
 import 'package:aura/models/palette.dart';
+import 'package:aura/models/workSans.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/services/impact.dart';
 
@@ -35,7 +35,7 @@ class Metricspage extends StatelessWidget {
                               children: [
                                 Text('Aura score',
                                     style:
-                                        Theme.of(context).textTheme.titleMedium)
+                                        WorkSans.titleMedium.copyWith(color: Palette.white))
                               ],
                             ),
                           ],
@@ -52,7 +52,7 @@ class Metricspage extends StatelessWidget {
                               children: [
                                 Text('Exercise',
                                     style:
-                                        Theme.of(context).textTheme.titleSmall),
+                                        WorkSans.titleSmall),
                               ],
                             ),
                             SizedBox(height: 20,),
@@ -60,9 +60,7 @@ class Metricspage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text('Last Date of Exercise: $lastDate',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineSmall),
+                                    style: WorkSans.headlineSmall.copyWith(fontSize: 16)),
                               ],
                             )
                           ],
@@ -77,7 +75,7 @@ class Metricspage extends StatelessWidget {
                               children: [
                                 Text('Sleep',
                                     style:
-                                        Theme.of(context).textTheme.titleSmall),
+                                        WorkSans.titleSmall),
                               ],
                             ),
                             SizedBox(
@@ -130,7 +128,7 @@ class SleepIndicator extends StatelessWidget {
                     children: [
                       Text(
                         'You slept ${todaySleepDuration.toInt()} hours',
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: WorkSans.headlineSmall,
                       ),
                     ],
                   )
