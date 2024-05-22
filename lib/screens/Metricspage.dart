@@ -2,6 +2,7 @@ import 'package:aura/models/palette.dart';
 import 'package:aura/models/workSans.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/services/impact.dart';
+import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 
 class Metricspage extends StatelessWidget {
   final impact = Impact();
@@ -33,7 +34,7 @@ class Metricspage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text('Aura score',
+                                Text('Aura score insights',
                                     style:
                                         WorkSans.titleMedium.copyWith(color: Palette.white))
                               ],
