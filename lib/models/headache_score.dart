@@ -80,14 +80,17 @@ class HeadacheScore {
   } //refreshScore
 
   Future<List<double>> getStress() async {
+
+    final todayData = await impact.getSleepHR();
+
     final featureNames = ["hours_of_sleep", "heart_rate"];
-    //await Future.delayed(const Duration(seconds: 2));//Provvisorio fino a accesso server
+    
     final data = DataFrame([
       featureNames,
       [0.0, 0.0], 
       [0.0, 0.0], 
       [0.0, 0.0], 
-      await impact.getSleepHR(),
+      todayData,
       [0.0, 0.0], 
       [0.0, 0.0],
       [0.0, 0.0], 
