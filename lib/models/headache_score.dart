@@ -73,10 +73,11 @@ class HeadacheScore {
         sp.setDouble('day3', _scores[3]);
         sp.setString('lastDayRefreshed', today.toIso8601String());
     }
-    
 
+    final todayScores = [stressScore[3], weatherScore[3]];
+    
     print('final scores: $_scores');
-    return this;
+    return this ;
   } //refreshScore
 
   Future<List<double>> getStress() async {
