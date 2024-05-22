@@ -82,140 +82,142 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Palette.white,
-            Palette.softBlue1,
-          ],
-        ),
-      ),
+      color: Palette.white,
       child: Scaffold(
-        backgroundColor: Palette.white,
-          appBar: AppBar(
-            title: Text(
-              "Aura",
-              style: Theme.of(context)
-                  .textTheme
-                  .titleMedium
-                  ?.copyWith(color: Palette.deepBlue),
+        appBar: AppBar(
+          title: Text(
+            "Aura",
+          ),
+        ),
+        // Drawer
+        drawer: Drawer(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                Row(children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    height: 50,
+                    width: 50,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Aura',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  )
+                ]),
+                SizedBox(
+                  height: 20,
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.health_and_safety,
+                    color: Palette.deepBlue,
+                  ),
+                  title: Text(
+                    'Aura Score',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  onTap: () {
+                    _onItemTapped(0);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.query_stats,
+                    color: Palette.deepBlue,
+                  ),
+                  title: Text(
+                    'Metrics',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  onTap: () {
+                    _onItemTapped(1);
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  leading: Icon(
+                    Icons.person,
+                    color: Palette.deepBlue,
+                  ),
+                  title: Text(
+                    'Account',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  onTap: () {
+                    _onItemTapped(2);
+                    Navigator.pop(context);
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  leading: Icon(
+                    Icons.logout,
+                    color: Palette.deepBlue,
+                  ),
+                  title: Text(
+                    'Logout',
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  ),
+                  onTap: () => {},
+                ),
+              ],
             ),
           ),
-          // Drawer
-          drawer: Drawer(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 50, 20, 20),
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  Row(children: [
-                    Image.asset(
-                      'assets/logo.png',
-                      height: 50,
-                      width: 50,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Aura',
-                      style: Theme.of(context).textTheme.titleSmall,
-                    )
-                  ]),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.health_and_safety,
-                      color: Palette.deepBlue,
-                    ),
-                    title: Text(
-                      'Aura Score',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    onTap: () {
-                      _onItemTapped(0);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.query_stats,
-                      color: Palette.deepBlue,
-                    ),
-                    title: Text(
-                      'Metrics',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    onTap: () {
-                      _onItemTapped(1);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      Icons.person,
-                      color: Palette.deepBlue,
-                    ),
-                    title: Text(
-                      'Account',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    onTap: () {
-                      _onItemTapped(2);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: Icon(
-                      Icons.logout,
-                      color: Palette.deepBlue,
-                    ),
-                    title: Text(
-                      'Logout',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    onTap: () => {},
-                  ),
-                ],
+        ),
+        body: Stack(
+          children: [
+            // Semicerchio dietro lo scaffold
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: ClipPath(
+                clipper: TopSemiCircleClipper(),
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.2, // Altezza personalizzabile
+                  color: Palette.blue,
+                ),
               ),
             ),
-          ),
-          body: FutureBuilder<HeadacheScore>(
-              future: score,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (snapshot.hasError) {
-                  print(snapshot.error);
-                  return Text('Error: ${snapshot.error}');
-                }
-                final HeadacheScore score = snapshot.data!;
-                return Stack(
-                  children: [
-                    TabBarView(
-                      controller: tabController,
-                      children: [
-                        DailyScore(
-                            score: score,
-                            day: day,
-                            onItemTapped: _onItemTapped),
-                        Metricspage(),
-                        Accountpage(),
-                      ],
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
+            // Resto del contenuto della homepage
+            Positioned.fill(
+              child: FutureBuilder<HeadacheScore>(
+                future: score,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Text('Error: ${snapshot.error}');
+                  }
+                  final HeadacheScore score = snapshot.data!;
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: TabBarView(
+                          controller: tabController,
+                          children: [
+                            DailyScore(
+                              score: score,
+                              day: day,
+                              onItemTapped: _onItemTapped,
+                            ),
+                            Metricspage(),
+                            Accountpage(),
+                          ],
+                        ),
+                      ),
+                      Container(
                         decoration: BoxDecoration(
                           color: Palette.white,
                           borderRadius: BorderRadius.circular(30.0),
@@ -227,8 +229,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                             ),
                           ],
                         ),
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: BottomNavigationBar(
                           currentIndex: currentIndex,
                           onTap: _onItemTapped,
@@ -237,13 +238,31 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           elevation: 0,
                         ),
                       ),
-                    ),
-                  ],
-                );
-                //return _selectPage(index, score, day);
-              })),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
+}
+
+class TopSemiCircleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, size.height);
+    path.quadraticBezierTo(size.width * 0.5, size.height * 0.8, size.width, size.height);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 class DailyScore extends StatelessWidget {
@@ -268,7 +287,7 @@ class DailyScore extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
                   child: Text(
                     "Welcome",
-                    style: Theme.of(context).textTheme.displaySmall,
+                    style: WorkSans.displaySmall?.copyWith(color: Palette.white),
                   ),
                 )
               ]),
@@ -489,18 +508,6 @@ class MyGaugeIndicator extends StatelessWidget {
   }
 }
 
-Color getButtonColor(double score) {
-  if (score < 2) {
-    return Palette.lightBlue1;
-  } else if ((score >= 2) & (score < 4)) {
-    return Palette.lightBlue4;
-  } else if ((score >= 4) & (score < 6)) {
-    return Palette.blue;
-  } else {
-    return Palette.yellow;
-  }
-}
-
 String getText(double score) {
   if (score < 2) {
     return "Low level";
@@ -518,3 +525,18 @@ DateTime getDateForValue(int value) {
   int difference = value - 3; // 3 è il valore centrale che rappresenta oggi
   return now.add(Duration(days: difference));
 }
+
+// To set the color of objects according to the aura score
+/*
+Color getButtonColor(double score) {
+  if (score < 2) {
+    return Palette.lightBlue1;
+  } else if ((score >= 2) & (score < 4)) {
+    return Palette.lightBlue4;
+  } else if ((score >= 4) & (score < 6)) {
+    return Palette.blue;
+  } else {
+    return Palette.yellow;
+  }
+}
+*/
