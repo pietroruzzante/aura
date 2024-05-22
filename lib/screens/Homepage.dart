@@ -316,42 +316,27 @@ class DailyScore extends StatelessWidget {
 }
 
 class SevenDayCalendar extends StatelessWidget {
-  final day;
-  DateTime selectedDate = DateTime.now();
+  Day day;
 
   SevenDayCalendar({required this.day});
   @override
   Widget build(BuildContext context) {
+  DateTime selectedDate = getDateForValue(day.toInt());
     return Container(
-      height: 120,
-      width: 500,
-      child: EasyInfiniteDateTimeLine(
-        firstDate: DateTime.now().subtract(Duration(days: 3)),
-        focusDate: DateTime.now(),
-        lastDate: DateTime.now().add(Duration(days: 3)),
-        timeLineProps: EasyTimeLineProps(
-          separatorPadding: 1.0,
-          margin: EdgeInsets.zero),
-        dayProps: EasyDayProps(
-          inactiveDayStyle: DayStyle(
-            decoration: BoxDecoration(
-              color: Palette.white,
-              borderRadius: BorderRadius.circular(10)
-            )
-          ),
-          activeDayStyle: DayStyle(
-            decoration: BoxDecoration(
-              color: Palette.deepBlue,
-              borderRadius: BorderRadius.circular(10)
-            )
-          ),
-        ),
-        showTimelineHeader: false,
-        onDateChange: (selectedDate) => day.setDay(
-          selectedDate, DateTime.now().subtract(Duration(days: 4))
-        ),
-      ),
-    );
+        height: 120,
+        width: 500,
+        child: EasyInfiniteDateTimeLine(
+          firstDate: DateTime.now().subtract(Duration(days: 3)),
+          focusDate: selectedDate,
+          lastDate: DateTime.now().add(Duration(days: 3)),
+          timeLineProps:
+              EasyTimeLineProps(separatorPadding: 1.0, margin: EdgeInsets.zero),
+          dayProps: EasyDayProps(),
+          showTimelineHeader: false,
+          onDateChange: (selectedDate) => day.setDay(
+              selectedDate, DateTime.now().subtract(Duration(days: 4))),
+          activeColor: Palette.deepBlue,
+        ));
   }
 }
 
