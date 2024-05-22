@@ -1,10 +1,8 @@
 
 import 'package:aura/screens/CAP_onboarding.dart';
-
 import 'package:aura/services/impact.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:aura/screens/Homepage.dart';
 import 'package:aura/models/palette.dart';
 
 class LoginPage extends StatefulWidget {
@@ -42,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
         } else {
           // The credentials are incorrect, show an error message
           setState(() {
-            _errorMessage = 'Incorrect email or password';
+            _errorMessage = 'Incorrect username or password';
             _isLoading = false;
           });
         }
@@ -56,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       // Email or password fields are empty, show an error message
       setState(() {
-        _errorMessage = 'Please enter both email and password';
+        _errorMessage = 'Please enter both username and password';
         _isLoading = false;
       });
     }
@@ -92,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               _icon(),
               const SizedBox(height: 50),
-              _inputField("Email", _emailController),
+              _inputField("Username", _emailController),
               const SizedBox(height: 20),
               _inputField("Password", _passwordController, isPassword: true),
               const SizedBox(height: 10),

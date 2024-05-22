@@ -3,7 +3,7 @@ import 'package:aura/models/palette.dart';
 import 'package:aura/models/solution.dart';
 
 class SolutionCard extends StatelessWidget {
-  Solution solution;
+  final Solution solution;
 
   SolutionCard({required this.solution});
 

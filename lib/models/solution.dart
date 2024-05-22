@@ -1,5 +1,3 @@
-import 'package:aura/screens/BreathingSol.dart';
-import 'package:aura/screens/SpotifySol.dart';
 import 'package:flutter/material.dart';
 
 class Solution {
