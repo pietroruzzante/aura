@@ -34,16 +34,7 @@ class _AccountpageState extends State<Accountpage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.bottomLeft,
-          colors: [
-            Palette.white,
-            Palette.softBlue1,
-          ],
-        ),
-      ),
+      color: Palette.white,
       child: Scaffold(
         body: SingleChildScrollView(
           child: Padding(
