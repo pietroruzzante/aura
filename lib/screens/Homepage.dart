@@ -386,24 +386,24 @@ class DayArrows extends StatelessWidget {
     return Container(
         width: 450,
         child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          IconButton(
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          /*IconButton(
               onPressed: decrementDay,
               icon: Icon(
                 Icons.arrow_back_ios_new,
                 size: 30,
                 color: day.toInt() == 0 ? Palette.transparent : Palette.white,
-              )),
+              )),*/
           Text(
             '$dayOfWeek, $formattedDate',
             style: WorkSans.titleSmall.copyWith(color: Palette.white),
           ),
-          IconButton(
+          /*IconButton(
               onPressed: incrementDay,
               icon: Icon(Icons.arrow_forward_ios,
                   size: 30,
                   color:
-                      day.toInt() == 6 ? Palette.transparent : Palette.white)),
+                      day.toInt() == 6 ? Palette.transparent : Palette.white)),*/
         ]));
   }
 }
@@ -468,6 +468,7 @@ class AuraScoreIndicator extends StatelessWidget {
 
     return GestureDetector(
       onTap: onTap,
+      onHorizontalDragEnd: _onHorizontalDragEnd,
       child: Container(
         height: 450,
         width: 480,
@@ -517,18 +518,14 @@ class AuraScoreIndicator extends StatelessWidget {
                             children: [
                               Text(
                                 '${value.toInt()}/8',
-                                style: Theme.of(context)
-                                    .textTheme
+                                style: WorkSans
                                     .displayMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
+                                    .copyWith(fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 getText(score[day.toInt()]),
-                                style: TextStyle(
-                                  color: Palette.deepBlue,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 30,
-                                ),
+                                style: WorkSans
+                                    .titleMedium.copyWith(fontWeight: FontWeight.w300)
                               ),
                             ],
                           ),
@@ -549,11 +546,45 @@ class AuraScoreIndicator extends StatelessWidget {
                 iconColor: Palette.blue,
               ),
             ),
+            /*
+            Positioned(
+              left: 0,
+              top: 200,
+              child: IconButton(
+                onPressed: day.decrementDay,
+                icon: Icon(
+                Icons.arrow_back_ios_new,
+                size: 30,
+                color: day.toInt() == 0 ? Palette.transparent : Palette.deepBlue,
+              )
+              ),
+            ),
+            Positioned(
+              right: 0,
+              top: 200,
+              child: IconButton(
+                onPressed: day.incrementDay,
+                icon: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  size: 30,
+                  color: day.toInt() == 6 ? Palette.transparent : Palette.deepBlue,),
+              ),
+            )*/
           ],
         ),
       ),
     );
   }
+
+  void _onHorizontalDragEnd(DragEndDetails details) {
+    if (details.primaryVelocity != null) {
+      if (details.primaryVelocity! < 0) {
+        day.incrementDay();
+      } else if (details.primaryVelocity! > 0) {
+        day.decrementDay();
+      }
+    }
+}
 }
 
 
