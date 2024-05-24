@@ -1,4 +1,5 @@
 import 'package:aura/models/palette.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 
 class EditItem extends StatelessWidget {
@@ -21,10 +22,10 @@ class EditItem extends StatelessWidget {
           flex: 2,
           child: Text(
             title,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Palette.darkBlue),
+            style: WorkSans.headlineMedium.copyWith(color: Palette.darkBlue),
           ),
         ),
-        const SizedBox(width: 40),
+        const SizedBox(width: 30),
         Expanded(
           flex: 5,
           child: widget,
