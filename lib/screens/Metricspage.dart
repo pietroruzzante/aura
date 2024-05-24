@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:aura/services/impact.dart';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Metricspage extends StatelessWidget {
   @override
@@ -28,7 +28,7 @@ class Metricspage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -40,35 +40,62 @@ class Metricspage extends StatelessWidget {
                           ),
                           //SizedBox(height: 100),
                           Container(
-                              width: 600,
-                              decoration: BoxDecoration(
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Palette.softBlue2,
-                                    blurRadius: 1,
+                            width: 600,
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Palette.softBlue2,
+                                  blurRadius: 1,
+                                ),
+                              ],
+                              color: Palette.white,
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            child: AspectRatio(
+                                aspectRatio: 1.8,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    right: 25,
+                                    left: 20,
+                                    top: 24,
+                                    bottom: 15,
                                   ),
-                                ],
-                                color: Palette.white,
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: AspectRatio(
-                                  aspectRatio: 1.8,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      right: 18,
-                                      left: 12,
-                                      top: 24,
-                                      bottom: 12,
-                                    ),
-                                    child: LineChart(
-                                      duration: Duration(milliseconds: 1000), 
-                                      curve: Easing.emphasizedDecelerate,
-                                      LineChartData(
+                                  child: LineChart(
+                                    LineChartData(
                                       minX: 0,
                                       maxX: 6,
                                       minY: 0,
                                       maxY: 8,
-                                      gridData: FlGridData(show: false),
+                                      gridData: FlGridData(
+                                        show: false,
+                                        drawVerticalLine: true,
+                                        getDrawingHorizontalLine: (value) {
+                                          return FlLine(
+                                            color: const Color(0xffe7e8ec),
+                                            strokeWidth: 1,
+                                          );
+                                        },
+                                        getDrawingVerticalLine: (value) {
+                                          return FlLine(
+                                            color: const Color(0xffe7e8ec),
+                                            strokeWidth: 1,
+                                          );
+                                        },
+                                      ),
+                                      extraLinesData: ExtraLinesData(
+                                        verticalLines: [
+                                          VerticalLine(
+                                            x: 3, // Quarto valore sull'asse X
+                                            color: Palette.deepBlue,
+                                            dashArray: [
+                                              5,
+                                              5
+                                            ], // Linea tratteggiata
+                                            strokeWidth: 2,
+                                            
+                                          ),
+                                        ],
+                                      ),
                                       titlesData: FlTitlesData(
                                         leftTitles: AxisTitles(
                                           sideTitles: SideTitles(
@@ -96,16 +123,18 @@ class Metricspage extends StatelessWidget {
                                         bottomTitles: AxisTitles(
                                           sideTitles: SideTitles(
                                             showTitles: true,
-                                            reservedSize: 22,
+                                            reservedSize: 30,
                                             getTitlesWidget: (value, meta) {
-                                              return Text(
-                                                dayOfWeek(value),
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 12),
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  dayOfWeek(value),
+                                                  style: TextStyle(
+                                                      color: Colors.grey,
+                                                      fontSize: 12),
+                                                ),
                                               );
-
-                                              
                                             },
                                             interval: 1,
                                           ),
@@ -113,46 +142,46 @@ class Metricspage extends StatelessWidget {
                                       ),
                                       borderData: FlBorderData(
                                         show: false,
-                                        ),
-                                          lineBarsData: [
-                                            LineChartBarData(
-                                                spots: [
-                                                  FlSpot(0, data[4][0]),
-                                                  FlSpot(1, data[4][1]),
-                                                  FlSpot(2, data[4][2]),
-                                                  FlSpot(3, data[4][3]),
-                                                  FlSpot(4, data[4][4]),
-                                                  FlSpot(5, data[4][5]),
-                                                  FlSpot(6, data[4][6]),
-                                                ],
-                                                isCurved: true,
-                                                barWidth: 4,
-                                                color: Palette.deepBlue,
-                                                isStrokeCapRound: true,
-                                                dotData: FlDotData(
-                                                    show: true,
-                                                    getDotPainter: (FlSpot spot,
-                                                        double percent,
-                                                        LineChartBarData bar,
-                                                        int index) {
-                                                      return FlDotCirclePainter(
-                                                        radius:
-                                                            5, // Dimensione dei punti
-                                                        color: Palette
-                                                            .deepBlue, // Colore dei punti
-                                                        strokeWidth: 0,
-                                                      );
-                                                    }),
-                                                belowBarData: BarAreaData(
-                                                  show: false,
-                                                ),
-                                                aboveBarData:
-                                                    BarAreaData(show: false)),
-                                          ],
-                                        ),
                                       ),
-                                    )),
+                                      lineBarsData: [
+                                        LineChartBarData(
+                                            spots: [
+                                              FlSpot(0, data[5]),
+                                              FlSpot(1, data[6]),
+                                              FlSpot(2, data[7]),
+                                              FlSpot(3, data[4][3]),
+                                              FlSpot(4, data[4][4]),
+                                              FlSpot(5, data[4][5]),
+                                              FlSpot(6, data[4][6]),
+                                            ],
+                                            isCurved: true,
+                                            barWidth: 4,
+                                            color: Palette.deepBlue,
+                                            isStrokeCapRound: true,
+                                            dotData: FlDotData(
+                                                show: true,
+                                                getDotPainter: (FlSpot spot,
+                                                    double percent,
+                                                    LineChartBarData bar,
+                                                    int index) {
+                                                  return FlDotCirclePainter(
+                                                    radius:
+                                                        5, // Dimensione dei punti
+                                                    color: Palette
+                                                        .deepBlue, // Colore dei punti
+                                                    strokeWidth: 0,
+                                                  );
+                                                }),
+                                            belowBarData: BarAreaData(
+                                              show: false,
+                                            ),
+                                            aboveBarData:
+                                                BarAreaData(show: false)),
+                                      ],
+                                    ),
                                   ),
+                                )),
+                          ),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -272,34 +301,31 @@ class Metricspage extends StatelessWidget {
     final todayStress = await HeadacheScore().getStress();
     final todayWeather = await HeadacheScore().getWeather();
     final lastDateExercise = await impact.getLastExerciseDate();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final day0 = prefs.getDouble('day0');
+    final day1 = prefs.getDouble('day1');
+    final day2 = prefs.getDouble('day2');
     final score = List.generate(todayWeather.length,
         (index) => todayWeather[index] + todayStress[index]);
-    return [todaySleep, todayStress, todayWeather, lastDateExercise, score];
+    return [
+      todaySleep,
+      todayStress,
+      todayWeather,
+      lastDateExercise,
+      score,
+      day0,
+      day1,
+      day2
+    ];
   }
-
-  String dayOfWeek(value){
-    final currentDay = DateTime.now().weekday;
-              final distance = value.toInt() - 3;
-              final dayOfWeek = (currentDay + distance) % 7;
-    switch (dayOfWeek) {
-                case 1:
-                  return 'MON';
-                case 2:
-                  return 'TUE';
-                case 3:
-                  return 'WED';
-                case 4:
-                  return 'THU';
-                case 5:
-                  return 'FRI';
-                case 6:
-                  return 'SAT';
-                case 0:
-                  return 'SUN';
-                default:
-                  return '';
-              }
+String dayOfWeek(double value) {
+    final today = DateTime.now();
+    final currentDay = today.weekday;
+    final daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    final adjustedDay = (currentDay + (value.toInt() - 3)) % 7;
+    return daysOfWeek[adjustedDay < 0 ? adjustedDay + 7 : adjustedDay];
   }
+ 
 }
 
 class SleepIndicator extends StatelessWidget {
