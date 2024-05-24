@@ -1,5 +1,6 @@
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Accountpage.dart';
+import 'package:aura/screens/Loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
 import 'package:info_widget/info_widget.dart';
@@ -170,7 +171,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     'Logout',
                     style: WorkSans.headlineSmall,
                   ),
-                  onTap: () => {},
+                  onTap: () async {
+                    final sp = await SharedPreferences.getInstance();
+                    await sp.remove('access');
+                    await sp.remove('refresh');
+                    //await sp.remove('name');
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: ((context) => LoginPage())));
+                  },
                 ),
               ],
             ),
@@ -340,49 +348,49 @@ class SevenDayCalendar extends StatelessWidget {
         height: 150,
         width: 500,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0,5,0,5),
+          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
           child: EasyInfiniteDateTimeLine(
             firstDate: DateTime.now().subtract(Duration(days: 3)),
             focusDate: selectedDate,
             lastDate: DateTime.now().add(Duration(days: 3)),
-            timeLineProps:
-                EasyTimeLineProps(separatorPadding: 1.0, margin: EdgeInsets.zero),
+            timeLineProps: EasyTimeLineProps(
+                separatorPadding: 1.0, margin: EdgeInsets.zero),
             dayProps: EasyDayProps(
               inactiveDayStyle: DayStyle(
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
                   border: Border(
-                    bottom: BorderSide(width: 2, color: Palette.blue,),
+                    bottom: BorderSide(
+                      width: 2,
+                      color: Palette.blue,
+                    ),
                   ),
                 ),
               ),
               todayStyle: DayStyle(
-                monthStrStyle: TextStyle(
-                  color: Palette.blue
-                ),
+                monthStrStyle: TextStyle(color: Palette.blue),
                 dayNumStyle: TextStyle(
-                  color: Palette.blue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20
-                ),
-                dayStrStyle: TextStyle(
-                  color: Palette.blue
-                ),
+                    color: Palette.blue,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+                dayStrStyle: TextStyle(color: Palette.blue),
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
                   border: Border(
-                    bottom: BorderSide(width: 2, color: Palette.blue,),
+                    bottom: BorderSide(
+                      width: 2,
+                      color: Palette.blue,
+                    ),
                   ),
                 ),
               ),
               activeDayStyle: DayStyle(
-                decoration: BoxDecoration(
-                  color: Palette.deepBlue,
-                  borderRadius: BorderRadius.circular(20),
-                )
-              ),
+                  decoration: BoxDecoration(
+                color: Palette.deepBlue,
+                borderRadius: BorderRadius.circular(20),
+              )),
             ),
             showTimelineHeader: false,
             onDateChange: (selectedDate) => day.setDay(
@@ -411,8 +419,7 @@ class DayArrows extends StatelessWidget {
 
     return Container(
         width: 450,
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           /*IconButton(
               onPressed: decrementDay,
               icon: Icon(
@@ -503,15 +510,12 @@ class AuraScoreIndicator extends StatelessWidget {
                             children: [
                               Text(
                                 '${value.toInt()}/8',
-                                style: WorkSans
-                                    .displayMedium
+                                style: WorkSans.displayMedium
                                     .copyWith(fontWeight: FontWeight.bold),
                               ),
-                              Text(
-                                getText(score[day.toInt()]),
-                                style: WorkSans
-                                    .titleMedium.copyWith(fontWeight: FontWeight.w300)
-                              ),
+                              Text(getText(score[day.toInt()]),
+                                  style: WorkSans.titleMedium
+                                      .copyWith(fontWeight: FontWeight.w300)),
                             ],
                           ),
                         ),
@@ -570,7 +574,7 @@ class AuraScoreIndicator extends StatelessWidget {
         day.decrementDay();
       }
     }
-}
+  }
 }
 
 class FindSolutions extends StatelessWidget {
