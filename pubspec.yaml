@@ -48,6 +48,7 @@ dependencies:
   dashed_circular_progress_bar: ^0.0.6
   info_widget: ^1.0.0
   expandable_page_view: ^1.0.17
+  vertical_card_pager: ^1.6.2
 
 
 

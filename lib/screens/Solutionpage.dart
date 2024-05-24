@@ -9,6 +9,7 @@ import 'package:aura/models/solution.dart';
 import 'package:aura/screens/solution_screens/BreathingSol.dart';
 import 'package:aura/screens/solution_screens/SpotifySol.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vertical_card_pager/vertical_card_pager.dart';
 import 'solution_screens/ExerciseSol.dart';
 import 'solution_screens/SleepingSol.dart';
 
@@ -81,31 +82,47 @@ class _SolutionpageState extends State<Solutionpage> {
                 ),
               ),
             ),
-                Positioned.fill(
-                  child: FutureBuilder<dynamic>(
-                      future: _loadData(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Text('Error');
-                        } else {
-                          final data = snapshot.data;
-                          return ListView.builder(
-                            controller: _scrollController,
-                              itemCount: _getSolutions(data!).length,
-                              itemBuilder: (BuildContext context, int index) {
-                                Solution solution = _getSolutions(data)[index];
-                                return SolutionCard(solution: solution);
-                              });
-                        }
-                      }
-                  ),
-                ),
-              ],
-            )
-            
-            )
+            Positioned.fill(
+              child: FutureBuilder<dynamic>(
+              future: _loadData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error');
+                } else {
+                  final data = snapshot.data;
+                  return _buildVerticalCardPager(data);
+                }
+              }
+            ),
+          ),
+        ],
+      )
+    )
+  );
+}
+
+  Widget _buildVerticalCardPager(List<dynamic> data) {
+    List<Solution> solutions = _getSolutions(data);
+    return VerticalCardPager(
+      titles: solutions.map((solution) => solution.name).toList(),
+      images: solutions.map((solution) => Hero(
+        tag: solution.name,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: Image.asset(
+            solution.imagePath,
+            fit: BoxFit.cover,
+            height: 200,
+            width: 380,
+          ),
+        ),
+      )).toList(),
+      onPageChanged: (page) {},
+      onSelectedItem: (index) {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => solutions[index].pageRoute));
+      },
     );
   }
 

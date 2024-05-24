@@ -5,7 +5,7 @@ import 'package:aura/models/solution.dart';
 class SolutionCard extends StatelessWidget {
   final Solution solution;
 
-  SolutionCard({required this.solution});
+  SolutionCard({super.key, required this.solution});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class SolutionCard extends StatelessWidget {
           context, MaterialPageRoute(builder: (context) => solution.pageRoute));
       },
       child: Container(
-        height: 200,
+        height: 150,
         child: Card(
           //semanticContainer: true,
           clipBehavior: Clip.antiAlias,
