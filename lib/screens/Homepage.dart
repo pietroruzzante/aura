@@ -455,13 +455,12 @@ class AuraScoreIndicator extends StatelessWidget {
       onTap: onTap,
       onHorizontalDragEnd: _onHorizontalDragEnd,
       child: Container(
-        height: 450,
         width: 480,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
               color: Palette.softBlue2,
-              blurRadius: 15,
+              blurRadius: 10,
             ),
           ],
           color: Palette.white,
@@ -469,69 +468,70 @@ class AuraScoreIndicator extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  "Your Aura score:",
-                  style: WorkSans.titleMedium,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    DashedCircularProgressBar.aspectRatio(
-                      aspectRatio: 1.5,
-                      valueNotifier: _valueNotifier,
-                      progress: score[day.toInt()],
-                      maxProgress: 8,
-                      startAngle: 225,
-                      sweepAngle: 270,
-                      foregroundColor: Palette.deepBlue,
-                      backgroundColor: Palette.white,
-                      foregroundStrokeWidth: 15,
-                      backgroundStrokeWidth: 15,
-                      animation: true,
-                      animationDuration: Duration(milliseconds: 500),
-                      animationCurve: Easing.standardDecelerate,
-                      seekSize: 10,
-                      seekColor: Palette.white,
-                      child: Center(
-                        child: ValueListenableBuilder(
-                          valueListenable: _valueNotifier,
-                          builder: (_, double value, __) => Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                '${value.toInt()}/8',
-                                style: WorkSans
-                                    .displayMedium
-                                    .copyWith(fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                getText(score[day.toInt()]),
-                                style: WorkSans
-                                    .titleMedium.copyWith(fontWeight: FontWeight.w300)
-                              ),
-                            ],
-                          ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Your Aura score:",
+                    style: WorkSans.titleMedium,
+                  ),
+                  SizedBox(height: 20,),
+                  DashedCircularProgressBar.aspectRatio(
+                    aspectRatio: 1.5,
+                    valueNotifier: _valueNotifier,
+                    progress: score[day.toInt()],
+                    maxProgress: 8,
+                    startAngle: 225,
+                    sweepAngle: 270,
+                    foregroundColor: Palette.deepBlue,
+                    backgroundColor: Palette.softBlue1,
+                    foregroundStrokeWidth: 15,
+                    backgroundStrokeWidth: 15,
+                    animation: true,
+                    animationDuration: Duration(milliseconds: 500),
+                    animationCurve: Easing.standardDecelerate,
+                    seekSize: 10,
+                    seekColor: Palette.white,
+                    child: Center(
+                      child: ValueListenableBuilder(
+                        valueListenable: _valueNotifier,
+                        builder: (_, double value, __) => Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '${value.toInt()}/8',
+                              style: WorkSans
+                                  .displayMedium
+                                  .copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              getText(score[day.toInt()]),
+                              style: WorkSans
+                                  .titleMedium.copyWith(fontWeight: FontWeight.w300)
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
+      // Info pop-up
             Positioned(
               top: 10,
               right: 10,
               child: InfoWidget(
-                infoText: "Aura Score for coming days is...",
+                infoText: "The score for the upcoming days has been calculated using today's stress score and future weather forecasts.",
                 infoTextStyle:
                     WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
                 iconData: Icons.info,
                 iconColor: Palette.blue,
               ),
             ),
+      // Arrows to control AuraScoreIndicator
             /*
             Positioned(
               left: 0,
@@ -562,6 +562,7 @@ class AuraScoreIndicator extends StatelessWidget {
     );
   }
 
+// Changes displayed day according to horizontal swipe direction
   void _onHorizontalDragEnd(DragEndDetails details) {
     if (details.primaryVelocity != null) {
       if (details.primaryVelocity! < 0) {
@@ -573,6 +574,7 @@ class AuraScoreIndicator extends StatelessWidget {
 }
 }
 
+// Section to go to Solutionpage
 class FindSolutions extends StatelessWidget {
   const FindSolutions({
     super.key,
@@ -586,35 +588,40 @@ class FindSolutions extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             color: Palette.softBlue2,
-            blurRadius: 15,
+            blurRadius: 10,
           ),
         ],
         color: Palette.white,
         borderRadius: BorderRadius.circular(20.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
               "What can you do?",
-              style: WorkSans.titleSmall,
+              style: WorkSans.titleMedium.copyWith(fontSize: 24),
             ),
-            ElevatedButton.icon(
+            SizedBox(height: 15,),
+            OutlinedButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Solutionpage(
-                                needSleep: true,
-                                needExercise: true,
-                              )));
+                          builder: (context) => Solutionpage()));
                 },
-                label: Text(
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: Palette.blue,
+                  elevation: 5,
+                  shadowColor: Palette.softBlue2,
+                ),
+                child: Text(
                   "Solutions",
+                  style: WorkSans.bodyMedium,
                   textScaler: TextScaler.linear(1.7),
-                ))
+                )
+              )
           ],
         ),
       ),
