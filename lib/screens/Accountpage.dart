@@ -1,4 +1,4 @@
-import 'package:aura/models/workSans.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:aura/screens/EditAccount.dart';
@@ -54,7 +54,7 @@ class _AccountpageState extends State<Accountpage> {
                         backgroundColor: Palette.lightBlue1, // Placeholder color
                         child: Text(
                           "U", // Initials or placeholder text
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: WorkSans.titleMedium,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -89,12 +89,12 @@ class _AccountpageState extends State<Accountpage> {
                 SizedBox(height: 40),
                 Text(
                   "Settings",
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: WorkSans.titleMedium,
                 ),
                 SizedBox(height: 20),
                 SettingItem(
                   title: Text('Notifications',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
+                  style: WorkSans.bodyMedium.copyWith(color: Palette.darkBlue)),
                   icon: Ionicons.notifications,
                   bgColor: Colors.blue.shade100,
                   iconColor: Colors.blue,
@@ -103,7 +103,7 @@ class _AccountpageState extends State<Accountpage> {
                 const SizedBox(height: 20),
                 SettingSwitch(
                   title: Text('Dark Mode',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
+                  style: WorkSans.bodyMedium.copyWith(color: Palette.darkBlue)),
                   icon: Ionicons.earth,
                   bgColor: Colors.purple.shade100,
                   iconColor: Colors.purple,
@@ -117,7 +117,7 @@ class _AccountpageState extends State<Accountpage> {
                 const SizedBox(height: 20),
                 SettingItem(
                   title: Text('Help',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.darkBlue)),
+                  style: WorkSans.bodyMedium.copyWith(color: Palette.darkBlue)),
                   icon: Ionicons.nuclear,
                   bgColor: Colors.red.shade100,
                   iconColor: Colors.red,
