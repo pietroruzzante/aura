@@ -1,5 +1,6 @@
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Accountpage.dart';
+import 'package:aura/screens/Loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
 import 'package:info_widget/info_widget.dart';
@@ -170,7 +171,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     'Logout',
                     style: WorkSans.headlineSmall,
                   ),
-                  onTap: () => {},
+                  onTap: () async {
+                    final sp = await SharedPreferences.getInstance();
+                    await sp.remove('access');
+                    await sp.remove('refresh');
+                    //await sp.remove('name');
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: ((context) => LoginPage())));
+                  },
                 ),
               ],
             ),
