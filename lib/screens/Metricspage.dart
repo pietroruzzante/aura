@@ -214,7 +214,7 @@ class Metricspage extends StatelessWidget {
                                             Easing.standardDecelerate,
                                         child: Center(
                                             child:
-                                                Text('${data[1][3].toInt()}')),
+                                                Text('${data[1][3].toInt()}/4')),
                                       )
                                     ],
                                   ),
@@ -246,7 +246,7 @@ class Metricspage extends StatelessWidget {
                                             Easing.standardDecelerate,
                                         child: Center(
                                             child:
-                                                Text('${data[2][3].toInt()}')),
+                                                Text('${data[2][3].toInt()}/4')),
                                       ),
                                     ],
                                   )
@@ -347,7 +347,7 @@ class SleepIndicator extends StatelessWidget {
             minHeight: 10.0,
             borderRadius: BorderRadius.circular(5),
           ),*/
-          ProgressIndicatorDemo(todaySleep: todaySleep),
+          SleepBar(todaySleep: todaySleep),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -360,14 +360,14 @@ class SleepIndicator extends StatelessWidget {
         ]));
   }
 }
-class ProgressIndicatorDemo extends StatefulWidget {
+class SleepBar extends StatefulWidget {
   final double todaySleep;
-  ProgressIndicatorDemo({required this.todaySleep});
+  SleepBar({required this.todaySleep});
   @override
-  _ProgressIndicatorDemoState createState() => _ProgressIndicatorDemoState();
+  SleepBarState createState() => SleepBarState();
 }
 
-class _ProgressIndicatorDemoState extends State<ProgressIndicatorDemo>
+class SleepBarState extends State<SleepBar>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -384,7 +384,7 @@ class _ProgressIndicatorDemoState extends State<ProgressIndicatorDemo>
 
     CurvedAnimation(
         parent: _controller,
-        curve: Curves.easeOut, // Utilizza Curves.easeOut per aggiungere una decelerazione
+        curve: Curves.decelerate, // Utilizza Curves.easeOut per aggiungere una decelerazione
       );
 
       _controller.forward();
