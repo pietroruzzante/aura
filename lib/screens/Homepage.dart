@@ -164,6 +164,7 @@ class _HomepageState extends State<Homepage> {
                         final sp = await SharedPreferences.getInstance();
                         await sp.remove('access');
                         await sp.remove('refresh');
+                        //await sp.remove('name');
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
                             builder: ((context) => LoginPage())));
                       },
