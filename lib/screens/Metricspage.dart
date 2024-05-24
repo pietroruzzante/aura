@@ -341,12 +341,13 @@ class SleepIndicator extends StatelessWidget {
     return Container(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: [/*
           LinearProgressIndicator(
             value: (todaySleep!) / 12,
             minHeight: 10.0,
             borderRadius: BorderRadius.circular(5),
-          ),
+          ),*/
+          ProgressIndicatorDemo(todaySleep: todaySleep),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -357,5 +358,57 @@ class SleepIndicator extends StatelessWidget {
             ],
           )
         ]));
+  }
+}
+class ProgressIndicatorDemo extends StatefulWidget {
+  final double todaySleep;
+  ProgressIndicatorDemo({required this.todaySleep});
+  @override
+  _ProgressIndicatorDemoState createState() => _ProgressIndicatorDemoState();
+}
+
+class _ProgressIndicatorDemoState extends State<ProgressIndicatorDemo>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    )..repeat(reverse: false);
+
+    _animation = Tween<double>(begin: 0, end: widget.todaySleep / 12).animate(_controller);
+
+    CurvedAnimation(
+        parent: _controller,
+        curve: Curves.easeOut, // Utilizza Curves.easeOut per aggiungere una decelerazione
+      );
+
+      _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return LinearProgressIndicator(
+            value: _animation.value,
+            minHeight: 10.0,
+            borderRadius: BorderRadius.circular(5),
+          );
+        },
+      ),
+    );
   }
 }
