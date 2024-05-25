@@ -16,6 +16,7 @@ class SolutionCard extends StatelessWidget {
       },
       child: Container(
         height: 150,
+        width: 300,
         child: Card(
           //semanticContainer: true,
           clipBehavior: Clip.antiAlias,
@@ -23,8 +24,8 @@ class SolutionCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
           color: Palette.white,
-          elevation: 5,
-          shadowColor: Palette.darkBlue,
+          elevation: 10,
+          shadowColor: Palette.softBlue2,
           child: Center(
             child: Container(
               child: Padding(

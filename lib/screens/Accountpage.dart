@@ -7,6 +7,7 @@ import 'package:aura/models/setting_widget/setting_item.dart';
 import 'package:aura/models/setting_widget/setting_switch.dart';
 import 'package:aura/models/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+typedef UserNameUpdatedCallback = void Function(String newName);
 
 class Accountpage extends StatefulWidget {
   const Accountpage({super.key});
@@ -51,10 +52,10 @@ class _AccountpageState extends State<Accountpage> {
                     children: [
                       CircleAvatar(
                         radius: 35,
-                        backgroundColor: Palette.lightBlue1, // Placeholder color
+                        backgroundColor: Palette.deepBlue, // Placeholder color
                         child: Text(
                           "U", // Initials or placeholder text
-                          style: WorkSans.titleMedium,
+                          style: WorkSans.titleMedium.copyWith(color: Palette.blue),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -78,7 +79,7 @@ class _AccountpageState extends State<Accountpage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditAccountScreen(),
+                              builder: (context) => EditAccountpage(),
                             ),
                           );
                         },
