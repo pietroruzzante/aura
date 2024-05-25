@@ -91,7 +91,7 @@ class Metricspage extends StatelessWidget {
                                       verticalLines: [
                                         VerticalLine(
                                           x: 3,
-                                          color: Colors.blue,
+                                          color: Palette.deepBlue,
                                           dashArray: [5, 5],
                                           strokeWidth: 2,
                                         ),
@@ -269,7 +269,7 @@ class Metricspage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text('Last date of work out:',
+                                Text('Your last workout session was:',
                                     style: WorkSans.headlineSmall
                                         ),
                               ],
@@ -302,7 +302,7 @@ class Metricspage extends StatelessWidget {
                         right: 0,
                          child: InfoWidget(
                                   infoText:
-                                      'Research says that you should exercise at least 3 times a week for 40 minutes to avoid headaches',
+                                      'Research says that you should exercise at least 3 times a week for 30 minutes to avoid headaches',
                                   infoTextStyle: WorkSans.bodyMedium
                                       .copyWith(color: Palette.deepBlue),
                                   iconData: Icons.info,
@@ -373,16 +373,20 @@ class Metricspage extends StatelessWidget {
   }
 
   String getExerciseText(String lastDateExercise) {
-    DateFormat dateFormat = DateFormat('yyyy-MM-dd');
-    DateTime parsedDate = dateFormat.parse(lastDateExercise);
-
-    DateTime currentDate = DateTime.now();
-    int differenceInDays = currentDate.difference(parsedDate).inDays;
-
-    if (differenceInDays.abs() < 3) {
-      return "Well Done! keep working out";
+    if (lastDateExercise == 'Not available data') {
+      return ' ';
     } else {
-      return "You haven't worked out enough!";
+      DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+      DateTime parsedDate = dateFormat.parse(lastDateExercise);
+
+      DateTime currentDate = DateTime.now();
+      int differenceInDays = currentDate.difference(parsedDate).inDays;
+
+      if (differenceInDays.abs() < 3) {
+        return "Well Done! keep working out";
+      } else {
+        return "You haven't worked out enough!";
+      }
     }
   }
 
@@ -521,9 +525,13 @@ int reccomendedSleepHours(int age) {
 }
 
 String lastDayOfWorkOut(String lastDateExercise){
-  DateFormat dateFormat = DateFormat('yyyy-MM-dd');
-  DateTime parsedDate = dateFormat.parse(lastDateExercise);
-  String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
-  String dayOfWeek = DateFormat('EEEE', 'en_IT').format(parsedDate);
-  return '$dayOfWeek, $formattedDate';
+  if (lastDateExercise == 'Not available data'){
+    return lastDateExercise;
+  } else {
+    DateFormat dateFormat = DateFormat('yyyy-MM-dd');
+    DateTime parsedDate = dateFormat.parse(lastDateExercise);
+    String formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
+    String dayOfWeek = DateFormat('EEEE', 'en_IT').format(parsedDate);
+    return '$dayOfWeek, $formattedDate';
+  }
 }

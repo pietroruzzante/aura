@@ -21,7 +21,7 @@ class Impact {
     final url = Impact.baseUrl + Impact.pingEndpoint;
 
     //Get the response
-    print('Calling: $url');
+    //print('Calling: $url');
     final response = await http.get(Uri.parse(url));
 
     //Just return if the status code is OK
@@ -35,7 +35,7 @@ class Impact {
     final body = {'username': username, 'password': password};
 
     //Get the response
-    print('Calling: $url');
+    //print('Calling: $url');
     final response = await http.post(Uri.parse(url), body: body);
 
     //If response is OK, decode it and store the tokens. Otherwise do nothing.
@@ -60,7 +60,7 @@ class Impact {
       final body = {'refresh': refresh};
 
       //Get the response
-      print('Calling: $url');
+      //print('Calling: $url');
       final response = await http.post(Uri.parse(url), body: body);
 
       //If the response is OK, set the tokens in SharedPreferences to the new values
@@ -115,13 +115,13 @@ class Impact {
   Future<List<double>> getSleepHR() async {
     var header = await getBearer();
     var day = DateFormat('yyyy-MM-dd')
-        .format(DateTime(2024, 4, 10)); // set the day !!!!
+        .format(DateTime(2024, 4, 10)); // set the day !!!! C'è un problema inserendo un il giorno DateTime.now().subtract(Duration(days:1))
     final urlSleep =
         '${Impact.baseUrl}data/v1/sleep/patients/$patientUsername/day/$day/';
     final urlRestHR =
         '${Impact.baseUrl}data/v1/resting_heart_rate/patients/$patientUsername/day/$day/';
-    print('urlSleep:$urlSleep');
-    print('urlRestHR:$urlRestHR');
+    //print('urlSleep:$urlSleep');
+    //print('urlRestHR:$urlRestHR');
 
     var r = await http.get(
       Uri.parse(urlSleep),
@@ -131,7 +131,6 @@ class Impact {
 
     final Map<String, dynamic> sleepData = jsonDecode(r.body);
     double duration = sleepData['data']['data']['duration'];
-    print(duration);
     double durationInHours = duration / 3600000;
     List<double> data = [durationInHours];
 
@@ -145,7 +144,7 @@ class Impact {
     double restHR = restHRData['data']['data']['value'];
     data.add(restHR.toDouble());
 
-    print('datalist:$data');
+    //print('datalist:$data');
 
     return data;
   }
@@ -157,25 +156,25 @@ class Impact {
   }
 
   Future<String> getLastExerciseDate() async{
-    String lastDate = '2024-05-17';
-  //https://impact.dei.unipd.it/bwthw/data/v1/exercise/patients/Jpefaq6m58/daterange/start_date/2024-05-14/end_date/2024-05-17/
+
+  String lastDate = 'Not available data';
 
   var header = await getBearer();
     var start_date = DateFormat('yyyy-MM-dd')
-        .format(DateTime(2024, 5, 10));
+        .format(DateTime.now().subtract(Duration(days:4)));
     var end_date = DateFormat('yyyy-MM-dd')
-        .format(DateTime(2024, 5, 11));
+        .format(DateTime.now().subtract(Duration(days:1)));
     final urlExercise =
         '${Impact.baseUrl}data/v1/exercise/patients/$patientUsername/daterange/start_date/$start_date/end_date/$end_date/';
 
-    print('urlExercise:$urlExercise');
+    //print('urlExercise:$urlExercise');
 
     var r = await http.get(
       Uri.parse(urlExercise),
       headers: header,
     );
 
-    if (r.statusCode != 200) return 'NoDataFound';
+    if (r.statusCode != 200) return 'Not available data';
 
     final Map<String, dynamic> exerciseData = jsonDecode(r.body);
     final dataForEachDate = exerciseData['data'];
@@ -184,7 +183,6 @@ class Impact {
         lastDate = entry['date'];
       }
     }
-    print('lastDate: $lastDate');
     return lastDate;
 
   }

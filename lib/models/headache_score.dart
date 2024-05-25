@@ -18,11 +18,11 @@ class HeadacheScore {
 
     final stressScore = await getStress();
     final weatherScore = await getWeather();
-    print('weatherScore:$weatherScore');
-    print('stressScore:$stressScore');
+    //print('weatherScore:$weatherScore');
+    //print('stressScore:$stressScore');
 
     DateTime today = DateTime.now();
-    print('today: $today');
+    //print('today: $today');
     DateTime yesterday = today.subtract(Duration(days: 1));
 
     final SharedPreferences sp = await SharedPreferences.getInstance();
@@ -36,25 +36,25 @@ class HeadacheScore {
       sp.setDouble('day3', 0.0);
     }
 
-    print('keys: $keys');
+    //print('keys: $keys');
 
     for (int i=0;i<3;i++){
-      print(sp.getDouble('db value for day$i = ${sp.getDouble('day$i')}'));
+      //print(sp.getDouble('db value for day$i = ${sp.getDouble('day$i')}'));
     }
-    print('lastDayRefreshed: ${sp.getString('lastDayRefreshed')}');
+    //print('lastDayRefreshed: ${sp.getString('lastDayRefreshed')}');
     
     for (int i = 3; i < 7; i++) {
       _scores[i] = stressScore[i] + weatherScore[i];
     }
 
     if (equalDates(DateTime.parse(sp.getString('lastDayRefreshed')!),today)){
-      print('db day 3: ${sp.getDouble('day3')}');
-      print('caso1');
+      //print('db day 3: ${sp.getDouble('day3')}');
+      //print('caso1');
       for (int i = 0; i < 3; i++) {
          _scores[i] = sp.getDouble('day$i')!;
       }
     } else if (equalDates(DateTime.parse(sp.getString('lastDayRefreshed')!),yesterday)){
-      print('caso2');
+      //print('caso2');
 
       sp.setDouble('day0', sp.getDouble('day1')!);
       sp.setDouble('day1', sp.getDouble('day2')!);
@@ -66,17 +66,15 @@ class HeadacheScore {
         _scores[i] = sp.getDouble('day$i')!;
       }
     } else {
-        print('caso3');
+        //print('caso3');
         sp.setDouble('day0', 0.0);
         sp.setDouble('day1', 0.0);
         sp.setDouble('day2', 0.0);
         sp.setDouble('day3', _scores[3]);
         sp.setString('lastDayRefreshed', today.toIso8601String());
     }
-
-    final todayScores = [stressScore[3], weatherScore[3]];
     
-    print('final scores: $_scores');
+    //print('final scores: $_scores');
     return this ;
   } //refreshScore
 
@@ -102,7 +100,7 @@ class HeadacheScore {
     for (int i=4;i<6;i++){
       prediction[i] = prediction[3];
     }
-    print('prediction:$prediction');
+    //print('prediction:$prediction');
     return prediction;
     
   } //getStress
@@ -110,7 +108,7 @@ class HeadacheScore {
   Future<List<double>> getWeather() async {
     final pressures = List<double>.filled(7, 0.0, growable: true);
     final dates = unixDates();
-    print('dates: $dates');
+    //print('dates: $dates');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     //int zip = 35137;
@@ -127,12 +125,12 @@ class HeadacheScore {
       if(i==3){selected = 'current';}
 
       pressure = getPressureFromTimestamp(timestamp, decodedResponse, selected);
-      print('i=$i: pressure value for timestamp $timestamp: pressure=$pressure hPa');
+      //print('i=$i: pressure value for timestamp $timestamp: pressure=$pressure hPa');
       pressures[i] = pressure;
 
     }
 
-    print('pressures:$pressures');
+    //print('pressures:$pressures');
     final weatherScore = List<double>.filled(7, 0.0);
 
     for (int i = 3; i < 7; i++) {
@@ -166,7 +164,7 @@ double getPressureFromTimestamp(int timestamp, Map<String, dynamic> decodedRespo
   if (selected == 'current') {
     if (decodedResponse['current'] != null && decodedResponse['current']['pressure_mb'] != null) {
       pressure = decodedResponse['current']['pressure_mb'];
-      print('current timestamp found');
+      //print('current timestamp found');
     } else {
       print("Error: 'current' or 'pressure_mb' is null in decodedResponse");
     }
@@ -179,7 +177,7 @@ double getPressureFromTimestamp(int timestamp, Map<String, dynamic> decodedRespo
             if (forecastTimestamp == timestamp) {
               if (value['pressure_mb'] != null) {
                 pressure = value['pressure_mb'].toDouble();
-                print('timestamp $timestamp found');
+                //print('timestamp $timestamp found');
               } else {
                 print("Error: 'pressure_mb' is null for timestamp: $timestamp");
               }
