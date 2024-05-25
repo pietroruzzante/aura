@@ -1,3 +1,5 @@
+import 'package:aura/models/palette.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:aura/services/impact.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,10 +56,7 @@ class Splash extends StatelessWidget {
           children: [
             Text(
               'Aura',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 6, 40, 73),
-                  fontSize: 40,
-                  fontWeight: FontWeight.bold),
+              style: WorkSans.displayMedium.copyWith(color: Palette.darkBlue, fontWeight: FontWeight.bold),
             ),
             Image.asset(
               'assets/logo.png',
@@ -67,17 +66,11 @@ class Splash extends StatelessWidget {
             SizedBox(height: 250),
             Text(
               'Powered by:',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 6, 40, 73),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400),
+              style: WorkSans.headlineMedium,
             ),
             Text(
               'DartVaders',
-              style: TextStyle(
-                  color: Color.fromARGB(255, 6, 40, 73),
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400),
+              style: WorkSans.headlineMedium,
             ),
             SizedBox(height: 50),
           ],

@@ -1,3 +1,4 @@
+import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
 import 'dart:async';
@@ -9,7 +10,7 @@ class BreathingSol extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Take a deep breath',
-          style: Theme.of(context).textTheme.titleSmall,
+          style: WorkSans.titleSmall.copyWith(color: Palette.white),
         ),
       ),
       body: BreathingPhases(),

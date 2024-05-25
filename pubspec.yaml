@@ -49,6 +49,8 @@ dependencies:
   info_widget: ^1.0.0
   fl_chart: ^0.68.0
   expandable_page_view: ^1.0.17
+  vertical_card_pager: ^1.6.2
+  flutter_carousel_widget: ^2.2.0
 
 
 
@@ -84,6 +86,7 @@ flutter:
   - assets/spotify.png
   - assets/breathing.png
   - assets/michaelsolution.png
+  - assets/waving-hand_1f44b.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -8,7 +8,9 @@ import 'package:aura/models/solutionCard.dart';
 import 'package:aura/models/solution.dart';
 import 'package:aura/screens/solution_screens/BreathingSol.dart';
 import 'package:aura/screens/solution_screens/SpotifySol.dart';
+import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vertical_card_pager/vertical_card_pager.dart';
 import 'solution_screens/ExerciseSol.dart';
 import 'solution_screens/SleepingSol.dart';
 
@@ -21,8 +23,6 @@ class Solutionpage extends StatefulWidget {
 
 class _SolutionpageState extends State<Solutionpage> {
   int age = 25;
-
-  final _scrollController = ScrollController();
 
   List<Solution> _fixedSolutions = [
     Solution('Spotify', 'assets/spotify.png', SpotifySol()),
@@ -81,33 +81,47 @@ class _SolutionpageState extends State<Solutionpage> {
                 ),
               ),
             ),
-                Positioned.fill(
-                  child: FutureBuilder<dynamic>(
-                      future: _loadData(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Text('Error');
-                        } else {
-                          final data = snapshot.data;
-                          return ListView.builder(
-                            controller: _scrollController,
-                              itemCount: _getSolutions(data!).length,
-                              itemBuilder: (BuildContext context, int index) {
-                                Solution solution = _getSolutions(data)[index];
-                                return SolutionCard(solution: solution);
-                              });
+            Positioned.fill(
+              child: FutureBuilder<dynamic>(
+              future: _loadData(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text('Error');
+                } else {
+                  final data = snapshot.data;
+                  return FlutterCarousel(
+                    options: CarouselOptions(
+                      viewportFraction: 0.9,
+                      height: 600,  //cards height
+                      showIndicator: true,
+                      slideIndicator: CircularWaveSlideIndicator(
+                        indicatorBackgroundColor: Palette.deepBlue,
+                        currentIndicatorColor: Palette.blue,
+                      ),
+                    ),
+                    items: _getSolutions(data!).map((solution) {
+                      return Builder(
+                        builder: (BuildContext context) {
+                          return Container(
+                            width: MediaQuery.of(context).size.width,
+                            margin: EdgeInsets.symmetric(horizontal: 5.0),
+                            child: SolutionCard(solution: solution,),
+                          );
                         }
-                      }
-                  ),
-                ),
-              ],
-            )
-            
-            )
-    );
-  }
+                      );
+                    }).toList(),
+                  );
+                }
+              }
+            ),
+          ),
+        ],
+      )
+    )
+  );
+}
 
   List<Solution> _getSolutions(List<dynamic> data) {
     List<Solution> solutions = List.from(_fixedSolutions);

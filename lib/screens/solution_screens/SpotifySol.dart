@@ -1,4 +1,5 @@
 import 'package:aura/models/palette.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -17,53 +18,50 @@ class SpotifySol extends StatelessWidget {
   Widget build(BuildContext context) {
     final Uri toLaunch = Uri.parse(_spotifyUrl);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Chill with some tunes',
-          style: Theme.of(context).textTheme.titleSmall,
+    return Container(
+      color: Palette.white,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Chill with some tunes',
+            style: WorkSans.titleSmall.copyWith(color: Palette.white),
+          ),
         ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              color: Color.fromARGB(255, 29, 185, 84),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20))),
-              child: Center(
-                child: Container(
-                    child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Text(
-                    'Music',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(color: Palette.white),
-                    textAlign: TextAlign.justify,
-                  ),
-                )),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                color: Color.fromARGB(255, 29, 185, 84),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                child: Center(
+                  child: Container(
+                      child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                      'Music',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(color: Palette.white),
+                      textAlign: TextAlign.justify,
+                    ),
+                  )),
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              child: Text('Open Spotify'),
-              onPressed: ()  => _launchUrl(toLaunch),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              child: Text('Other solutions'),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                child: Text('Open Spotify'),
+                onPressed: ()  => _launchUrl(toLaunch),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

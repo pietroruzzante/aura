@@ -265,33 +265,17 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   }
 }
 
-class TopSemiCircleClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0, size.height);
-    path.quadraticBezierTo(
-        size.width * 0.5, size.height * 0.8, size.width, size.height);
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
-}
-
 class DailyScore extends StatelessWidget {
   final HeadacheScore score;
   final Day day;
   final Function(int) onItemTapped;
-  final name;
+  final String name;
 
   DailyScore({
     required this.score,
     required this.day,
     required this.onItemTapped,
-    this.name,
+    required this.name,
   });
 
   @override
@@ -299,18 +283,31 @@ class DailyScore extends StatelessWidget {
     return Center(
         child: SizedBox(
             width: 350,
-            child: Column(children: [
-              Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            child: Column(
+              children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
-                  child: Text(
-                    "Welcome, $name",
-                    style: WorkSans.displaySmall.copyWith(color: Palette.white),
+                  padding: const EdgeInsets.fromLTRB(15, 0, 10, 0),
+                  child: Row(
+                    children: [
+                      Flexible(
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            "Welcome, $name",
+                            style: WorkSans.displaySmall.copyWith(color: Palette.white),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 5,),
+                      Image.asset(
+                        'assets/waving-hand_1f44b.png',
+                        scale: 4,
+                      ),
+                    ],
                   ),
-                )
-              ]),
-              SizedBox(
-                height: 10,
+                ),
+                SizedBox(
+                  height: 10,
               ),
               Consumer<Day>(builder: (context, day, child) {
                 return Center(
@@ -348,49 +345,49 @@ class SevenDayCalendar extends StatelessWidget {
         height: 150,
         width: 500,
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(0,5,0,5),
+          padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
           child: EasyInfiniteDateTimeLine(
             firstDate: DateTime.now().subtract(Duration(days: 3)),
             focusDate: selectedDate,
             lastDate: DateTime.now().add(Duration(days: 3)),
-            timeLineProps:
-                EasyTimeLineProps(separatorPadding: 1.0, margin: EdgeInsets.zero),
+            timeLineProps: EasyTimeLineProps(
+                separatorPadding: 1.0, margin: EdgeInsets.zero),
             dayProps: EasyDayProps(
               inactiveDayStyle: DayStyle(
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
                   border: Border(
-                    bottom: BorderSide(width: 2, color: Palette.blue,),
+                    bottom: BorderSide(
+                      width: 2,
+                      color: Palette.blue,
+                    ),
                   ),
                 ),
               ),
               todayStyle: DayStyle(
-                monthStrStyle: TextStyle(
-                  color: Palette.blue
-                ),
+                monthStrStyle: TextStyle(color: Palette.blue),
                 dayNumStyle: TextStyle(
-                  color: Palette.blue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20
-                ),
-                dayStrStyle: TextStyle(
-                  color: Palette.blue
-                ),
+                    color: Palette.blue,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+                dayStrStyle: TextStyle(color: Palette.blue),
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
                   border: Border(
-                    bottom: BorderSide(width: 2, color: Palette.blue,),
+                    bottom: BorderSide(
+                      width: 2,
+                      color: Palette.blue,
+                    ),
                   ),
                 ),
               ),
               activeDayStyle: DayStyle(
-                decoration: BoxDecoration(
-                  color: Palette.deepBlue,
-                  borderRadius: BorderRadius.circular(20),
-                )
-              ),
+                  decoration: BoxDecoration(
+                color: Palette.deepBlue,
+                borderRadius: BorderRadius.circular(20),
+              )),
             ),
             showTimelineHeader: false,
             onDateChange: (selectedDate) => day.setDay(
@@ -419,8 +416,7 @@ class DayArrows extends StatelessWidget {
 
     return Container(
         width: 450,
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           /*IconButton(
               onPressed: decrementDay,
               icon: Icon(
@@ -485,7 +481,9 @@ class AuraScoreIndicator extends StatelessWidget {
                     "Your Aura score:",
                     style: WorkSans.titleMedium,
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   DashedCircularProgressBar.aspectRatio(
                     aspectRatio: 1.5,
                     valueNotifier: _valueNotifier,
@@ -510,15 +508,12 @@ class AuraScoreIndicator extends StatelessWidget {
                           children: [
                             Text(
                               '${value.toInt()}/8',
-                              style: WorkSans
-                                  .displayMedium
+                              style: WorkSans.displayMedium
                                   .copyWith(fontWeight: FontWeight.bold),
                             ),
-                            Text(
-                              getText(score[day.toInt()]),
-                              style: WorkSans
-                                  .titleMedium.copyWith(fontWeight: FontWeight.w300)
-                            ),
+                            Text(getText(score[day.toInt()]),
+                                style: WorkSans.titleMedium
+                                    .copyWith(fontWeight: FontWeight.w300)),
                           ],
                         ),
                       ),
@@ -527,19 +522,20 @@ class AuraScoreIndicator extends StatelessWidget {
                 ],
               ),
             ),
-      // Info pop-up
+            // Info pop-up
             Positioned(
               top: 10,
               right: 10,
               child: InfoWidget(
-                infoText: "The score for the upcoming days has been calculated using today's stress score and future weather forecasts.",
+                infoText:
+                    "The score for the upcoming days has been calculated using today's stress score and future weather forecasts.",
                 infoTextStyle:
                     WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
                 iconData: Icons.info,
                 iconColor: Palette.blue,
               ),
             ),
-      // Arrows to control AuraScoreIndicator
+            // Arrows to control AuraScoreIndicator
             /*
             Positioned(
               left: 0,
@@ -579,7 +575,7 @@ class AuraScoreIndicator extends StatelessWidget {
         day.decrementDay();
       }
     }
-}
+  }
 }
 
 // Section to go to Solutionpage
@@ -611,15 +607,15 @@ class FindSolutions extends StatelessWidget {
               "What can you do?",
               style: WorkSans.titleMedium.copyWith(fontSize: 24),
             ),
-            SizedBox(height: 15,),
-            OutlinedButton(
+            SizedBox(
+              height: 15,
+            ),
+            FilledButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Solutionpage()));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Solutionpage()));
                 },
-                style: OutlinedButton.styleFrom(
+                style: FilledButton.styleFrom(
                   backgroundColor: Palette.blue,
                   elevation: 5,
                   shadowColor: Palette.softBlue2,
@@ -628,8 +624,7 @@ class FindSolutions extends StatelessWidget {
                   "Solutions",
                   style: WorkSans.bodyMedium,
                   textScaler: TextScaler.linear(1.7),
-                )
-              )
+                ))
           ],
         ),
       ),
@@ -637,22 +632,41 @@ class FindSolutions extends StatelessWidget {
   }
 }
 
+// text to display according to AuraScore
 String getText(double score) {
   if (score < 2) {
-    return "Low level";
+    return "Low";
   } else if ((score >= 2) & (score < 4)) {
-    return "Medium level";
+    return "Medium";
   } else if ((score >= 4) & (score < 6)) {
-    return "High level";
+    return "High";
   } else {
     return "Your level is very high!";
   }
 }
 
+// to convert index values in DateTime
 DateTime getDateForValue(int value) {
   DateTime now = DateTime.now();
-  int difference = value - 3; // 3 è il valore centrale che rappresenta oggi
+  int difference = value - 3; // 3 is the central value and it represents today
   return now.add(Duration(days: difference));
+}
+
+// to draw semicircle for background
+class TopSemiCircleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, size.height);
+    path.quadraticBezierTo(
+        size.width * 0.5, size.height * 0.8, size.width, size.height);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 // To set the color of objects according to the aura score

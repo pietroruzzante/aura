@@ -5,14 +5,14 @@ import 'package:aura/models/setting_widget/edit_item.dart';
 import 'package:aura/models/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class EditAccountScreen extends StatefulWidget {
-  const EditAccountScreen({super.key});
+class EditAccountpage extends StatefulWidget {
+  const EditAccountpage({super.key});
 
   @override
-  State<EditAccountScreen> createState() => _EditAccountScreenState();
+  State<EditAccountpage> createState() => _EditAccountpageState();
 }
 
-class _EditAccountScreenState extends State<EditAccountScreen> {
+class _EditAccountpageState extends State<EditAccountpage> {
   String gender = "man";
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
@@ -109,10 +109,10 @@ class _EditAccountScreenState extends State<EditAccountScreen> {
                     const SizedBox(height: 20),
                     CircleAvatar(
                         radius: 35,
-                        backgroundColor: Palette.lightBlue1, // Placeholder color
+                        backgroundColor: Palette.deepBlue, // Placeholder color
                         child: Text(
                           "U", // Initials or placeholder text
-                          style: WorkSans.titleMedium,
+                          style: WorkSans.titleMedium.copyWith(color: Palette.blue),
                         ),
                       ),
                     const SizedBox(height: 40),
