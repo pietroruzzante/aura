@@ -13,7 +13,7 @@ class Openweather{
     
     url = baseUrl+forecastUrl+'&key='+APIkey+'&q='+coordinates+'&days=4';
 
-    print('Calling: $url');
+    //print('Calling: $url');
     final response = await http.get(Uri.parse(url));
     final Map<String, dynamic> decodedResponse = jsonDecode(response.body);
     return decodedResponse;
@@ -23,13 +23,13 @@ class Openweather{
     const OpenWeatherKey = '9eb79248952ff7bdd77ab6c7ea84ee2f';
     final zip = zipCode.toString();
     final url = 'http://api.openweathermap.org/geo/1.0/zip?zip=$zip,IT&appid=$OpenWeatherKey';
-    print('Calling: $url');
+    //print('Calling: $url');
     final response = await http.get(Uri.parse(url));
     final decoded = jsonDecode(response.body);
     final lat = decoded['lat'];
     final lon = decoded['lon'];
     final coordinates = '${lat.toString()},${lon.toString()}';
-    print('coordinates: $coordinates');
+    //print('coordinates: $coordinates');
     return coordinates;
   }
 

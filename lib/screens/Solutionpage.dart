@@ -135,14 +135,8 @@ class _SolutionpageState extends State<Solutionpage> {
   }
 
   bool needSleep(double todaySleep) {
-    int sleepNeeded; // in hours, according to SleepFoundation.org
-    if (age<1) {
-      sleepNeeded = 12;
-    } else if (age>=1 && age<=2) {
-      sleepNeeded = 11;
-    } else if (age>=3 && age<=5) {
-      sleepNeeded = 10;
-    } else if (age>=6 && age<=12) {
+    int sleepNeeded; 
+    if (age<=12) {
       sleepNeeded = 9;
     } else if (age>=13 && age<=18) {
       sleepNeeded = 8;
