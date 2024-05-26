@@ -131,8 +131,27 @@ class Impact {
     );
     if (r.statusCode != 200) return [];
 
-    final Map<String, dynamic> sleepData = jsonDecode(r.body);
-    final duration = sleepData['data']['data'][0]['duration'];
+    final Map<String, dynamic> jsonData = jsonDecode(r.body);
+    double duration;
+        final dataContent = jsonData['data'];
+
+        if (dataContent == null || dataContent.isEmpty) {
+          duration = 0.0;
+        } else if (dataContent['data'] is List) {
+          if (dataContent['data'].isNotEmpty) {
+            final sleepData = dataContent['data'][0];
+            duration = sleepData['duration'] ?? 0.0;
+          } else {
+            duration = 0.0;
+          }
+        } else if (dataContent['data'] is Map) {
+          duration = dataContent['data']['duration'] ?? 0.0;
+        } else {
+          duration = 0.0;
+        }
+    // final Map<String, dynamic> sleepData = jsonDecode(r.body);
+    // final duration = sleepData['data']['data'][0]['duration'];
+
     double durationInHours = duration / 3600000;
     data.add(durationInHours);
 
