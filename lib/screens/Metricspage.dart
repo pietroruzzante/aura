@@ -269,7 +269,7 @@ class Metricspage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text('Your last workout session was:',
+                                Text('Your last workout session was on:',
                                     style: WorkSans.headlineSmall
                                         ),
                               ],
