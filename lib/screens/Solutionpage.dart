@@ -1,3 +1,5 @@
+import 'package:aura/models/curved_background.dart';
+import 'package:aura/models/find_solutions.dart';
 import 'package:aura/models/headache_score.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/solution_screens/MichaelSol.dart';
@@ -71,66 +73,55 @@ class _SolutionpageState extends State<Solutionpage> {
             body: Stack(
               children: [
                 Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: ClipPath(
-                clipper: BottomSemiCircleClipper(),
-                child: Column(
-                  children: [
-                    Container(
-                      height: MediaQuery.of(context).size.height * 0.16,
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: ClipPath(
+                    child: CurvedBackground(
+                      height: MediaQuery.of(context).size.height * 0.25,
                       color: Palette.blue,
                     ),
-                    Container(
-                      color: Palette.blue,
-                      height: 400,
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            Positioned.fill(
-              child: FutureBuilder<dynamic>(
-              future: _loadData(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text('Error');
-                } else {
-                  final data = snapshot.data;
-                  return FlutterCarousel(
-                    options: CarouselOptions(
-                      viewportFraction: 0.9,
-                      height: 250,  //cards height
-                      showIndicator: true,
-                      slideIndicator: CircularWaveSlideIndicator(
-                        indicatorBackgroundColor: Palette.deepBlue,
-                        currentIndicatorColor: Palette.white,
-                      ),
-                    ),
-                    items: _getSolutions(data!).map((solution) {
-                      return Builder(
-                        builder: (BuildContext context) {
-                          return Container(
-                            width: MediaQuery.of(context).size.width,
-                            margin: EdgeInsets.symmetric(horizontal: 5.0),
-                            child: SolutionCard(solution: solution,),
+                Positioned.fill(
+                  child: FutureBuilder<dynamic>(
+                      future: _loadData(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Text('Error');
+                        } else {
+                          final data = snapshot.data;
+                          return FlutterCarousel(
+                            options: CarouselOptions(
+                              viewportFraction: 0.9,
+                              height: 250, //cards height
+                              showIndicator: true,
+                              slideIndicator: CircularWaveSlideIndicator(
+                                indicatorBackgroundColor: Palette.deepBlue,
+                                currentIndicatorColor: Palette.white,
+                              ),
+                            ),
+                            items: _getSolutions(data!).map((solution) {
+                              return Builder(builder: (BuildContext context) {
+                                return Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: EdgeInsets.symmetric(horizontal: 5.0),
+                                  child: SolutionCard(
+                                    solution: solution,
+                                  ),
+                                );
+                              });
+                            }).toList(),
                           );
                         }
-                      );
-                    }).toList(),
-                  );
-                }
-              }
-            ),
-          ),
-        ],
-      )
-    )
-  );
-}
+                      }),
+                ),
+              ],
+            )));
+  }
 
   List<Solution> _getSolutions(List<dynamic> data) {
     List<Solution> solutions = List.from(_fixedSolutions);
@@ -144,10 +135,10 @@ class _SolutionpageState extends State<Solutionpage> {
   }
 
   bool needSleep(double todaySleep) {
-    int sleepNeeded; 
-    if (age<=12) {
+    int sleepNeeded;
+    if (age <= 12) {
       sleepNeeded = 9;
-    } else if (age>=13 && age<=18) {
+    } else if (age >= 13 && age <= 18) {
       sleepNeeded = 8;
     } else {
       sleepNeeded = 7;
@@ -160,6 +151,7 @@ class _SolutionpageState extends State<Solutionpage> {
   }
 }
 
+/*
 class BottomSemiCircleClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
@@ -176,3 +168,4 @@ class BottomSemiCircleClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+*/

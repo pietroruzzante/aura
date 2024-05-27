@@ -265,7 +265,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                             child: FittedBox(
                                                 child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.center,
+                                              MainAxisAlignment.start,
                                           children: [
                                             DayArrows(
                                                 incrementDay: day.incrementDay,
@@ -273,12 +273,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                                 day: day),
                                             SevenDayCalendar(day: day),
                                             AuraScoreIndicator(
-                                                score: score,
-                                                day: day,
-                                                onTap: () => _onItemTapped(1)),
-                                            SizedBox(
-                                              height: 10,
+                                              score: score,
+                                              day: day,
+                                              onTap: () => _onItemTapped(1)
                                             ),
+                                            SizedBox(height: 30,),
                                             FindSolutions(),
                                           ],
                                         )));
