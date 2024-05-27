@@ -155,7 +155,7 @@ class Metricspage extends StatelessWidget {
                                           FlSpot(5, data[4][5]),
                                           FlSpot(6, data[4][6]),
                                         ],
-                                        isCurved: true,
+                                        isCurved: false,
                                         barWidth: 4,
                                         color: Colors.blue,
                                         isStrokeCapRound: true,
@@ -269,7 +269,7 @@ class Metricspage extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text('Your last workout session was:',
+                                Text('Your last workout session was on:',
                                     style: WorkSans.headlineSmall
                                         ),
                               ],

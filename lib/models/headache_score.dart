@@ -94,6 +94,7 @@ class HeadacheScore {
       [0.0, 0.0],
       [0.0, 0.0], 
     ]); //Here we need data request from Impact and from database
+    print(todayData);
     final json = await rootBundle.loadString('assets/stress_model.json');
     final classifier = DecisionTreeClassifier.fromJson(json);
     final prediction = classifier.predict(data).toMatrix().asFlattenedList;
@@ -111,8 +112,6 @@ class HeadacheScore {
     //print('dates: $dates');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    //int zip = 35137;
-
     int zip = int.parse(prefs.getString('address')!);
 
     final coordinates = await Openweather().getCoordinates(zip);

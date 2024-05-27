@@ -115,25 +115,51 @@ class Impact {
   Future<List<double>> getSleepHR() async {
     var header = await getBearer();
     var day = DateFormat('yyyy-MM-dd')
-        .format(DateTime(2024, 4, 10)); // set the day !!!! C'è un problema inserendo un il giorno DateTime.now().subtract(Duration(days:1))
+        .format(DateTime.now().subtract(Duration(days:1))); // set the day !!!! C'è un problema inserendo un il giorno DateTime.now().subtract(Duration(days:1))
     final urlSleep =
         '${Impact.baseUrl}data/v1/sleep/patients/$patientUsername/day/$day/';
     final urlRestHR =
         '${Impact.baseUrl}data/v1/resting_heart_rate/patients/$patientUsername/day/$day/';
     //print('urlSleep:$urlSleep');
     //print('urlRestHR:$urlRestHR');
+    List<double> data = [];
 
+    try{
     var r = await http.get(
       Uri.parse(urlSleep),
       headers: header,
     );
     if (r.statusCode != 200) return [];
 
-    final Map<String, dynamic> sleepData = jsonDecode(r.body);
-    double duration = sleepData['data']['data']['duration'];
-    double durationInHours = duration / 3600000;
-    List<double> data = [durationInHours];
+    final Map<String, dynamic> jsonData = jsonDecode(r.body);
+    double duration;
+        final dataContent = jsonData['data'];
 
+        if (dataContent == null || dataContent.isEmpty) {
+          duration = 0.0;
+        } else if (dataContent['data'] is List) {
+          if (dataContent['data'].isNotEmpty) {
+            final sleepData = dataContent['data'][0];
+            duration = sleepData['duration'] ?? 0.0;
+          } else {
+            duration = 0.0;
+          }
+        } else if (dataContent['data'] is Map) {
+          duration = dataContent['data']['duration'] ?? 0.0;
+        } else {
+          duration = 0.0;
+        }
+    // final Map<String, dynamic> sleepData = jsonDecode(r.body);
+    // final duration = sleepData['data']['data'][0]['duration'];
+
+    double durationInHours = duration / 3600000;
+    data.add(durationInHours);
+
+    } catch (e){
+      print('Error: $e');
+    }
+
+    try{
     var j = await http.get(  
       Uri.parse(urlRestHR),
       headers: header,
@@ -145,6 +171,10 @@ class Impact {
     data.add(restHR.toDouble());
 
     //print('datalist:$data');
+
+    } catch(e){
+      print('Error: $e');
+    }
 
     return data;
   }
