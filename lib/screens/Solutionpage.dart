@@ -63,21 +63,30 @@ class _SolutionpageState extends State<Solutionpage> {
             appBar: AppBar(
               title: Text(
                 "What can you do?",
-                style: WorkSans.titleSmall.copyWith(color: Palette.white),
+                style: WorkSans.titleSmall.copyWith(color: Palette.blue),
               ),
+              backgroundColor: Palette.white,
+              iconTheme: IconThemeData(color: Palette.blue),
             ),
             body: Stack(
               children: [
                 Positioned(
-              top: 0,
+              bottom: 0,
               left: 0,
               right: 0,
               child: ClipPath(
-                clipper: TopSemiCircleClipper(),
-                child: Container(
-                  // sets height of top panel
-                  height: MediaQuery.of(context).size.height * 0.16,
-                  color: Palette.blue,
+                clipper: BottomSemiCircleClipper(),
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.16,
+                      color: Palette.blue,
+                    ),
+                    Container(
+                      color: Palette.blue,
+                      height: 400,
+                    )
+                  ],
                 ),
               ),
             ),
@@ -94,11 +103,11 @@ class _SolutionpageState extends State<Solutionpage> {
                   return FlutterCarousel(
                     options: CarouselOptions(
                       viewportFraction: 0.9,
-                      height: 600,  //cards height
+                      height: 250,  //cards height
                       showIndicator: true,
                       slideIndicator: CircularWaveSlideIndicator(
                         indicatorBackgroundColor: Palette.deepBlue,
-                        currentIndicatorColor: Palette.blue,
+                        currentIndicatorColor: Palette.white,
                       ),
                     ),
                     items: _getSolutions(data!).map((solution) {
@@ -151,14 +160,15 @@ class _SolutionpageState extends State<Solutionpage> {
   }
 }
 
-class TopSemiCircleClipper extends CustomClipper<Path> {
+class BottomSemiCircleClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     var path = Path();
-    path.lineTo(0, size.height);
+    path.moveTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.lineTo(size.width, size.height * 0.2);
     path.quadraticBezierTo(
-        size.width * 0.5, size.height * 0.8, size.width, size.height);
-    path.lineTo(size.width, 0);
+        size.width * 0.5, size.height * 0.4, 0, size.height * 0.2);
     path.close();
     return path;
   }
