@@ -2,12 +2,14 @@ import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
 import 'dart:async';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
 class BreathingSol extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           'Take a deep breath',
           style: WorkSans.titleSmall.copyWith(color: Palette.white),
@@ -76,7 +78,10 @@ class _BreathingSolState extends State<BreathingPhases> {
                           padding: const EdgeInsets.all(15.0),
                           child: Text(
                             'The 4-7-8 breathing technique is a method that can help reduce anxiety and improve sleep. It involves breathing in for four seconds, holding your breath for seven seconds, and then exhaling for eight seconds. This technique helps to slow down your breathing and encourages your body to enter a state of deep relaxation.',
-                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Palette.white),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(color: Palette.white),
                             textAlign: TextAlign.justify,
                           ),
                         ),
@@ -98,21 +103,23 @@ class _BreathingSolState extends State<BreathingPhases> {
           ),
         ),
         Align(
-          alignment: Alignment.bottomRight,
+          alignment: Alignment.bottomCenter,
           child: _isCycleActive
               ? Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: ElevatedButton(
-                    onPressed: _stopCycle,
-                    child: Text('Stop Breathing Exercise'),
-                  ),
-                )
-              : SizedBox(),
+                padding: EdgeInsets.only(bottom: 150),
+                child: ElevatedButton(
+                  onPressed: _stopCycle,
+                  child: Text('Stop Breathing Exercise',
+                  style: WorkSans.titleSmall,),
+                ),
+              )
+              : SizedBox(height: 200,),
         ),
       ],
     );
   }
 }
+
 
 class StateCycle extends StatefulWidget {
   final Function onCycleEnd;
@@ -133,6 +140,7 @@ class _StateCycleState extends State<StateCycle> {
   ];
 
   Timer? _timer;
+  final CountDownController _controller = CountDownController();
 
   @override
   void initState() {
@@ -141,19 +149,16 @@ class _StateCycleState extends State<StateCycle> {
   }
 
   void _startCycle() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (_currentStateIndex < _phases.length) {
-        setState(() {
-          if (_timer != null) {
-            if (_timer!.tick == _durations[_currentStateIndex].inSeconds) {
-              _currentStateIndex = (_currentStateIndex + 1) % _phases.length;
-              _timer!.cancel(); // cancel the current timer
-              _startCycle(); // start the next cycle with the new duration
-            }
-          }
-        });
-      }
+    _controller.start();
+    _timer = Timer(_durations[_currentStateIndex], _nextPhase);
+  }
+
+  void _nextPhase() {
+    setState(() {
+      _currentStateIndex = (_currentStateIndex + 1) % _phases.length;
     });
+    _controller.restart(duration: _durations[_currentStateIndex].inSeconds);
+    _startCycle();
   }
 
   @override
@@ -164,17 +169,39 @@ class _StateCycleState extends State<StateCycle> {
 
   @override
   Widget build(BuildContext context) {
-    try {
-      return Center(
-        child: Text(
-          _phases[_currentStateIndex % _phases.length],
-          style: Theme.of(context).textTheme.headlineMedium,
-        ),
-      );
-    } catch (e, stackTrace) {
-      print('Error: $e');
-      print('Stack Trace: $stackTrace');
-      return Container();
-    }
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(height: 40,),
+          Text(
+            _phases[_currentStateIndex],
+            style: WorkSans.titleLarge,
+          ),
+          SizedBox(height: 40,),
+          CircularCountDownTimer(
+            width: 300,
+            height: 300,
+            duration: _durations[_currentStateIndex].inSeconds,
+            initialDuration: 0,
+            controller: _controller,
+            fillColor: Palette.deepBlue,
+            ringColor: Palette.softBlue1,
+            isTimerTextShown: true,
+            textStyle: WorkSans.titleLarge,
+            strokeCap: StrokeCap.round,
+            textFormat: CountdownTextFormat.S,
+            strokeWidth: 15,
+            autoStart: true, 
+            onComplete: () {
+            },
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          
+        ],
+      ),
+    );
   }
 }

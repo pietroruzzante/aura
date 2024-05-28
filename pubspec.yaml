@@ -51,6 +51,7 @@ dependencies:
   expandable_page_view: ^1.0.17
   vertical_card_pager: ^1.6.2
   flutter_carousel_widget: ^2.2.0
+  circular_countdown_timer: ^0.2.3
 
 
 
