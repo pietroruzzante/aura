@@ -202,7 +202,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                             ),
                           );
                         }).toList(),
-                        dropdownColor: Colors.grey.shade700,
+                        dropdownColor: Palette.blue,
                         style: TextStyle(color: Colors.white),
                         isExpanded: true,
                       ),
