@@ -66,11 +66,9 @@ class _AccountpageState extends State<Accountpage> {
                             name,
                             style: WorkSans.headlineMedium.copyWith(color: Palette.white),
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "test@example.com",
-                            style: WorkSans.bodyMedium.copyWith(color: Colors.blueGrey),
-                          )
+                      
+                          const SizedBox(height: 20), // MODIFY THE UI
+
                         ],
                       ),
                       const Spacer(),
