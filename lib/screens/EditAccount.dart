@@ -18,6 +18,8 @@ class _EditAccountpageState extends State<EditAccountpage> {
   TextEditingController ageController = TextEditingController();
   TextEditingController addressController = TextEditingController();
 
+  String? _errorMessage;
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +40,55 @@ class _EditAccountpageState extends State<EditAccountpage> {
   }
 
   Future<void> saveUserInfo(String name, String age, String address) async {
+    setState(() {
+      _errorMessage = null;
+    });
+
+    // CAP VALIDATION
+    if (address.isEmpty) {
+      setState(() {
+        _errorMessage = 'CAP is necessary';
+      });
+      return;
+    }
+
+    if (address.length != 5) {
+      setState(() {
+        _errorMessage = 'CAP must be 5 numbers';
+      });
+      return;
+    }
+
+    if (!RegExp(r'^[0-9]+$').hasMatch(address)) {
+      setState(() {
+        _errorMessage = 'CAP must contain only numbers';
+      });
+      return;
+    }
+
+    // AGE VALIDATION
+    if (age.isEmpty) {
+      setState(() {
+        _errorMessage = 'Age is necessary';
+      });
+      return;
+    }
+
+    if (!RegExp(r'^[0-9]+$').hasMatch(age)) {
+      setState(() {
+        _errorMessage = 'Age must contain only numbers';
+      });
+      return;
+    }
+
+    int ageValue = int.parse(age);
+    if (ageValue < 0 || ageValue > 120) {
+      setState(() {
+        _errorMessage = 'Age must be between 0 and 120';
+      });
+      return;
+    }
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('name', name);
     await prefs.setString('age', age);
@@ -63,11 +114,15 @@ class _EditAccountpageState extends State<EditAccountpage> {
               padding: const EdgeInsets.only(right: 15),
               child: IconButton(
                 onPressed: () async {
-                  await saveUserInfo(nameController.text, ageController.text,
-                      addressController.text);
-                  // We can optionally show a confirmation message here
-                  Navigator.pop(context);
-                },
+                  await saveUserInfo(
+                    nameController.text,
+                    ageController.text,
+                    addressController.text,
+                  );
+                  if (_errorMessage == null) {
+                    Navigator.pop(context);
+                  }
+                },  
                 style: IconButton.styleFrom(
                   backgroundColor: Palette.blue,
                   shape: RoundedRectangleBorder(
@@ -185,6 +240,13 @@ class _EditAccountpageState extends State<EditAccountpage> {
                       ),
                       controller: addressController,
                     ),
+                    if (_errorMessage != null) ...[
+                      const SizedBox(height: 20),
+                      Text(
+                        _errorMessage!,
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
                   ],
                 ),
               ),
