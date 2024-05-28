@@ -178,9 +178,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                   ),
                   onTap: () async {
                     final sp = await SharedPreferences.getInstance();
-                    await sp.remove('access');
-                    await sp.remove('refresh');
-                    //await sp.remove('name');
+                    await sp.clear();
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: ((context) => LoginPage())));
                   },
