@@ -38,6 +38,9 @@ class HeadacheScore {
 
     //print('keys: $keys');
 
+    //debug HRV
+    final hrv = await impact.calculateHRV();
+
     for (int i=0;i<3;i++){
       //print(sp.getDouble('db value for day$i = ${sp.getDouble('day$i')}'));
     }
