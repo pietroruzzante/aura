@@ -32,21 +32,14 @@ class FindSolutions extends StatelessWidget {
           ),
           child: Stack(
             children: [
-              Hero(
-                tag: 'solution page',
-                child: Container(
-                  width: double.infinity,
-                  height: 200,
-                  child: Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: ClipPath(
-                      child: CurvedBackground(
-                        height: MediaQuery.of(context).size.height * 0.25,
-                        color: Palette.blue,),
-                    ),
-                  ),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: ClipPath(
+                  child: CurvedBackground(
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    color: Palette.blue,),
                 ),
               ),
               Center(

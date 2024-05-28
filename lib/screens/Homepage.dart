@@ -3,15 +3,10 @@ import 'package:aura/screens/Accountpage.dart';
 import 'package:aura/screens/Loginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
-import 'package:info_widget/info_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:aura/models/headache_score.dart';
-import 'package:aura/screens/Solutionpage.dart';
 import 'package:aura/screens/Metricspage.dart';
 import 'package:aura/models/palette.dart';
-import 'package:easy_date_timeline/easy_date_timeline.dart';
-import 'package:intl/intl.dart';
-import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/aura_score_indicator.dart';
@@ -77,9 +72,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _onItemTapped(int newIndex) {
+  void _onItemTapped(int newIndex) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       currentIndex = newIndex;
+      name = prefs.getString('name') ?? 'User';
     });
     tabController.animateTo(newIndex);
   }

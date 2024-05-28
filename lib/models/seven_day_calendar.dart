@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class SevenDayCalendar extends StatelessWidget {
   Day day;
 
-  SevenDayCalendar({required this.day});
+  SevenDayCalendar({super.key, required this.day});
   @override
   Widget build(BuildContext context) {
     DateTime selectedDate = getDateForValue(day.toInt());
