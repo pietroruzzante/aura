@@ -1,13 +1,19 @@
 import 'package:aura/services/openWeather.dart';
 import 'package:aura/services/impact.dart';
+import 'package:cherry_toast/resources/arrays.dart';
+import 'package:flutter/material.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cherry_toast/cherry_toast.dart';
 
 class HeadacheScore {
   final List<double> _scores = List<double>.filled(7, 0.0);
   final impact = Impact();
+  Function()? showToastCallback;
+
+  HeadacheScore({this.showToastCallback});
 
   double operator [](int index) => _scores[index];
 
@@ -32,10 +38,6 @@ class HeadacheScore {
       sp.setDouble('day3', 0.0);
     }
 
-    //print('keys: $keys');
-
-    //debug HRV
-    final hrv = await impact.calculateHRV();
 
     for (int i = 0; i < 3; i++) {
       //print(sp.getDouble('db value for day$i = ${sp.getDouble('day$i')}'));
@@ -98,6 +100,13 @@ class HeadacheScore {
 
 // Assegna i dati effettivi alla quarta riga (indice 3)
     rows[3] = [todayData[0], todayData[1], hrv[0].toDouble(), hrv[1].toDouble(), age.toDouble()];
+
+    if (rows[3].contains(0)) {
+      // Chiama il callback per mostrare il toast
+      if (showToastCallback != null) {
+        showToastCallback!();
+      }
+    }
 
 // Crea il DataFrame utilizzando i nomi delle colonne e le righe
     final data = DataFrame([
@@ -228,3 +237,4 @@ bool equalDates(DateTime date1, DateTime date2) {
       date1.month == date2.month &&
       date1.day == date2.day;
 }
+
