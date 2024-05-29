@@ -88,6 +88,7 @@ flutter:
   - assets/breathing.png
   - assets/michaelsolution.png
   - assets/waving-hand_1f44b.png
+  - assets/face-in-clouds-emoji.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
