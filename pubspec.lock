@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  cherry_toast:
+    dependency: "direct main"
+    description:
+      name: cherry_toast
+      sha256: "266bcd9dd1220ffd8f907aa70ae2a34d8c6d10073b4e065c1ef9a1131812e197"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.10.1"
   circular_countdown_timer:
     dependency: "direct main"
     description:
