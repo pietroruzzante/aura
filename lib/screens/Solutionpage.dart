@@ -34,7 +34,8 @@ class _SolutionpageState extends State<Solutionpage> {
       'Spotify',
       'assets/spotify.png',
       'Dive into our specially curated Spotify playlist crafted to ease migraine symptoms and promote well-being. Take a break from tension and pain, and let the therapeutic power of music transport you. Discover how simple listening can make a difference in your personal relief.',
-      pageRoute: SpotifySol()),
+      pageRoute: SpotifySol(),
+      url: 'https://open.spotify.com/playlist/2bz6wk2mbPgF9ZNXhLN4Ts?si=0fe7203fa4364f4e'),
     Solution(
       'Breathing',
       'assets/breathing.png',
@@ -219,7 +220,7 @@ class _SolutionpageState extends State<Solutionpage> {
                                 child: FlutterCarousel(
                                   options: CarouselOptions(
                                     viewportFraction: 0.9,
-                                    height: 430,
+                                    height: 400,
                                     showIndicator: true,
                                     indicatorMargin: 0,
                                     slideIndicator: CircularWaveSlideIndicator(
@@ -228,8 +229,7 @@ class _SolutionpageState extends State<Solutionpage> {
                                     ),
                                   ),
                                   items: _getSolutions(data!).map((solution) {
-                                    return Builder(
-                                        builder: (BuildContext context) {
+                                    return Builder( builder: (BuildContext context) {
                                       return Column(
                                         children: [
                                           Container(

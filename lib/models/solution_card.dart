@@ -15,7 +15,7 @@ class SolutionCard extends StatelessWidget {
           context, MaterialPageRoute(builder: (context) => solution.pageRoute!));
       },
       child: SizedBox(
-        height: 250,
+        height: 225,
         width: 300,
         child: Card(
           //semanticContainer: true,

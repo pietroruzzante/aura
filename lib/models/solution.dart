@@ -5,6 +5,7 @@ class Solution {
   final String imagePath;
   final String description;
   final Widget? pageRoute;
+  final String? url;
 
-  Solution(this.name, this.imagePath, this.description, {this.pageRoute});
+  Solution(this.name, this.imagePath, this.description, {this.pageRoute, this.url});
 }
