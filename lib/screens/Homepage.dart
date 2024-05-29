@@ -86,13 +86,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
           ),
         ],
       ),
-      textAlign: TextAlign.justify,
+      textAlign: TextAlign.left,
     ),
       displayIcon: true,
       animationType: AnimationType.fromTop,
       animationDuration: Duration(milliseconds: 1000),
+      toastDuration: Duration(milliseconds: 5000),
       inheritThemeColors: true,
-      autoDismiss: false,
+      autoDismiss: true,
       
     ).show(context)
     ;

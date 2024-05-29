@@ -567,11 +567,11 @@ void _showErrorToast(BuildContext context) {
         children: [
           TextSpan(
             text: 'Some data are not available',
-            style: WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w100),
+            style: WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w500),
           ),
         ],
       ),
-      textAlign: TextAlign.justify,
+      textAlign: TextAlign.left,
     ),
       displayIcon: true,
       animationType: AnimationType.fromTop,
