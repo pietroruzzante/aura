@@ -92,13 +92,16 @@ class AuraScoreIndicator extends StatelessWidget {
             Positioned(
               top: 10,
               right: 10,
-              child: InfoWidget(
-                infoText:
-                    "The score for the upcoming days has been calculated using today's stress score and future weather forecasts.",
-                infoTextStyle:
-                    WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
-                iconData: Icons.info,
-                iconColor: Palette.blue,
+              child: Transform.scale(
+                scale: 1.3,
+                child: InfoWidget(
+                  infoText:
+                      "The score for the upcoming days has been calculated using today's stress score and future weather forecasts.",
+                  infoTextStyle:
+                      WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                  iconData: Icons.info,
+                  iconColor: Palette.blue,
+                ),
               ),
             ),
             // Arrows to control AuraScoreIndicator

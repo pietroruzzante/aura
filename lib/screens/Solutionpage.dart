@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:math';
 
 import 'package:aura/models/curved_background.dart';
@@ -15,7 +14,6 @@ import 'package:aura/models/solution.dart';
 import 'package:aura/screens/solution_screens/BreathingSol.dart';
 import 'package:aura/screens/solution_screens/SpotifySol.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'solution_screens/ExerciseSol.dart';
 import 'solution_screens/SleepingSol.dart';
 
@@ -30,22 +28,17 @@ class _SolutionpageState extends State<Solutionpage> {
   int age = 25;
 
   final List<Solution> _fixedSolutions = [
-    Solution(
-      'Spotify',
-      'assets/spotify.png',
-      'Dive into our specially curated Spotify playlist crafted to ease migraine symptoms and promote well-being. Take a break from tension and pain, and let the therapeutic power of music transport you. Discover how simple listening can make a difference in your personal relief.',
-      pageRoute: SpotifySol(),
-      url: 'https://open.spotify.com/playlist/2bz6wk2mbPgF9ZNXhLN4Ts?si=0fe7203fa4364f4e'),
-    Solution(
-      'Breathing',
-      'assets/breathing.png',
-      'Experience a guided breathing exercise designed to ease migraine symptoms and promote relaxation. Allow your breath to soothe tension and bring relief, discover the calming effect of mindful breathing on your migraine journey.',
-      pageRoute: BreathingSol()),
-    Solution(
-      'Michael',
-      'assets/michaelsolution.png',
-      'Join us in exploring this unexpected approach to easing stress, straight from the iconic sitcom. Discover how Michael\'s unique methods may just provide a humorous yet surprisingly effective way to tackle anxiety. Embrace the unexpected and let laughter be your guide on the path to relaxation.',
-      pageRoute: MichaelSol()),
+    Solution('Spotify', 'assets/spotify.png',
+        'Dive into our specially curated Spotify playlist crafted to ease migraine symptoms and promote well-being. Take a break from tension and pain, and let the therapeutic power of music transport you. Discover how simple listening can make a difference in your personal relief.',
+        pageRoute: SpotifySol(),
+        url:
+            'https://open.spotify.com/playlist/2bz6wk2mbPgF9ZNXhLN4Ts?si=0fe7203fa4364f4e'),
+    Solution('Breathing', 'assets/breathing.png',
+        'Experience a guided breathing exercise designed to ease migraine symptoms and promote relaxation. Allow your breath to soothe tension and bring relief, discover the calming effect of mindful breathing on your migraine journey.',
+        pageRoute: BreathingSol()),
+    Solution('Michael', 'assets/michaelsolution.png',
+        'Join us in exploring this unexpected approach to easing stress, straight from the iconic sitcom. Discover how Michael\'s unique methods may just provide a humorous yet surprisingly effective way to tackle anxiety. Embrace the unexpected and let laughter be your guide on the path to relaxation.',
+        pageRoute: MichaelSol()),
     //Solution('More coming', 'assets/more_coming.png')
   ];
 
@@ -163,7 +156,8 @@ class _SolutionpageState extends State<Solutionpage> {
                   child: FutureBuilder<dynamic>(
                       future: _loadData(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Text('Error');
@@ -189,9 +183,7 @@ class _SolutionpageState extends State<Solutionpage> {
                                       ),
                                       if (_randomMigraineInfo != null)
                                         Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
+                                            width: MediaQuery.of(context).size.width -
                                                 40,
                                             child: RandomInfoCard(
                                                 migraineInfo:
@@ -207,7 +199,7 @@ class _SolutionpageState extends State<Solutionpage> {
                                   child: Text(
                                     'Try some of our solutions:',
                                     style: WorkSans.titleSmall,
-                                        //.copyWith(color: Colors.grey[400]),
+                                    //.copyWith(color: Colors.grey[400]),
                                     textAlign: TextAlign.left,
                                   ),
                                 ),
@@ -224,21 +216,28 @@ class _SolutionpageState extends State<Solutionpage> {
                                     showIndicator: true,
                                     indicatorMargin: 0,
                                     slideIndicator: CircularWaveSlideIndicator(
-                                      indicatorBackgroundColor: Palette.deepBlue,
+                                      indicatorBackgroundColor:
+                                          Palette.deepBlue,
                                       currentIndicatorColor: Palette.white,
                                     ),
                                   ),
                                   items: _getSolutions(data!).map((solution) {
-                                    return Builder( builder: (BuildContext context) {
+                                    return Builder(
+                                        builder: (BuildContext context) {
                                       return Column(
                                         children: [
                                           Container(
                                             height: 150,
                                             child: Padding(
-                                              padding: const EdgeInsets.fromLTRB(17, 0, 17, 15),
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      17, 0, 17, 15),
                                               child: Text(
                                                 solution.description,
-                                                style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue,),
+                                                style: WorkSans.bodyMedium
+                                                    .copyWith(
+                                                  color: Palette.deepBlue,
+                                                ),
                                                 textAlign: TextAlign.justify,
                                               ),
                                             ),
@@ -257,22 +256,19 @@ class _SolutionpageState extends State<Solutionpage> {
                         }
                       }),
                 ),
-                
               ],
-            )
-          )
-        );
+            )));
   }
 
   List<Solution> _getSolutions(List<dynamic> data) {
     List<Solution> solutions = List.from(_fixedSolutions);
     if (needSleep(data[0])) {
-      solutions.add(
-          Solution('Sleeping', 'assets/spotify.png', 'description', pageRoute: SleepingSol()));
+      solutions.add(Solution('Sleeping', 'assets/spotify.png', 'description',
+          pageRoute: SleepingSol()));
     }
     if (needExercise()) {
-      solutions.add(
-          Solution('Exercise', 'assets/spotify.png', 'description', pageRoute: ExerciseSol()));
+      solutions.add(Solution('Exercise', 'assets/spotify.png', 'description',
+          pageRoute: ExerciseSol()));
     }
     return solutions;
   }

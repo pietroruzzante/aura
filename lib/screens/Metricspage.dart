@@ -12,6 +12,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Metricspage extends StatelessWidget {
+  const Metricspage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -19,37 +21,37 @@ class Metricspage extends StatelessWidget {
         future: loadData(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return Text('Error');
+            return const Center(child: Text('Error'));
           } else {
             final data = snapshot.data;
-            return Center(
-              child: Container(
-                width: 300,
-                height: 1000,
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(30, 15, 30, 30),
                 child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text('Aura score insights',
-                                  style: WorkSans.titleMedium
-                                      .copyWith(color: Palette.white)),
-                            ],
+                          // Title
+                          Text('Insights',
+                              style: WorkSans.titleMedium
+                                  .copyWith(color: Palette.white)),
+                          const SizedBox(height: 10),
+                          // Aura score chart
+                          Text(
+                            'Previous scores and forecasting:',
+                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue, fontWeight: FontWeight.bold),
                           ),
-                          //SizedBox(height: 100),
+                          const SizedBox(height: 5,),
                           Container(
-                            width: 600,
                             decoration: BoxDecoration(
-                              boxShadow: [
+                              boxShadow: const [
                                 BoxShadow(
-                                  color: Colors.blueAccent.withOpacity(0.1),
-                                  blurRadius: 10,
+                                  color: Palette.deepBlue,
+                                  blurRadius: 5,
                                 ),
                               ],
                               color: Colors.white,
@@ -58,12 +60,7 @@ class Metricspage extends StatelessWidget {
                             child: AspectRatio(
                               aspectRatio: 1.8,
                               child: Padding(
-                                padding: EdgeInsets.only(
-                                  right: 25,
-                                  left: 20,
-                                  top: 24,
-                                  bottom: 15,
-                                ),
+                                padding: EdgeInsets.fromLTRB(10, 15, 20, 2),
                                 child: LineChart(
                                   duration: Duration(milliseconds: 1000),
                                   LineChartData(
@@ -74,18 +71,6 @@ class Metricspage extends StatelessWidget {
                                     gridData: FlGridData(
                                       show: false,
                                       drawVerticalLine: true,
-                                      getDrawingHorizontalLine: (value) {
-                                        return FlLine(
-                                          color: const Color(0xffe7e8ec),
-                                          strokeWidth: 1,
-                                        );
-                                      },
-                                      getDrawingVerticalLine: (value) {
-                                        return FlLine(
-                                          color: const Color(0xffe7e8ec),
-                                          strokeWidth: 1,
-                                        );
-                                      },
                                     ),
                                     extraLinesData: ExtraLinesData(
                                       verticalLines: [
@@ -93,47 +78,48 @@ class Metricspage extends StatelessWidget {
                                           x: 3,
                                           color: Palette.deepBlue,
                                           dashArray: [5, 5],
-                                          strokeWidth: 2,
+                                          strokeWidth: 1,
                                         ),
                                       ],
                                     ),
                                     titlesData: FlTitlesData(
+                                      // numbers for graph
                                       leftTitles: AxisTitles(
                                         sideTitles: SideTitles(
                                           showTitles: true,
-                                          reservedSize: 40,
+                                          reservedSize: 20,
                                           getTitlesWidget: (value, meta) {
                                             return Text(
                                               value.toInt().toString(),
-                                              style: TextStyle(
-                                                  color: Colors.grey,
-                                                  fontSize: 12),
+                                              style: WorkSans.bodyMedium
+                                                  .copyWith(color: Colors.grey),
                                             );
                                           },
                                           interval: 2,
                                         ),
                                       ),
-                                      rightTitles: AxisTitles(
+                                      rightTitles: const AxisTitles(
                                         sideTitles:
                                             SideTitles(showTitles: false),
                                       ),
-                                      topTitles: AxisTitles(
+                                      topTitles: const AxisTitles(
                                         sideTitles:
                                             SideTitles(showTitles: false),
                                       ),
+                                      // days of the week
                                       bottomTitles: AxisTitles(
                                         sideTitles: SideTitles(
                                           showTitles: true,
                                           reservedSize: 30,
                                           getTitlesWidget: (value, meta) {
                                             return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.only(
+                                                  top: 10),
                                               child: Text(
-                                                  dayOfWeek(value),
-                                                style: TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 12),
+                                                dayOfWeek(value),
+                                                style: WorkSans.bodyMedium
+                                                    .copyWith(
+                                                        color: Colors.grey),
                                               ),
                                             );
                                           },
@@ -144,6 +130,7 @@ class Metricspage extends StatelessWidget {
                                     borderData: FlBorderData(
                                       show: false,
                                     ),
+                                    // graph line and dots
                                     lineBarsData: [
                                       LineChartBarData(
                                         spots: [
@@ -155,10 +142,10 @@ class Metricspage extends StatelessWidget {
                                           FlSpot(5, data[4][5]),
                                           FlSpot(6, data[4][6]),
                                         ],
-                                        isCurved: false,
-                                        barWidth: 4,
+                                        isCurved: true,
+                                        barWidth: 3,
                                         color: Colors.blue,
-                                        isStrokeCapRound: true,
+                                        isStrokeCapRound: false,
                                         dotData: FlDotData(
                                           show: true,
                                           getDotPainter: (FlSpot spot,
@@ -166,9 +153,8 @@ class Metricspage extends StatelessWidget {
                                               LineChartBarData bar,
                                               int index) {
                                             return FlDotCirclePainter(
-                                              radius: 5,
+                                              radius: 4,
                                               color: Palette.deepBlue,
-                                              strokeWidth: 0,
                                             );
                                           },
                                         ),
@@ -181,172 +167,176 @@ class Metricspage extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Today\'s score composition:',
+                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 5,),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Palette.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: const [
+                                BoxShadow(
+                                  blurRadius: 5,
+                                  color: Palette.softBlue2,
+                                )
+                              ]
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
+                                  // Stress
                                   Column(
                                     children: [
-                                      Text('stress',
-                                          style: WorkSans.titleSmall.copyWith(
-                                              color: Palette.deepBlue)),
                                       DashedCircularProgressBar(
-                                        width: 100,
-                                        height: 100,
+                                        width: 75,
+                                        height: 75,
                                         progress: data[1][3],
                                         maxProgress: 4,
                                         startAngle: 225,
                                         sweepAngle: 270,
                                         foregroundColor: Palette.deepBlue,
                                         backgroundColor: Palette.softBlue1,
-                                        foregroundStrokeWidth: 10,
-                                        backgroundStrokeWidth: 10,
+                                        foregroundStrokeWidth: 6,
+                                        backgroundStrokeWidth: 6,
                                         seekColor: Palette.white,
                                         seekSize: 8,
                                         animation: true,
                                         animationDuration:
                                             Duration(milliseconds: 500),
-                                        animationCurve:
-                                            Easing.standardDecelerate,
+                                        animationCurve: Easing.standardDecelerate,
                                         child: Center(
                                             child: Text(
-                                                '${data[1][3].toInt()}/4')),
-                                      )
+                                          '${data[1][3].toInt()}/4',
+                                          style: WorkSans.bodyMedium.copyWith(
+                                              color: Palette.deepBlue,
+                                              fontWeight: FontWeight.bold),
+                                        )),
+                                      ),
+                                      Text('stress', style: WorkSans.headlineSmall),
                                     ],
                                   ),
-                                  SizedBox(
-                                    width: 15,
-                                  ),
+                                  // Weather
                                   Column(
                                     children: [
-                                      Text('weather',
-                                          style: WorkSans.titleSmall.copyWith(
-                                              color: Palette.deepBlue)),
                                       DashedCircularProgressBar(
-                                        width: 100,
-                                        height: 100,
+                                        width: 75,
+                                        height: 75,
                                         startAngle: 225,
                                         sweepAngle: 270,
                                         progress: data[2][3],
                                         maxProgress: 4,
                                         foregroundColor: Palette.deepBlue,
                                         backgroundColor: Palette.softBlue1,
-                                        foregroundStrokeWidth: 10,
-                                        backgroundStrokeWidth: 10,
+                                        foregroundStrokeWidth: 6,
+                                        backgroundStrokeWidth: 6,
                                         seekColor: Palette.white,
                                         seekSize: 8,
                                         animation: true,
                                         animationDuration:
                                             Duration(milliseconds: 500),
-                                        animationCurve:
-                                            Easing.standardDecelerate,
+                                        animationCurve: Easing.standardDecelerate,
                                         child: Center(
                                             child: Text(
-                                                '${data[2][3].toInt()}/4')),
+                                          '${data[2][3].toInt()}/4',
+                                          style: WorkSans.bodyMedium.copyWith(
+                                              color: Palette.deepBlue,
+                                              fontWeight: FontWeight.bold),
+                                        )),
                                       ),
+                                      const Text('weather',
+                                          style: WorkSans.headlineSmall),
                                     ],
                                   )
                                 ],
-                              )
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          // Exercise
+                          const Text('Exercise', style: WorkSans.titleSmall),
+                          Text(
+                            'Your last workout session was on:',
+                            style: WorkSans.headlineSmall.copyWith(fontSize: 16),
+                          ),
+                          // Last exercise container
+                          Container(
+                            height: 30,
+                            width: MediaQuery.sizeOf(context).width - 60,
+                            decoration: BoxDecoration(
+                                color: Palette.softBlue1,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(lastDayOfWorkOut(data[3]),
+                                      style: WorkSans.bodyMedium.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                          color: Palette.deepBlue)),
+                                ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Transform.scale(
+                                  scale: 0.8,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: InfoWidget(
+                                      infoText:
+                                          'Research says that you should exercise at least 3 times a week for 30 minutes to avoid headaches',
+                                      infoTextStyle: WorkSans.bodyMedium
+                                          .copyWith(color: Palette.deepBlue),
+                                      iconData: Icons.info,
+                                      iconColor: Palette.blue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                getExerciseText(data[3]),
+                                style: WorkSans.bodyMedium
+                                    .copyWith(color: Palette.deepBlue),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          // Sleep
+                          const Text('Sleep', style: WorkSans.titleSmall),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          SleepIndicator(todaySleep: data[0], age: data[8]),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                getSleepText(data[0], data[8]),
+                                style: WorkSans.bodyMedium
+                                    .copyWith(color: Palette.deepBlue),
+                              ),
                             ],
                           ),
                         ],
                       ),
-                      Stack(
-                        children: [
-                          Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Exercise', style: WorkSans.titleSmall),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Your last workout session was on:',
-                                    style: WorkSans.headlineSmall
-                                        ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(lastDayOfWorkOut(data[3]),
-                                    style: WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w700)
-                                        ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(getExerciseText(data[3]),
-                                        style: WorkSans.headlineSmall,)
-                                           
-                              ],
-                            ),
-                          ],
-                        ),
-                       Positioned(
-                        right: 0,
-                         child: InfoWidget(
-                                  infoText:
-                                      'Research says that you should exercise at least 3 times a week for 30 minutes to avoid headaches',
-                                  infoTextStyle: WorkSans.bodyMedium
-                                      .copyWith(color: Palette.deepBlue),
-                                  iconData: Icons.info,
-                                  iconColor: Palette.blue,
-                                ),
-                       ),
-                    ]
-                    ),
-                      Stack(children: [
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text('Sleep', style: WorkSans.titleSmall),
-                              ],
-                            ),
-                            SleepIndicator(todaySleep: data[0], age: data[8]),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  getSleepText(data[0], data[8]),
-                                  style: WorkSans.headlineSmall,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Positioned(
-                          right: 0,
-                          child: InfoWidget(
-                            infoText:
-                                'Based on your age, you should sleep at least ${reccomendedSleepHours(data[8])} hours per night',
-                            infoTextStyle: WorkSans.bodyMedium
-                                .copyWith(color: Palette.deepBlue),
-                            iconData: Icons.info,
-                            iconColor: Palette.blue,
-                          ),
-                        ),
-                      ]),
                     ]),
               ),
             );
@@ -366,9 +356,9 @@ class Metricspage extends StatelessWidget {
       sleepNeeded = 7;
     }
     if (todaySleep < sleepNeeded) {
-      return "You didn't sleep enough!";
+      return "You didn't sleep enough! :()";
     } else {
-      return "Well Done! You slept enough";
+      return "Well Done! You slept enough :)";
     }
   }
 
@@ -383,9 +373,9 @@ class Metricspage extends StatelessWidget {
       int differenceInDays = currentDate.difference(parsedDate).inDays;
 
       if (differenceInDays.abs() < 3) {
-        return "Well Done! keep working out";
+        return "Well Done! Keep working out :)";
       } else {
-        return "You haven't worked out enough!";
+        return "You haven't worked out enough! :(";
       }
     }
   }
@@ -418,8 +408,8 @@ class Metricspage extends StatelessWidget {
 }
 
 class SleepIndicator extends StatelessWidget {
-  final todaySleep;
-  final age;
+  final dynamic todaySleep;
+  final dynamic age;
 
   const SleepIndicator({
     super.key,
@@ -429,28 +419,53 @@ class SleepIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-          SleepBar(todaySleep: todaySleep, age: age),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                'You slept ${todaySleep.toInt()} hours',
-                style: WorkSans.headlineSmall,
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Last night you slept ${todaySleep.toInt()} hours!',
+            style: WorkSans.headlineSmall.copyWith(fontSize: 16),
+          ),
+          Container(
+              height: 30,
+              width: MediaQuery.sizeOf(context).width - 60,
+              decoration: BoxDecoration(
+                color: Palette.softBlue1,
+                borderRadius: BorderRadius.circular(20),
               ),
-            ],
-          )
-        ]));
+              child: Stack(
+                children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 40,),
+                  child: SleepBar(todaySleep: todaySleep, age: age),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Transform.scale(
+                    scale: 0.8,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 5),
+                      child: InfoWidget(
+                        infoText:
+                            'Based on your age, you should sleep at least ${reccomendedSleepHours(age)} hours per night',
+                        infoTextStyle:
+                            WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                        iconData: Icons.info,
+                        iconColor: Palette.blue,
+                      ),
+                    ),
+                  ),
+                ),
+              ])),
+        ]);
   }
 }
 
 class SleepBar extends StatefulWidget {
   final double todaySleep;
   final int age;
-  SleepBar({required this.todaySleep, required this.age});
+  const SleepBar({super.key, required this.todaySleep, required this.age});
   @override
   SleepBarState createState() => SleepBarState();
 }
@@ -464,7 +479,7 @@ class SleepBarState extends State<SleepBar>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 800),
       vsync: this,
     )..repeat(reverse: false);
 
@@ -495,7 +510,7 @@ class SleepBarState extends State<SleepBar>
         builder: (context, child) {
           return LinearProgressIndicator(
             value: _animation.value,
-            minHeight: 10.0,
+            minHeight: 10,
             borderRadius: BorderRadius.circular(5),
           );
         },
@@ -524,8 +539,8 @@ int reccomendedSleepHours(int age) {
   return sleepNeeded;
 }
 
-String lastDayOfWorkOut(String lastDateExercise){
-  if (lastDateExercise == 'Not available data'){
+String lastDayOfWorkOut(String lastDateExercise) {
+  if (lastDateExercise == 'Not available data') {
     return lastDateExercise;
   } else {
     DateFormat dateFormat = DateFormat('yyyy-MM-dd');
