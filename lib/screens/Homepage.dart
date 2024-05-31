@@ -1,19 +1,19 @@
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Accountpage.dart';
 import 'package:aura/screens/Loginpage.dart';
+import 'package:aura/screens/Solutionpage.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
 import 'package:provider/provider.dart';
-import 'package:aura/models/headache_score.dart';
+import 'package:aura/models/homepage_widgets/headache_score.dart';
 import 'package:aura/screens/Metricspage.dart';
 import 'package:aura/models/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/aura_score_indicator.dart';
-import '../models/day_arrows.dart';
-import '../models/find_solutions.dart';
+import '../models/homepage_widgets/aura_score_indicator.dart';
+import '../models/homepage_widgets/find_solutions.dart';
 import '../models/seven_day_calendar.dart';
 
 class Homepage extends StatefulWidget {
@@ -61,11 +61,19 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     initializeScore();
   }
 
+  // To dispose controllers after use
+  @override
+  void dispose() {
+    tabController.dispose();
+    super.dispose();
+  }
+
+  // To show warnings for missing device data
   void _showErrorToast() {
     CherryToast.warning(
       height: 200,
       width: 400,
-      title: Text('Warning!', style: WorkSans.titleSmall,),
+      title: const Text('Warning!', style: WorkSans.titleSmall,),
       description: Text.rich(
       TextSpan(
         children: [
@@ -85,8 +93,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     ),
       displayIcon: true,
       animationType: AnimationType.fromTop,
-      animationDuration: Duration(milliseconds: 1000),
-      toastDuration: Duration(milliseconds: 5000),
+      animationDuration: const Duration(seconds: 1),
+      toastDuration: const Duration(seconds: 5),
       inheritThemeColors: true,
       autoDismiss: true,
       
@@ -94,11 +102,13 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     ;
   }
 
+  // Score initialization
   void initializeScore() {
     final headacheScore = HeadacheScore(showToastCallback: _showErrorToast);
     score = headacheScore.refreshScore();
   }
 
+  // To update username
   Future<void> loadUserName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -106,16 +116,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
     });
   }
 
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
-
+  // To change page using TabBar
   void _onItemTapped(int newIndex) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
       currentIndex = newIndex;
+      // Update username
       name = prefs.getString('name') ?? 'User';
     });
     tabController.animateTo(newIndex);
@@ -213,10 +219,9 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     style: WorkSans.headlineSmall,
                   ),
                   onTap: () async {
-                    final sp = await SharedPreferences.getInstance();
-                    await sp.remove('access');
-                    await sp.remove('refresh');
-                    //await sp.remove('name');
+                    final prefs = await SharedPreferences.getInstance();
+                    await prefs.remove('access');
+                    await prefs.remove('refresh');
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: ((context) => LoginPage())));
                   },
@@ -265,6 +270,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                 child: SizedBox(
                                     width: 350,
                                     child: Column(children: [
+                                      const SizedBox(height: 10,),
                                       Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             15, 0, 10, 0),
@@ -292,7 +298,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                         ),
                                       ),
                                       const SizedBox(
-                                        height: 10,
+                                        height: 15,
                                       ),
                                       Consumer<Day>(
                                           builder: (context, day, child) {
@@ -302,24 +308,27 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            DayArrows(
-                                                incrementDay: day.incrementDay,
-                                                decrementDay: day.decrementDay,
-                                                day: day),
+                                            //TodayDate(day: day),
                                             SevenDayCalendar(day: day),
+                                            const SizedBox(height: 10,),
+                                            const Text(
+                                              'Your Aura Score:',
+                                              style: WorkSans.titleMedium,
+                                            ),
+                                            const SizedBox(height: 5,),
                                             AuraScoreIndicator(
                                               score: score,
                                               day: day,
                                               onTap: () => _onItemTapped(1)
                                             ),
                                             const SizedBox(height: 30,),
-                                            const FindSolutions(),
+                                            FindSolutions(),
                                           ],
                                         )));
                                       })
                                     ]))),
                             Metricspage(),
-                            Accountpage(),
+                            const Accountpage(),
                           ],
                         ),
                       ),
@@ -365,7 +374,7 @@ String getText(double score) {
   } else if ((score >= 4) & (score < 6)) {
     return "High";
   } else {
-    return "Your level is very high!";
+    return "Very high!";
   }
 }
 
@@ -392,20 +401,3 @@ class TopSemiCircleClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
-
-// To set the color of objects according to the aura score
-/*
-Color getButtonColor(double score) {
-  if (score < 2) {
-    return Palette.lightBlue1;
-  } else if ((score >= 2) & (score < 4)) {
-    return Palette.lightBlue4;
-  } else if ((score >= 4) & (score < 6)) {
-    return Palette.blue;
-  } else {
-    return Palette.yellow;
-  }
-}
-*/
-
-

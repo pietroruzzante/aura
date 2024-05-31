@@ -1,12 +1,9 @@
 import 'package:aura/services/openWeather.dart';
 import 'package:aura/services/impact.dart';
-import 'package:cherry_toast/resources/arrays.dart';
-import 'package:flutter/material.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:cherry_toast/cherry_toast.dart';
 
 class HeadacheScore {
   final List<double> _scores = List<double>.filled(7, 0.0);
@@ -25,7 +22,7 @@ class HeadacheScore {
 
     DateTime today = DateTime.now();
     //print('today: $today');
-    DateTime yesterday = today.subtract(Duration(days: 1));
+    DateTime yesterday = today.subtract(const Duration(days: 1));
 
     final SharedPreferences sp = await SharedPreferences.getInstance();
     final keys = sp.getKeys();
@@ -83,7 +80,7 @@ class HeadacheScore {
   Future<List<double>> getStress() async {
     final todayData = await impact.getSleepHR();
     final hrv = await impact.calculateHRV();
-    final SharedPreferences sp = await SharedPreferences.getInstance();
+    //final SharedPreferences sp = await SharedPreferences.getInstance();
     const age = 23;
 
     const featureNames = [
@@ -220,7 +217,7 @@ List<int> unixDates() {
 
   for (int i = 0; i < 7; i++) {
     dates[i] =
-        DateTime.now().subtract(Duration(days: 3)).add(Duration(days: i));
+        DateTime.now().subtract(const Duration(days: 3)).add(Duration(days: i));
   }
   List<int> unixTimestamps = [];
   for (int i = 0; i < dates.length; i++) {

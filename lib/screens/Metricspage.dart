@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:aura/models/headache_score.dart';
+import 'package:aura/models/homepage_widgets/headache_score.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:cherry_toast/cherry_toast.dart';
@@ -41,7 +41,7 @@ class _MetricspageState extends State<Metricspage> {
             final data = snapshot.data;
             return SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(30, 15, 30, 30),
+                padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -52,7 +52,7 @@ class _MetricspageState extends State<Metricspage> {
                           Text('Insights',
                               style: WorkSans.titleMedium
                                   .copyWith(color: Palette.white)),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 15),
                           // Aura score chart
                           Text(
                             'Previous scores and forecasting:',
@@ -219,7 +219,7 @@ class _MetricspageState extends State<Metricspage> {
                                         foregroundStrokeWidth: 6,
                                         backgroundStrokeWidth: 6,
                                         seekColor: Palette.white,
-                                        seekSize: 8,
+                                        seekSize: 5,
                                         animation: true,
                                         animationDuration:
                                             Duration(milliseconds: 500),
@@ -250,7 +250,7 @@ class _MetricspageState extends State<Metricspage> {
                                         foregroundStrokeWidth: 6,
                                         backgroundStrokeWidth: 6,
                                         seekColor: Palette.white,
-                                        seekSize: 8,
+                                        seekSize: 5,
                                         animation: true,
                                         animationDuration:
                                             Duration(milliseconds: 500),
