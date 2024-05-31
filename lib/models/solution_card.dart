@@ -10,10 +10,7 @@ class SolutionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
-          context, MaterialPageRoute(builder: (context) => solution.pageRoute!));
-      },
+      onTap: () => solution.open(context),
       child: SizedBox(
         height: 225,
         width: 300,
