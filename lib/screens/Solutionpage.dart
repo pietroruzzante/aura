@@ -135,122 +135,127 @@ class _SolutionpageState extends State<Solutionpage> {
               backgroundColor: Palette.white,
               iconTheme: const IconThemeData(color: Palette.deepBlue),
             ),
-            body: Stack(
-              children: [
-                // Background
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: ClipPath(
-                    child: CurvedBackground(
-                      height: MediaQuery.of(context).size.height * 0.25,
-                      color: Palette.blue,
-                    ),
-                  ),
-                ),
-                FutureBuilder<dynamic>(
+            body: Center(
+              child: SingleChildScrollView(
+                child: FutureBuilder<dynamic>(
                     future: _loadData(),
                     builder: (context, snapshot) {
-                      if (snapshot.connectionState ==
-                          ConnectionState.waiting) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       } else if (snapshot.hasError) {
                         return const Text('Error');
                       } else {
                         final data = snapshot.data;
-                        return Column(
+                        return Stack(
                           children: [
                             Positioned(
-                              top: 0,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        'Did you know...?',
-                                        style: WorkSans.titleSmall,
-                                      ),
-                                    ),
-                                    if (_randomMigraineInfo != null)
-                                      SizedBox(
-                                          width: MediaQuery.of(context).size.width -
-                                              40,
-                                          child: RandomInfoCard(
-                                              migraineInfo:
-                                                  _randomMigraineInfo!)),
-                                  ],
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: ClipPath(
+                                child: CurvedBackground(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.25,
+                                  color: Palette.blue,
                                 ),
                               ),
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(left: 30),
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  'Try some of our solutions:',
-                                  style: WorkSans.titleSmall,
-                                  //.copyWith(color: Colors.grey[400]),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 20),
-                              child: FlutterCarousel(
-                                options: CarouselOptions(
-                                  viewportFraction: 0.9,
-                                  height: 400,
-                                  showIndicator: true,
-                                  indicatorMargin: 0,
-                                  slideIndicator: CircularWaveSlideIndicator(
-                                    indicatorBackgroundColor:
-                                        Palette.deepBlue,
-                                    currentIndicatorColor: Palette.white,
-                                  ),
-                                ),
-                                items: _getSolutions(data!).map((solution) {
-                                  return Builder(
-                                      builder: (BuildContext context) {
-                                    return Column(
+                            Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        SizedBox(
-                                          height: 150,
-                                          child: Padding(
-                                            padding:
-                                                const EdgeInsets.fromLTRB(
-                                                    17, 0, 17, 15),
-                                            child: Text(
-                                              solution.description,
-                                              style: WorkSans.bodyMedium
-                                                  .copyWith(
-                                                color: Palette.deepBlue,
-                                              ),
-                                              textAlign: TextAlign.justify,
-                                            ),
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Text(
+                                            'Did you know...?',
+                                            style: WorkSans.titleSmall,
                                           ),
                                         ),
-                                        SolutionCard(
-                                          solution: solution,
-                                        ),
+                                        if (_randomMigraineInfo != null)
+                                          SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  40,
+                                              child: RandomInfoCard(
+                                                  migraineInfo:
+                                                      _randomMigraineInfo!)),
                                       ],
-                                    );
-                                  });
-                                }).toList(),
-                              ),
+                                    ),
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 30),
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      'Try some of our solutions:',
+                                      style: WorkSans.titleSmall,
+                                      //.copyWith(color: Colors.grey[400]),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 20),
+                                  child: FlutterCarousel(
+                                    options: CarouselOptions(
+                                      viewportFraction: 0.9,
+                                      height: 400,
+                                      showIndicator: true,
+                                      indicatorMargin: 0,
+                                      slideIndicator: CircularWaveSlideIndicator(
+                                        indicatorBackgroundColor:
+                                            Palette.deepBlue,
+                                        currentIndicatorColor: Palette.white,
+                                      ),
+                                    ),
+                                    items: _getSolutions(data!).map((solution) {
+                                      return Builder(
+                                          builder: (BuildContext context) {
+                                        return Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 150,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        17, 0, 17, 15),
+                                                child: Text(
+                                                  solution.description,
+                                                  style: WorkSans.bodyMedium
+                                                      .copyWith(
+                                                    color: Palette.deepBlue,
+                                                  ),
+                                                  textAlign: TextAlign.justify,
+                                                ),
+                                              ),
+                                            ),
+                                            SolutionCard(
+                                              solution: solution,
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                    }).toList(),
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         );
                       }
                     }),
-              ],
+              ),
             )));
   }
 
