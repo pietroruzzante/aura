@@ -2,9 +2,9 @@ import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:aura/screens/EditAccount.dart';
-import 'package:aura/models/setting_widget/forward_button.dart';
-import 'package:aura/models/setting_widget/setting_item.dart';
-import 'package:aura/models/setting_widget/setting_switch.dart';
+import 'package:aura/models/edit_account_widgets/forward_button.dart';
+import 'package:aura/models/edit_account_widgets/setting_item.dart';
+import 'package:aura/models/edit_account_widgets/setting_switch.dart';
 import 'package:aura/models/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 typedef UserNameUpdatedCallback = void Function(String newName);
@@ -37,7 +37,7 @@ class _AccountpageState extends State<Accountpage> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(30, 15, 30, 30),
+            padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -45,7 +45,7 @@ class _AccountpageState extends State<Accountpage> {
                   "Account",
                   style: WorkSans.titleMedium.copyWith(color: Palette.white),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15,),
                 SizedBox(
                   width: double.infinity,
                   child: Row(
@@ -58,36 +58,36 @@ class _AccountpageState extends State<Accountpage> {
                           style: WorkSans.titleMedium.copyWith(color: Palette.blue),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 15),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             name,
-                            style: WorkSans.headlineMedium.copyWith(color: Palette.white),
+                            style: WorkSans.headlineLarge.copyWith(color: Palette.white, fontSize: 30),
                           ),
-                          const SizedBox(height: 10),
-                          Text(
-                            "test@example.com",
-                            style: WorkSans.bodyMedium.copyWith(color: Colors.blueGrey),
-                          )
                         ],
                       ),
                       const Spacer(),
                       ForwardButton(
-                        onTap: () {
-                          Navigator.push(
+                        onTap: () async {
+                          final updatedUsername = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditAccountpage(),
                             ),
                           );
+                          if (updatedUsername != null) {
+                            setState(() {
+                              name = updatedUsername;
+                            });
+                          }
                         },
                       )
                     ],
                   ),
                 ),
-                SizedBox(height: 40),
+                SizedBox(height: 30),
                 Text(
                   "Settings",
                   style: WorkSans.titleMedium,

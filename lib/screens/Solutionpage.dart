@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:aura/models/curved_background.dart';
-import 'package:aura/models/headache_score.dart';
+import 'package:aura/models/homepage_widgets/headache_score.dart';
 import 'package:aura/models/random_info.dart';
 import 'package:aura/models/random_info_card.dart';
 import 'package:aura/models/work_sans.dart';
@@ -42,7 +42,7 @@ class _SolutionpageState extends State<Solutionpage> {
     //Solution('More coming', 'assets/more_coming.png')
   ];
 
-  List<RandomInfo> _migraineInfoList = [
+  final List<RandomInfo> _migraineInfoList = [
     RandomInfo('Migraines are a neurological disorder',
         'They can cause severe headaches, nausea, and sensitivity to light or sound.'),
     RandomInfo('There are different types of migraines',
@@ -133,7 +133,7 @@ class _SolutionpageState extends State<Solutionpage> {
                 style: WorkSans.titleSmall.copyWith(color: Palette.deepBlue),
               ),
               backgroundColor: Palette.white,
-              iconTheme: IconThemeData(color: Palette.deepBlue),
+              iconTheme: const IconThemeData(color: Palette.deepBlue),
             ),
             body: Stack(
               children: [
@@ -149,113 +149,107 @@ class _SolutionpageState extends State<Solutionpage> {
                     ),
                   ),
                 ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: FutureBuilder<dynamic>(
-                      future: _loadData(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Text('Error');
-                        } else {
-                          final data = snapshot.data;
-                          return Column(
-                            children: [
-                              Positioned(
-                                top: 0,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          'Did you know...?',
-                                          style: WorkSans.titleSmall,
-                                        ),
+                FutureBuilder<dynamic>(
+                    future: _loadData(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Text('Error');
+                      } else {
+                        final data = snapshot.data;
+                        return Column(
+                          children: [
+                            Positioned(
+                              top: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(left: 10),
+                                      child: Text(
+                                        'Did you know...?',
+                                        style: WorkSans.titleSmall,
                                       ),
-                                      if (_randomMigraineInfo != null)
-                                        Container(
-                                            width: MediaQuery.of(context).size.width -
-                                                40,
-                                            child: RandomInfoCard(
-                                                migraineInfo:
-                                                    _randomMigraineInfo!)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 30),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    'Try some of our solutions:',
-                                    style: WorkSans.titleSmall,
-                                    //.copyWith(color: Colors.grey[400]),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 20),
-                                child: FlutterCarousel(
-                                  options: CarouselOptions(
-                                    viewportFraction: 0.9,
-                                    height: 400,
-                                    showIndicator: true,
-                                    indicatorMargin: 0,
-                                    slideIndicator: CircularWaveSlideIndicator(
-                                      indicatorBackgroundColor:
-                                          Palette.deepBlue,
-                                      currentIndicatorColor: Palette.white,
                                     ),
+                                    if (_randomMigraineInfo != null)
+                                      SizedBox(
+                                          width: MediaQuery.of(context).size.width -
+                                              40,
+                                          child: RandomInfoCard(
+                                              migraineInfo:
+                                                  _randomMigraineInfo!)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 30),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  'Try some of our solutions:',
+                                  style: WorkSans.titleSmall,
+                                  //.copyWith(color: Colors.grey[400]),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: FlutterCarousel(
+                                options: CarouselOptions(
+                                  viewportFraction: 0.9,
+                                  height: 400,
+                                  showIndicator: true,
+                                  indicatorMargin: 0,
+                                  slideIndicator: CircularWaveSlideIndicator(
+                                    indicatorBackgroundColor:
+                                        Palette.deepBlue,
+                                    currentIndicatorColor: Palette.white,
                                   ),
-                                  items: _getSolutions(data!).map((solution) {
-                                    return Builder(
-                                        builder: (BuildContext context) {
-                                      return Column(
-                                        children: [
-                                          Container(
-                                            height: 150,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      17, 0, 17, 15),
-                                              child: Text(
-                                                solution.description,
-                                                style: WorkSans.bodyMedium
-                                                    .copyWith(
-                                                  color: Palette.deepBlue,
-                                                ),
-                                                textAlign: TextAlign.justify,
+                                ),
+                                items: _getSolutions(data!).map((solution) {
+                                  return Builder(
+                                      builder: (BuildContext context) {
+                                    return Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 150,
+                                          child: Padding(
+                                            padding:
+                                                const EdgeInsets.fromLTRB(
+                                                    17, 0, 17, 15),
+                                            child: Text(
+                                              solution.description,
+                                              style: WorkSans.bodyMedium
+                                                  .copyWith(
+                                                color: Palette.deepBlue,
                                               ),
+                                              textAlign: TextAlign.justify,
                                             ),
                                           ),
-                                          SolutionCard(
-                                            solution: solution,
-                                          ),
-                                        ],
-                                      );
-                                    });
-                                  }).toList(),
-                                ),
+                                        ),
+                                        SolutionCard(
+                                          solution: solution,
+                                        ),
+                                      ],
+                                    );
+                                  });
+                                }).toList(),
                               ),
-                            ],
-                          );
-                        }
-                      }),
-                ),
+                            ),
+                          ],
+                        );
+                      }
+                    }),
               ],
             )));
   }
