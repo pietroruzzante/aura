@@ -7,13 +7,15 @@ import 'package:aura/models/random_info_card.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/solution_screens/MichaelSol.dart';
 import 'package:aura/services/impact.dart';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/models/solution_card.dart';
 import 'package:aura/models/solution.dart';
 import 'package:aura/screens/solution_screens/BreathingSol.dart';
-import 'package:aura/screens/solution_screens/SpotifySol.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'solution_screens/ExerciseSol.dart';
 import 'solution_screens/SleepingSol.dart';
 
@@ -25,12 +27,11 @@ class Solutionpage extends StatefulWidget {
 }
 
 class _SolutionpageState extends State<Solutionpage> {
-  int age = 25;
+  late Future<List<dynamic>> futureData;
 
   final List<Solution> _fixedSolutions = [
     Solution('Spotify', 'assets/spotify.png',
         'Dive into our specially curated Spotify playlist crafted to ease migraine symptoms and promote well-being. Take a break from tension and pain, and let the therapeutic power of music transport you. Discover how simple listening can make a difference in your personal relief.',
-        pageRoute: SpotifySol(),
         url:
             'https://open.spotify.com/playlist/2bz6wk2mbPgF9ZNXhLN4Ts?si=0fe7203fa4364f4e'),
     Solution('Breathing', 'assets/breathing.png',
@@ -63,7 +64,7 @@ class _SolutionpageState extends State<Solutionpage> {
         'Staying physically active helps decrease the frequency and severity of attacks.'),
     RandomInfo('Identifying and avoiding personal triggers is key',
         'Avoiding certain foods or stressful situations can help prevent migraines.'),
-    RandomInfo('Keeping a regular sleep routine makes a difference',
+    RandomInfo('Regular sleep routines make a difference',
         'Getting enough sleep and keeping consistent sleep times helps reduce migraines.'),
     RandomInfo('Limiting caffeine can be helpful',
         'Caffeine can assist, but overdoing it can turn into a trigger.'),
@@ -75,8 +76,7 @@ class _SolutionpageState extends State<Solutionpage> {
         'If one or both of your parents suffer from migraines, you\'re more likely to have them too.'),
     RandomInfo('Over-the-counter meds like ibuprofen or acetaminophen can help',
         'They can relieve migraine symptoms.'),
-    RandomInfo(
-        'Alternative therapies like acupuncture and biofeedback are valid options',
+    RandomInfo('Alternative therapies include acupuncture and biofeedback',
         'Supplements like magnesium and riboflavin can also help.'),
     RandomInfo('Applying a cold or hot pack to your head or neck helps',
         'It can reduce pain during a migraine attack.'),
@@ -91,8 +91,13 @@ class _SolutionpageState extends State<Solutionpage> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    futureData = loadData(context);
     _setRandomMigraineInfo();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void _setRandomMigraineInfo() {
@@ -101,25 +106,6 @@ class _SolutionpageState extends State<Solutionpage> {
     setState(() {
       _randomMigraineInfo = _migraineInfoList[randomIndex];
     });
-  }
-
-/*
-  Future<void> _loadAge() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      age = prefs.getString('age') ?? '25'; // Default age is 25 if not found
-    });
-  }
-  */
-
-  Future<List<dynamic>> _loadData() async {
-    //await _loadAge();
-    final impact = Impact();
-    final todaySleep = await impact.getTodaySleep();
-    final todayStress = await HeadacheScore().getStress();
-    final todayWeather = await HeadacheScore().getWeather();
-    final lastDateExercise = await impact.getLastExerciseDate();
-    return [todaySleep, todayStress, todayWeather, lastDateExercise];
   }
 
   @override
@@ -138,7 +124,7 @@ class _SolutionpageState extends State<Solutionpage> {
             body: Center(
               child: SingleChildScrollView(
                 child: FutureBuilder<dynamic>(
-                    future: _loadData(),
+                    future: futureData,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
@@ -213,7 +199,8 @@ class _SolutionpageState extends State<Solutionpage> {
                                       height: 400,
                                       showIndicator: true,
                                       indicatorMargin: 0,
-                                      slideIndicator: CircularWaveSlideIndicator(
+                                      slideIndicator:
+                                          CircularWaveSlideIndicator(
                                         indicatorBackgroundColor:
                                             Palette.deepBlue,
                                         currentIndicatorColor: Palette.white,
@@ -261,7 +248,7 @@ class _SolutionpageState extends State<Solutionpage> {
 
   List<Solution> _getSolutions(List<dynamic> data) {
     List<Solution> solutions = List.from(_fixedSolutions);
-    if (needSleep(data[0])) {
+    if (needSleep(data[0], data[8])) {
       solutions.add(Solution('Sleeping', 'assets/spotify.png', 'description',
           pageRoute: SleepingSol()));
     }
@@ -272,7 +259,7 @@ class _SolutionpageState extends State<Solutionpage> {
     return solutions;
   }
 
-  bool needSleep(double todaySleep) {
+  bool needSleep(double todaySleep, int age) {
     int sleepNeeded;
 
     if (age <= 12) {
@@ -288,4 +275,62 @@ class _SolutionpageState extends State<Solutionpage> {
   bool needExercise() {
     return true;
   }
+}
+
+Future<List<dynamic>> loadData(BuildContext context) async {
+  final impact = Impact();
+  final todaySleep = await impact.getTodaySleep();
+  final todayStress = await HeadacheScore().getStress();
+  final todayWeather = await HeadacheScore().getWeather();
+  final lastDateExercise = await impact.getLastExerciseDate();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  final day0 = prefs.getDouble('day0');
+  final day1 = prefs.getDouble('day1');
+  final day2 = prefs.getDouble('day2');
+  final age = int.parse(prefs.getString('age')!);
+  final score = List.generate(
+      todayWeather.length, (index) => todayWeather[index] + todayStress[index]);
+
+  if (todaySleep == 0 || lastDateExercise == 'Not available data') {
+    _showErrorToast(context);
+  }
+  return [
+    todaySleep,
+    todayStress,
+    todayWeather,
+    lastDateExercise,
+    score,
+    day0,
+    day1,
+    day2,
+    age
+  ];
+}
+
+void _showErrorToast(BuildContext context) {
+  CherryToast.warning(
+    height: 100,
+    width: 400,
+    title: const Text(
+      'Warning!',
+      style: WorkSans.titleSmall,
+    ),
+    description: Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: 'Some data are not available',
+            style: WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+      textAlign: TextAlign.left,
+    ),
+    displayIcon: true,
+    animationType: AnimationType.fromTop,
+    animationDuration: const Duration(seconds: 1),
+    toastDuration: const Duration(seconds: 5),
+    inheritThemeColors: true,
+    autoDismiss: true,
+  ).show(context);
 }
