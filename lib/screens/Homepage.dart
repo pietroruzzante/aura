@@ -15,7 +15,7 @@ import '../models/find_solutions.dart';
 import '../models/seven_day_calendar.dart';
 
 class Homepage extends StatefulWidget {
-  const Homepage({Key? key}) : super(key: key);
+  const Homepage({super.key});
 
   @override
   _HomepageState createState() => _HomepageState();
@@ -31,15 +31,15 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   String name = 'User';
 
   List<BottomNavigationBarItem> navBarItems = [
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
       icon: Icon(Icons.health_and_safety),
       label: 'Aura Score',
     ),
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
       icon: Icon(Icons.query_stats),
       label: 'Metrics',
     ),
-    BottomNavigationBarItem(
+    const BottomNavigationBarItem(
       icon: Icon(Icons.person),
       label: 'Account',
     ),
@@ -87,9 +87,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       color: Palette.white,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            "Aura",
-          ),
+          title: const Text("Aura"),
         ),
         // Drawer
         drawer: Drawer(
@@ -106,24 +104,20 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     height: 50,
                     width: 50,
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Text(
+                  const SizedBox(width: 10),
+                  const Text(
                     'Aura',
                     style: WorkSans.titleSmall,
                   )
                 ]),
-                SizedBox(
-                  height: 20,
-                ),
+                const SizedBox(height: 20),
                 // To Homepage
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.health_and_safety,
                     color: Palette.deepBlue,
                   ),
-                  title: Text(
+                  title: const Text(
                     'Aura Score',
                     style: WorkSans.headlineSmall,
                   ),
@@ -134,11 +128,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 ),
                 // To Metricspage
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.query_stats,
                     color: Palette.deepBlue,
                   ),
-                  title: Text(
+                  title: const Text(
                     'Metrics',
                     style: WorkSans.headlineSmall,
                   ),
@@ -149,11 +143,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 ),
                 // To Accountpage
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.person,
                     color: Palette.deepBlue,
                   ),
-                  title: Text(
+                  title: const Text(
                     'Account',
                     style: WorkSans.headlineSmall,
                   ),
@@ -162,14 +156,14 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     Navigator.pop(context);
                   },
                 ),
-                Divider(),
+                const Divider(),
                 // Logout
                 ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.logout,
                     color: Palette.deepBlue,
                   ),
-                  title: Text(
+                  title: const Text(
                     'Logout',
                     style: WorkSans.headlineSmall,
                   ),
@@ -208,12 +202,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 future: score,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+                    return const Center(
                       child: CircularProgressIndicator(),
                     );
                   }
                   if (snapshot.hasError) {
-                    print(snapshot.error);
                     return Text('Error: ${snapshot.error}');
                   }
                   final HeadacheScore score = snapshot.data!;
@@ -243,7 +236,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                                 ),
                                               ),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 5,
                                             ),
                                             Image.asset(
@@ -253,7 +246,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                           ],
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Consumer<Day>(
@@ -274,8 +267,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                               day: day,
                                               onTap: () => _onItemTapped(1)
                                             ),
-                                            SizedBox(height: 30,),
-                                            FindSolutions(),
+                                            const SizedBox(height: 30,),
+                                            const FindSolutions(),
                                           ],
                                         )));
                                       })
@@ -289,7 +282,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                         decoration: BoxDecoration(
                           color: Palette.white,
                           borderRadius: BorderRadius.circular(30.0),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.blueGrey,
                               blurRadius: 8.0,
@@ -297,7 +290,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           ],
                         ),
                         margin:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         child: BottomNavigationBar(
                           currentIndex: currentIndex,
                           onTap: _onItemTapped,
