@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:aura/models/headache_score.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/models/work_sans.dart';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/services/impact.dart';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
@@ -11,14 +13,25 @@ import 'package:info_widget/info_widget.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Metricspage extends StatelessWidget {
-  const Metricspage({super.key});
+class Metricspage extends StatefulWidget {
+  @override
+  _MetricspageState createState() => _MetricspageState();
+}
+
+class _MetricspageState extends State<Metricspage> {
+  late Future<List<dynamic>> futureData;
+
+  @override
+  void initState() {
+    super.initState();
+    futureData = loadData(context);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder<dynamic>(
-        future: loadData(),
+        future: futureData,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -346,6 +359,8 @@ class Metricspage extends StatelessWidget {
     );
   }
 
+  
+
   String getSleepText(double todaySleep, int age) {
     int sleepNeeded;
     if (age <= 12) {
@@ -380,7 +395,7 @@ class Metricspage extends StatelessWidget {
     }
   }
 
-  Future<List<dynamic>> loadData() async {
+  Future<List<dynamic>> loadData(BuildContext context) async {
     final impact = Impact();
     final todaySleep = await impact.getTodaySleep();
     final todayStress = await HeadacheScore().getStress();
@@ -393,6 +408,10 @@ class Metricspage extends StatelessWidget {
     final age = int.parse(prefs.getString('age')!);
     final score = List.generate(todayWeather.length,
         (index) => todayWeather[index] + todayStress[index]);
+
+    if (todaySleep == 0 || lastDateExercise == 'Not available data') {
+    _showErrorToast(context);
+  }
     return [
       todaySleep,
       todayStress,
@@ -550,3 +569,33 @@ String lastDayOfWorkOut(String lastDateExercise) {
     return '$dayOfWeek, $formattedDate';
   }
 }
+
+void _showErrorToast(BuildContext context) {
+    CherryToast.warning(
+      height: 100,
+      width: 400,
+      title: Text('Warning!', style: WorkSans.titleSmall,),
+      description: Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: 'Some data are not available',
+            style: WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+      textAlign: TextAlign.left,
+    ),
+      displayIcon: true,
+      animationType: AnimationType.fromTop,
+      animationDuration: Duration(milliseconds: 1000),
+      toastDuration: Duration(milliseconds: 5000),
+      inheritThemeColors: true,
+      autoDismiss: true,
+      
+    ).show(context)
+    ;
+  }
+
+
+

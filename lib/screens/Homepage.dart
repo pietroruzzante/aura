@@ -1,6 +1,8 @@
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Accountpage.dart';
 import 'package:aura/screens/Loginpage.dart';
+import 'package:cherry_toast/cherry_toast.dart';
+import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
 import 'package:provider/provider.dart';
@@ -24,8 +26,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
   int currentIndex = 0;
   late TabController tabController;
-
-  final score = HeadacheScore().refreshScore();
+  late Future<HeadacheScore> score;
   final day = Day();
 
   String name = 'User';
@@ -57,6 +58,45 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       }
     });
     loadUserName();
+    initializeScore();
+  }
+
+  void _showErrorToast() {
+    CherryToast.warning(
+      height: 200,
+      width: 400,
+      title: Text('Warning!', style: WorkSans.titleSmall,),
+      description: Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: 'One or more data not available',
+            style: WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w800),
+          ),
+          TextSpan(
+            text: '\nStress estimate could be inaccurate!',
+            style: WorkSans.headlineSmall.copyWith(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+      textAlign: TextAlign.left,
+    ),
+      displayIcon: true,
+      animationType: AnimationType.fromTop,
+      animationDuration: Duration(milliseconds: 1000),
+      toastDuration: Duration(milliseconds: 5000),
+      inheritThemeColors: true,
+      autoDismiss: true,
+      
+    ).show(context)
+    ;
+  }
+
+  void initializeScore() {
+    final headacheScore = HeadacheScore(showToastCallback: _showErrorToast);
+    score = headacheScore.refreshScore();
   }
 
   Future<void> loadUserName() async {
@@ -79,6 +119,11 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
       name = prefs.getString('name') ?? 'User';
     });
     tabController.animateTo(newIndex);
+
+    if (newIndex == 0) {
+      initializeScore();
+      loadUserName();
+    }
   }
 
   @override
@@ -362,3 +407,5 @@ Color getButtonColor(double score) {
   }
 }
 */
+
+
