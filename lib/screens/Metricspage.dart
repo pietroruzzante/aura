@@ -56,9 +56,13 @@ class _MetricspageState extends State<Metricspage> {
                           // Aura score chart
                           Text(
                             'Previous scores and forecasting:',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue, fontWeight: FontWeight.bold),
+                            style: WorkSans.bodyMedium.copyWith(
+                                color: Palette.deepBlue,
+                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 5,),
+                          const SizedBox(
+                            height: 5,
+                          ),
                           Container(
                             decoration: BoxDecoration(
                               boxShadow: const [
@@ -73,15 +77,16 @@ class _MetricspageState extends State<Metricspage> {
                             child: AspectRatio(
                               aspectRatio: 1.8,
                               child: Padding(
-                                padding: EdgeInsets.fromLTRB(10, 15, 20, 2),
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 15, 20, 2),
                                 child: LineChart(
-                                  duration: Duration(milliseconds: 1000),
+                                  duration: const Duration(seconds: 1),
                                   LineChartData(
                                     minX: 0,
                                     maxX: 6,
                                     minY: 0,
                                     maxY: 8,
-                                    gridData: FlGridData(
+                                    gridData: const FlGridData(
                                       show: false,
                                       drawVerticalLine: true,
                                     ),
@@ -185,24 +190,29 @@ class _MetricspageState extends State<Metricspage> {
                           ),
                           Text(
                             'Today\'s score composition:',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue, fontWeight: FontWeight.bold),
+                            style: WorkSans.bodyMedium.copyWith(
+                                color: Palette.deepBlue,
+                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 5,),
+                          const SizedBox(
+                            height: 5,
+                          ),
                           Container(
                             decoration: BoxDecoration(
-                              color: Palette.white,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: const [
-                                BoxShadow(
-                                  blurRadius: 5,
-                                  color: Palette.softBlue2,
-                                )
-                              ]
-                            ),
+                                color: Palette.white,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: const [
+                                  BoxShadow(
+                                    blurRadius: 5,
+                                    color: Palette.softBlue2,
+                                  )
+                                ]),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   // Stress
                                   Column(
@@ -222,8 +232,9 @@ class _MetricspageState extends State<Metricspage> {
                                         seekSize: 5,
                                         animation: true,
                                         animationDuration:
-                                            Duration(milliseconds: 500),
-                                        animationCurve: Easing.standardDecelerate,
+                                            const Duration(milliseconds: 500),
+                                        animationCurve:
+                                            Easing.standardDecelerate,
                                         child: Center(
                                             child: Text(
                                           '${data[1][3].toInt()}/4',
@@ -232,7 +243,8 @@ class _MetricspageState extends State<Metricspage> {
                                               fontWeight: FontWeight.bold),
                                         )),
                                       ),
-                                      Text('stress', style: WorkSans.headlineSmall),
+                                      const Text('stress',
+                                          style: WorkSans.headlineSmall),
                                     ],
                                   ),
                                   // Weather
@@ -253,8 +265,9 @@ class _MetricspageState extends State<Metricspage> {
                                         seekSize: 5,
                                         animation: true,
                                         animationDuration:
-                                            Duration(milliseconds: 500),
-                                        animationCurve: Easing.standardDecelerate,
+                                            const Duration(milliseconds: 500),
+                                        animationCurve:
+                                            Easing.standardDecelerate,
                                         child: Center(
                                             child: Text(
                                           '${data[2][3].toInt()}/4',
@@ -278,7 +291,8 @@ class _MetricspageState extends State<Metricspage> {
                           const Text('Exercise', style: WorkSans.titleSmall),
                           Text(
                             'Your last workout session was on:',
-                            style: WorkSans.headlineSmall.copyWith(fontSize: 16),
+                            style:
+                                WorkSans.headlineSmall.copyWith(fontSize: 16),
                           ),
                           // Last exercise container
                           Container(
@@ -287,15 +301,14 @@ class _MetricspageState extends State<Metricspage> {
                             decoration: BoxDecoration(
                                 color: Palette.softBlue1,
                                 borderRadius: BorderRadius.circular(20)),
-                            child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(lastDayOfWorkOut(data[3]),
-                                      style: WorkSans.bodyMedium.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                          color: Palette.deepBlue)),
-                                ),
+                            child: Stack(children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text(lastDayOfWorkOut(data[3]),
+                                    style: WorkSans.bodyMedium.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Palette.deepBlue)),
+                              ),
                               Align(
                                 alignment: Alignment.centerRight,
                                 child: Transform.scale(
@@ -330,10 +343,6 @@ class _MetricspageState extends State<Metricspage> {
                           ),
                           // Sleep
                           const Text('Sleep', style: WorkSans.titleSmall),
-                        ],
-                      ),
-                      Column(
-                        children: [
                           SleepIndicator(todaySleep: data[0], age: data[8]),
                           const SizedBox(
                             height: 5,
@@ -348,6 +357,58 @@ class _MetricspageState extends State<Metricspage> {
                               ),
                             ],
                           ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          // Weather
+                          const Text('Weather', style: WorkSans.titleSmall),
+                          Text(
+                            'About today\'s weather:',
+                            style:
+                                WorkSans.headlineSmall.copyWith(fontSize: 16),
+                          ),
+                          Container(
+                            height: 40,
+                            width: MediaQuery.sizeOf(context).width - 60,
+                            decoration: BoxDecoration(
+                                color: Palette.softBlue1,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: Stack(children: [
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text('pressure',
+                                    style: WorkSans.bodyMedium.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Palette.deepBlue)),
+                              ),
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(left: 5),
+                                  child: Icon(
+                                    Icons.wb_sunny_outlined,
+                                  ),
+                                ),
+                              ),
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Transform.scale(
+                                  scale: 0.8,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: InfoWidget(
+                                      infoText:
+                                          'Spiegare che il meteo è preso ogni 3 ore?',
+                                      infoTextStyle: WorkSans.bodyMedium
+                                          .copyWith(color: Palette.deepBlue),
+                                      iconData: Icons.info,
+                                      iconColor: Palette.blue,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ]),
+                          ),
                         ],
                       ),
                     ]),
@@ -358,8 +419,6 @@ class _MetricspageState extends State<Metricspage> {
       ),
     );
   }
-
-  
 
   String getSleepText(double todaySleep, int age) {
     int sleepNeeded;
@@ -410,8 +469,8 @@ class _MetricspageState extends State<Metricspage> {
         (index) => todayWeather[index] + todayStress[index]);
 
     if (todaySleep == 0 || lastDateExercise == 'Not available data') {
-    _showErrorToast(context);
-  }
+      _showErrorToast(context);
+    }
     return [
       todaySleep,
       todayStress,
@@ -453,10 +512,12 @@ class SleepIndicator extends StatelessWidget {
                 color: Palette.softBlue1,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Stack(
-                children: [
+              child: Stack(children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 40,),
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                    right: 40,
+                  ),
                   child: SleepBar(todaySleep: todaySleep, age: age),
                 ),
                 Align(
@@ -468,8 +529,8 @@ class SleepIndicator extends StatelessWidget {
                       child: InfoWidget(
                         infoText:
                             'Based on your age, you should sleep at least ${reccomendedSleepHours(age)} hours per night',
-                        infoTextStyle:
-                            WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                        infoTextStyle: WorkSans.bodyMedium
+                            .copyWith(color: Palette.deepBlue),
                         iconData: Icons.info,
                         iconColor: Palette.blue,
                       ),
@@ -571,11 +632,14 @@ String lastDayOfWorkOut(String lastDateExercise) {
 }
 
 void _showErrorToast(BuildContext context) {
-    CherryToast.warning(
-      height: 100,
-      width: 400,
-      title: Text('Warning!', style: WorkSans.titleSmall,),
-      description: Text.rich(
+  CherryToast.warning(
+    height: 100,
+    width: 400,
+    title: const Text(
+      'Warning!',
+      style: WorkSans.titleSmall,
+    ),
+    description: Text.rich(
       TextSpan(
         children: [
           TextSpan(
@@ -586,16 +650,11 @@ void _showErrorToast(BuildContext context) {
       ),
       textAlign: TextAlign.left,
     ),
-      displayIcon: true,
-      animationType: AnimationType.fromTop,
-      animationDuration: Duration(milliseconds: 1000),
-      toastDuration: Duration(milliseconds: 5000),
-      inheritThemeColors: true,
-      autoDismiss: true,
-      
-    ).show(context)
-    ;
-  }
-
-
-
+    displayIcon: true,
+    animationType: AnimationType.fromTop,
+    animationDuration: const Duration(seconds: 1),
+    toastDuration: const Duration(seconds: 5),
+    inheritThemeColors: true,
+    autoDismiss: true,
+  ).show(context);
+}
