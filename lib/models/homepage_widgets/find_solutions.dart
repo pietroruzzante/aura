@@ -22,6 +22,12 @@ class _FindSolutionsState extends State<FindSolutions> with TickerProviderStateM
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
