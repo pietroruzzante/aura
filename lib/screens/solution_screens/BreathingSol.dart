@@ -5,17 +5,23 @@ import 'dart:async';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
 class BreathingSol extends StatelessWidget {
+  const BreathingSol({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text(
+        title: const Text(
           'Take a deep breath',
-          style: WorkSans.titleSmall.copyWith(color: Palette.white),
+          style: WorkSans.titleSmall,
         ),
+        backgroundColor: Palette.white,
+        iconTheme: const IconThemeData(color: Palette.deepBlue),
       ),
-      body: BreathingPhases(),
+      body: Container(
+          width: MediaQuery.of(context).size.width,
+          decoration: const BoxDecoration(color: Palette.white),
+          child: const BreathingPhases()),
     );
   }
 }
@@ -37,89 +43,102 @@ class _BreathingSolState extends State<BreathingPhases> {
   }
 
   void _stopCycle() {
-    setState(() {
-      _isCycleActive = false;
-    });
+    if (mounted) {
+      setState(() {
+        _isCycleActive = false;
+      });
+    }
   }
 
   @override
   void dispose() {
-    if (_isCycleActive) {
-      _stopCycle();
-    }
+    _isCycleActive = false;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AnimatedContainer(
-          duration: Duration(seconds: 1),
-          color: Palette.white,
-          child: Center(
-            child: _isCycleActive
-                ? StateCycle(
-                    onCycleEnd: () {
-                      setState(() {
-                        _isCycleActive = false;
-                      });
-                    },
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Card(
-                        color: Palette.blue,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Text(
-                            'The 4-7-8 breathing technique is a method that can help reduce anxiety and improve sleep. It involves breathing in for four seconds, holding your breath for seven seconds, and then exhaling for eight seconds. This technique helps to slow down your breathing and encourages your body to enter a state of deep relaxation.',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(color: Palette.white),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _startCycle,
-                        child: Text('Start Breathing Exercise'),
-                      ),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        child: Text('Other solutions'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: _isCycleActive
-              ? Padding(
-                padding: EdgeInsets.only(bottom: 150),
-                child: ElevatedButton(
-                  onPressed: _stopCycle,
-                  child: Text('Stop Breathing Exercise',
-                  style: WorkSans.titleSmall,),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(30, 0, 30, 30),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width - 60,
+            height: 300,
+            decoration: BoxDecoration(
+              color: Palette.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: const [
+                BoxShadow(
+                  color: Palette.softBlue2,
+                  blurRadius: 5,
                 ),
-              )
-              : SizedBox(height: 200,),
-        ),
-      ],
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  if (!_isCycleActive)
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Are you ready?',
+                          style: WorkSans.titleMedium,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        CircularCountDownTimer(
+                          width: 200,
+                          height: 200,
+                          duration: 0,
+                          initialDuration: 0,
+                          fillColor: Palette.blue,
+                          ringColor: Palette.softBlue1,
+                          isTimerTextShown: false,
+                          textStyle: WorkSans.titleLarge,
+                          strokeCap: StrokeCap.round,
+                          textFormat: CountdownTextFormat.S,
+                          strokeWidth: 10,
+                          autoStart: true,
+                          isReverse: true,
+                          onComplete: () {},
+                        ),
+                      ],
+                    )
+                  else
+                    StateCycle(
+                      onCycleEnd: () {
+                        if (mounted) {
+                          setState(() {
+                            _isCycleActive = false;
+                          });
+                        }
+                      },
+                    ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _isCycleActive ? _stopCycle : _startCycle,
+            child: Text(
+              _isCycleActive
+                  ? 'Stop Breathing Exercise'
+                  : 'Start Breathing Exercise',
+              style: WorkSans.titleSmall.copyWith(fontSize: 18),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
-
 
 class StateCycle extends StatefulWidget {
   final Function onCycleEnd;
@@ -132,8 +151,8 @@ class StateCycle extends StatefulWidget {
 
 class _StateCycleState extends State<StateCycle> {
   int _currentStateIndex = 0;
-  List<String> _phases = ['Breathe In', 'Hold', 'Breathe Out'];
-  List<Duration> _durations = [
+  final List<String> _phases = ['Breathe In', 'Hold', 'Breathe Out'];
+  final List<Duration> _durations = const [
     Duration(seconds: 4),
     Duration(seconds: 7),
     Duration(seconds: 8),
@@ -169,39 +188,34 @@ class _StateCycleState extends State<StateCycle> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(height: 40,),
-          Text(
-            _phases[_currentStateIndex],
-            style: WorkSans.titleLarge,
-          ),
-          SizedBox(height: 40,),
-          CircularCountDownTimer(
-            width: 300,
-            height: 300,
-            duration: _durations[_currentStateIndex].inSeconds,
-            initialDuration: 0,
-            controller: _controller,
-            fillColor: Palette.deepBlue,
-            ringColor: Palette.softBlue1,
-            isTimerTextShown: true,
-            textStyle: WorkSans.titleLarge,
-            strokeCap: StrokeCap.round,
-            textFormat: CountdownTextFormat.S,
-            strokeWidth: 15,
-            autoStart: true, 
-            onComplete: () {
-            },
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text(
+          _phases[_currentStateIndex],
+          style: WorkSans.titleMedium,
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        CircularCountDownTimer(
+          width: 200,
+          height: 200,
+          duration: _durations[_currentStateIndex].inSeconds,
+          initialDuration: 0,
+          controller: _controller,
+          fillColor: Palette.blue,
+          ringColor: Palette.softBlue1,
+          isTimerTextShown: true,
+          textStyle: WorkSans.titleLarge,
+          strokeCap: StrokeCap.round,
+          textFormat: CountdownTextFormat.S,
+          strokeWidth: 10,
+          autoStart: true,
+          isReverse: true,
+          onComplete: () {},
+        ),
+      ],
     );
   }
 }

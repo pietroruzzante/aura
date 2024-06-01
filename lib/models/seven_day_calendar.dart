@@ -4,30 +4,35 @@ import 'package:aura/screens/Homepage.dart';
 import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
 
-class SevenDayCalendar extends StatelessWidget {
-  Day day;
+class SevenDayCalendar extends StatefulWidget {
+  final Day day;
 
   SevenDayCalendar({super.key, required this.day});
+
+  @override
+  State<SevenDayCalendar> createState() => _SevenDayCalendarState();
+}
+
+class _SevenDayCalendarState extends State<SevenDayCalendar> {
   @override
   Widget build(BuildContext context) {
-    DateTime selectedDate = getDateForValue(day.toInt());
-    return Container(
-        height: 150,
+    DateTime selectedDate = getDateForValue(widget.day.toInt());
+    return SizedBox(
         width: 500,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
           child: EasyInfiniteDateTimeLine(
-            firstDate: DateTime.now().subtract(Duration(days: 3)),
+            firstDate: DateTime.now().subtract(const Duration(days: 3)),
             focusDate: selectedDate,
-            lastDate: DateTime.now().add(Duration(days: 3)),
-            timeLineProps: EasyTimeLineProps(
+            lastDate: DateTime.now().add(const Duration(days: 3)),
+            timeLineProps: const EasyTimeLineProps(
                 separatorPadding: 1.0, margin: EdgeInsets.zero),
             dayProps: EasyDayProps(
               inactiveDayStyle: DayStyle(
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border(
+                  border: const Border(
                     bottom: BorderSide(
                       width: 2,
                       color: Palette.blue,
@@ -36,16 +41,16 @@ class SevenDayCalendar extends StatelessWidget {
                 ),
               ),
               todayStyle: DayStyle(
-                monthStrStyle: TextStyle(color: Palette.blue),
-                dayNumStyle: TextStyle(
+                monthStrStyle: const TextStyle(color: Palette.blue),
+                dayNumStyle: const TextStyle(
                     color: Palette.blue,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
-                dayStrStyle: TextStyle(color: Palette.blue),
+                dayStrStyle: const TextStyle(color: Palette.blue),
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border(
+                  border: const Border(
                     bottom: BorderSide(
                       width: 2,
                       color: Palette.blue,
@@ -60,8 +65,8 @@ class SevenDayCalendar extends StatelessWidget {
               )),
             ),
             showTimelineHeader: false,
-            onDateChange: (selectedDate) => day.setDay(
-                selectedDate, DateTime.now().subtract(Duration(days: 4))),
+            onDateChange: (selectedDate) => widget.day.setDay(
+                selectedDate, DateTime.now().subtract(const Duration(days: 4))),
           ),
         ));
   }
