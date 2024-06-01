@@ -269,62 +269,64 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           controller: tabController,
                           children: [
                             Center(
-                                child: SizedBox(
-                                    width: 350,
-                                    child: Column(children: [
-                                      Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            15, 0, 10, 0),
-                                        child: Row(
-                                          children: [
-                                            Flexible(
-                                              child: FittedBox(
-                                                fit: BoxFit.scaleDown,
-                                                child: Text(
-                                                  "Welcome, $name",
-                                                  style: WorkSans.displaySmall
-                                                      .copyWith(
-                                                          color: Palette.white),
+                                child: SingleChildScrollView(
+                                  child: SizedBox(
+                                      width: 350,
+                                      child: Column(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15, 0, 10, 0),
+                                          child: Row(
+                                            children: [
+                                              Flexible(
+                                                child: FittedBox(
+                                                  fit: BoxFit.scaleDown,
+                                                  child: Text(
+                                                    "Welcome, $name",
+                                                    style: WorkSans.displaySmall
+                                                        .copyWith(
+                                                            color: Palette.white),
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Image.asset(
-                                              'assets/waving-hand_1f44b.png',
-                                              scale: 4,
-                                            ),
-                                          ],
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Image.asset(
+                                                'assets/waving-hand_1f44b.png',
+                                                scale: 4,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Consumer<Day>(
-                                          builder: (context, day, child) {
-                                        return Center(
-                                            child: FittedBox(
-                                                child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            DayArrows(
-                                                incrementDay: day.incrementDay,
-                                                decrementDay: day.decrementDay,
-                                                day: day),
-                                            SevenDayCalendar(day: day),
-                                            AuraScoreIndicator(
-                                              score: score,
-                                              day: day,
-                                              onTap: () => _onItemTapped(1)
-                                            ),
-                                            SizedBox(height: 30,),
-                                            FindSolutions(),
-                                          ],
-                                        )));
-                                      })
-                                    ]))),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Consumer<Day>(
+                                            builder: (context, day, child) {
+                                          return Center(
+                                              child: FittedBox(
+                                                  child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              DayArrows(
+                                                  incrementDay: day.incrementDay,
+                                                  decrementDay: day.decrementDay,
+                                                  day: day),
+                                              SevenDayCalendar(day: day),
+                                              AuraScoreIndicator(
+                                                score: score,
+                                                day: day,
+                                                onTap: () => _onItemTapped(1)
+                                              ),
+                                              SizedBox(height: 30,),
+                                              FindSolutions(),
+                                            ],
+                                          )));
+                                        })
+                                      ])),
+                                )),
                             Metricspage(),
                             Accountpage(),
                           ],
