@@ -266,11 +266,12 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                         child: TabBarView(
                           controller: tabController,
                           children: [
-                            Center(
-                                child: SingleChildScrollView(
+                            SingleChildScrollView(
+                              child: Center(
                                   child: SizedBox(
                                       width: 350,
                                       child: Column(children: [
+                                        const SizedBox(height: 10,),
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
                                               15, 0, 10, 0),
@@ -287,7 +288,7 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                                   ),
                                                 ),
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               Image.asset(
@@ -297,8 +298,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                             ],
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 10,
+                                        const SizedBox(
+                                          height: 15,
                                         ),
                                         Consumer<Day>(
                                             builder: (context, day, child) {
@@ -308,23 +309,26 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
                                             children: [
-                                              DayArrows(
-                                                  incrementDay: day.incrementDay,
-                                                  decrementDay: day.decrementDay,
-                                                  day: day),
+                                              //TodayDate(day: day),
                                               SevenDayCalendar(day: day),
+                                              const SizedBox(height: 10,),
+                                              const Text(
+                                                'Your Aura Score:',
+                                                style: WorkSans.titleMedium,
+                                              ),
+                                              const SizedBox(height: 5,),
                                               AuraScoreIndicator(
                                                 score: score,
                                                 day: day,
                                                 onTap: () => _onItemTapped(1)
                                               ),
-                                              SizedBox(height: 30,),
+                                              const SizedBox(height: 30,),
                                               FindSolutions(),
                                             ],
                                           )));
                                         })
-                                      ])),
-                                )),
+                                      ]))),
+                            ),
                             Metricspage(),
                             const Accountpage(),
                           ],
