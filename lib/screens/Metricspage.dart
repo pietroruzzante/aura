@@ -387,10 +387,10 @@ class _MetricspageState extends State<Metricspage> {
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 5),
                                   child: data[9] > 1010
-                                      ? Icon(
+                                      ? const Icon(
                                           Icons.wb_sunny_outlined,
                                         )
-                                      : Icon(
+                                      : const Icon(
                                           Icons.cloud, 
                                         ),
                                 ),
