@@ -376,18 +376,22 @@ class _MetricspageState extends State<Metricspage> {
                             child: Stack(children: [
                               Align(
                                 alignment: Alignment.center,
-                                child: Text('pressure',
+                                child: Text('pressure: ${data[9]} mb',
                                     style: WorkSans.bodyMedium.copyWith(
                                         fontWeight: FontWeight.bold,
                                         color: Palette.deepBlue)),
                               ),
-                              const Align(
+                              Align(
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 5),
-                                  child: Icon(
-                                    Icons.wb_sunny_outlined,
-                                  ),
+                                  child: data[9] > 1010
+                                      ? Icon(
+                                          Icons.wb_sunny_outlined,
+                                        )
+                                      : Icon(
+                                          Icons.cloud, 
+                                        ),
                                 ),
                               ),
                               Align(
