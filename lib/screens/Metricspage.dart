@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:aura/models/homepage_widgets/headache_score.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/models/work_sans.dart';
+import 'package:aura/services/openWeather.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
@@ -471,6 +472,12 @@ class _MetricspageState extends State<Metricspage> {
     final age = int.parse(prefs.getString('age')!);
     final score = List.generate(todayWeather.length,
         (index) => todayWeather[index] + todayStress[index]);
+    final pressure = getPressureFromTimestamp(
+            unixDates()[3],
+            await Openweather().getData(await Openweather()
+                .getCoordinates(await int.parse(prefs.getString('address')!))),
+            'current')
+        .toInt();
 
     if (todaySleep == 0 || lastDateExercise == 'Not available data') {
       _showErrorToast(context);
@@ -484,7 +491,8 @@ class _MetricspageState extends State<Metricspage> {
       day0,
       day1,
       day2,
-      age
+      age,
+      pressure
     ];
   }
 }
