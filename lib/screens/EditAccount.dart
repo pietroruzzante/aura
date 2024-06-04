@@ -1,7 +1,7 @@
 import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:aura/models/setting_widget/edit_item.dart';
+import 'package:aura/models/edit_account_widgets/edit_item.dart';
 import 'package:aura/models/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -132,7 +132,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   fixedSize: Size(50, 50),
                   elevation: 3,
                 ),
-                icon: Icon(Ionicons.checkmark, color: Colors.white),
+                icon: const Icon(Ionicons.checkmark, color: Palette.white),
               ),
             ),
           ],
@@ -154,7 +154,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
             ),
             SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(30,15,30,30),
+                padding: const EdgeInsets.fromLTRB(30,10,30,30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -162,7 +162,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                       "Account",
                       style: WorkSans.titleMedium.copyWith(color: Palette.white),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 15),
                     CircleAvatar(
                         radius: 35,
                         backgroundColor: Palette.deepBlue, // Placeholder color
@@ -211,7 +211,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                             },
                             style: IconButton.styleFrom(
                               backgroundColor: gender == "woman"
-                                  ? Palette.blue
+                                  ? Palette.yellow
                                   : Colors.grey.shade200,
                               fixedSize: const Size(50, 50),
                             ),

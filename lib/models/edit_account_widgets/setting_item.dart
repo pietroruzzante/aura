@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:aura/models/setting_widget/forward_button.dart';
+import 'package:aura/models/edit_account_widgets/forward_button.dart';
 
 class SettingItem extends StatelessWidget {
   final Text title;

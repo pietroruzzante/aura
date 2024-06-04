@@ -10,36 +10,27 @@ class SolutionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
-          context, MaterialPageRoute(builder: (context) => solution.pageRoute));
-      },
-      child: Container(
-        height: 150,
+      onTap: () => solution.open(context),
+      child: SizedBox(
+        height: 225,
         width: 300,
         child: Card(
           //semanticContainer: true,
           clipBehavior: Clip.antiAlias,
-          margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-          shape: RoundedRectangleBorder(
+          margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20))),
           color: Palette.white,
           elevation: 10,
           shadowColor: Palette.softBlue2,
           child: Center(
-            child: Container(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Image.asset(
-                    solution.imagePath,
-                    fit: BoxFit.contain,
-                ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.asset(
+                  solution.imagePath,
+                  fit: BoxFit.contain,
               ),
             ),
-                /*Text(
-                solution.name,
-                style: const TextStyle(fontSize: 16, color: Colors.white),
-              ),*/
           ),
         )
       ),

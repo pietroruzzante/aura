@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:intl/intl.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -216,5 +217,76 @@ class Impact {
     return lastDate;
 
   }
+
+  Future<List<int>> calculateHRV()async{
+
+   var header = await getBearer();
+    var day = DateFormat('yyyy-MM-dd')
+        .format(DateTime.now().subtract(Duration(days:1))); 
+    final urlHeart =
+        '${Impact.baseUrl}data/v1/heart_rate/patients/$patientUsername/day/$day/';
+
+    print('Url Heart: $urlHeart');
+    List<double> data = [];
+
+    var r = await http.get(
+      Uri.parse(urlHeart),
+      headers: header,
+    );
+    print(r.statusCode);
+    if (r.statusCode != 200) return [0, 0];
+
+    final jsonData = jsonDecode(r.body);
+    final List<dynamic> HRdata = jsonData['data']['data'];
+
+    final heartRateData = HRdata.map<Map<String, dynamic>>((item) => {
+      'value': item['value'],
+    }).toList();
+
+    //print('heart rate data: $heartRateData');
+
+    if (heartRateData.length < 2) {
+      return [0, 0];
+    }
+  
+
+    List<int> rrIntervals = [];
+    for (int i = 1; i < heartRateData.length; i++) {
+    int bpm = heartRateData[i]['value'];
+    int rrInterval = (60000 / bpm).round();
+    rrIntervals.add(rrInterval);
+    }
+
+    if (rrIntervals.isEmpty) {
+      return [0, 0];
+    }
+
+    final sdnn = calculateSDNN(rrIntervals);
+    final rmssd = calculateRMSSD(rrIntervals);
+
+    return [sdnn, rmssd];
+}
 } //Impact
 
+int calculateSDNN(List<int> rrIntervals){
+  double meanRR = rrIntervals.reduce((a, b) => a + b) / rrIntervals.length;
+    double summed = 0.0;
+    for (int interval in rrIntervals){
+      summed += pow(interval - meanRR,2);
+    }
+    final sdnn = sqrt(summed/(rrIntervals.length - 1)).round();
+    print('sdnn: $sdnn');
+    return sdnn;
+}
+
+int calculateRMSSD(List<int> rrIntervals) {
+  List<int> successiveDifferences = [];
+  for (int i = 0; i < rrIntervals.length - 1; i++) {
+    successiveDifferences.add(rrIntervals[i + 1] - rrIntervals[i]);
+  }
+  List<int> squaredDifferences = successiveDifferences.map((diff) => pow(diff, 2).toInt()).toList();
+  double meanSquaredDifferences = squaredDifferences.reduce((a, b) => a + b) / squaredDifferences.length;
+  int rmssd = sqrt(meanSquaredDifferences).toInt();
+  print('rmssd: $rmssd');
+  return rmssd;
+}
