@@ -219,9 +219,8 @@ class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     style: WorkSans.headlineSmall,
                   ),
                   onTap: () async {
-                    final prefs = await SharedPreferences.getInstance();
-                    await prefs.remove('access');
-                    await prefs.remove('refresh');
+                    final sp = await SharedPreferences.getInstance();
+                    await sp.clear();
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: ((context) => LoginPage())));
                   },
