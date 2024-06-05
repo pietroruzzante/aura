@@ -86,7 +86,7 @@ class _MetricspageState extends State<Metricspage> {
                                     minX: 0,
                                     maxX: 6,
                                     minY: 0,
-                                    maxY: 8,
+                                    maxY: 10,
                                     gridData: const FlGridData(
                                       show: false,
                                       drawVerticalLine: true,
@@ -111,7 +111,7 @@ class _MetricspageState extends State<Metricspage> {
                                             return Text(
                                               value.toInt().toString(),
                                               style: WorkSans.bodyMedium
-                                                  .copyWith(color: Colors.grey),
+                                                  .copyWith(color: Colors.grey, fontWeight: FontWeight.w400),
                                             );
                                           },
                                           interval: 2,
@@ -138,7 +138,7 @@ class _MetricspageState extends State<Metricspage> {
                                                 dayOfWeek(value),
                                                 style: WorkSans.bodyMedium
                                                     .copyWith(
-                                                        color: Colors.grey),
+                                                        color: Colors.grey, fontWeight: FontWeight.w400),
                                               ),
                                             );
                                           },
@@ -222,7 +222,7 @@ class _MetricspageState extends State<Metricspage> {
                                         width: 75,
                                         height: 75,
                                         progress: data[1][3],
-                                        maxProgress: 4,
+                                        maxProgress: 6,
                                         startAngle: 225,
                                         sweepAngle: 270,
                                         foregroundColor: Palette.deepBlue,
@@ -238,7 +238,7 @@ class _MetricspageState extends State<Metricspage> {
                                             Easing.standardDecelerate,
                                         child: Center(
                                             child: Text(
-                                          '${data[1][3].toInt()}/4',
+                                          '${data[1][3].toInt()}/6',
                                           style: WorkSans.bodyMedium.copyWith(
                                               color: Palette.deepBlue,
                                               fontWeight: FontWeight.bold),
@@ -577,7 +577,7 @@ class SleepBarState extends State<SleepBar>
 
     _animation = Tween<double>(
             begin: 0,
-            end: widget.todaySleep / reccomendedSleepHours(widget.age))
+            end: ((widget.todaySleep)/reccomendedSleepHours(widget.age)))
         .animate(_controller);
 
     CurvedAnimation(

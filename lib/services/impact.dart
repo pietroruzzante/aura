@@ -226,14 +226,14 @@ class Impact {
     final urlHeart =
         '${Impact.baseUrl}data/v1/heart_rate/patients/$patientUsername/day/$day/';
 
-    print('Url Heart: $urlHeart');
+    //print('Url Heart: $urlHeart');
     List<double> data = [];
 
     var r = await http.get(
       Uri.parse(urlHeart),
       headers: header,
     );
-    print(r.statusCode);
+    //print(r.statusCode);
     if (r.statusCode != 200) return [0, 0];
 
     final jsonData = jsonDecode(r.body);
@@ -275,7 +275,7 @@ int calculateSDNN(List<int> rrIntervals){
       summed += pow(interval - meanRR,2);
     }
     final sdnn = sqrt(summed/(rrIntervals.length - 1)).round();
-    print('sdnn: $sdnn');
+    //print('sdnn: $sdnn');
     return sdnn;
 }
 
@@ -287,6 +287,6 @@ int calculateRMSSD(List<int> rrIntervals) {
   List<int> squaredDifferences = successiveDifferences.map((diff) => pow(diff, 2).toInt()).toList();
   double meanSquaredDifferences = squaredDifferences.reduce((a, b) => a + b) / squaredDifferences.length;
   int rmssd = sqrt(meanSquaredDifferences).toInt();
-  print('rmssd: $rmssd');
+  //print('rmssd: $rmssd');
   return rmssd;
 }

@@ -55,7 +55,7 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
                     aspectRatio: 1.5,
                     valueNotifier: valueNotifier,
                     progress: widget.score[widget.day.toInt()],
-                    maxProgress: 8,
+                    maxProgress: 10,
                     startAngle: 225,
                     sweepAngle: 270,
                     foregroundColor: Palette.deepBlue,
@@ -74,7 +74,7 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Text(
-                              '${value.toInt()}/8',
+                              '${value.toInt()}/10',
                               style: WorkSans.displayMedium
                                   .copyWith(fontWeight: FontWeight.bold),
                             ),
