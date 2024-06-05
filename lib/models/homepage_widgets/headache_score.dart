@@ -81,34 +81,38 @@ class HeadacheScore {
     final todayData = await impact.getSleepHR();
     final hrv = await impact.calculateHRV();
     //final SharedPreferences sp = await SharedPreferences.getInstance();
-    const age = 23;
+    final age = 32; //connection to PREFERENCE!!!!!!!!!!!!!!!!!!!!!!!
+    final gender = 1;
+    final onMenstrual = 0;
+
 
     const featureNames = [
       "hours_of_sleep",
       "heart_rate",
       "SDNN",
       "RMSSD",
-      "age"
+      "age",
+      'gender', 
+      'onMenstrual'
     ];
 
-// Inizializza una lista di righe con tutti i valori iniziali a 0.0
     List<List<double>> rows =
         List.generate(7, (_) => List.filled(featureNames.length, 0.0));
 
-// Assegna i dati effettivi alla quarta riga (indice 3)
-    rows[3] = [todayData[0], todayData[1], hrv[0].toDouble(), hrv[1].toDouble(), age.toDouble()];
+    rows[3] = [todayData[0], todayData[1], hrv[0].toDouble(), hrv[1].toDouble(), age.toDouble(), gender.toDouble(), onMenstrual.toDouble()];
 
-    if (rows[3].contains(0)) {
-      // Chiama il callback per mostrare il toast
-      if (showToastCallback != null) {
-        showToastCallback!();
-      }
+    for (int i=0; i<5; i++){
+      if (rows[3][i] == 0) {
+        if (showToastCallback != null) {
+          showToastCallback!();
+        }
     }
+    }
+    
 
-// Crea il DataFrame utilizzando i nomi delle colonne e le righe
     final data = DataFrame([
       featureNames,
-      ...rows, // Il spread operator espande le righe all'interno della lista principale
+      ...rows, 
     ]);
 
     final json = await rootBundle.loadString('assets/stress_model.json');

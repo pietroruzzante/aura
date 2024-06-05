@@ -18,7 +18,7 @@ class _TodayDateState extends State<TodayDate> {
   @override
   Widget build(BuildContext context) {
     DateTime associatedDate = getDateForValue(widget.day.toInt());
-    String formattedDate = DateFormat('dd/MM/yyyy').format(associatedDate);
+    String formattedDate = DateFormat('dd/MM').format(associatedDate);
     String dayOfWeek = DateFormat('EEEE', 'en_IT').format(associatedDate);
 
     return SizedBox(
@@ -26,7 +26,7 @@ class _TodayDateState extends State<TodayDate> {
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Text(
             '$dayOfWeek, $formattedDate',
-            style: WorkSans.headlineSmall,
+            style: WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w400, fontSize: 21),
           ),
         ]));
   }
