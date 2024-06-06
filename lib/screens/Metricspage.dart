@@ -403,7 +403,7 @@ class _MetricspageState extends State<Metricspage> {
                                     padding: const EdgeInsets.only(right: 5),
                                     child: InfoWidget(
                                       infoText:
-                                          'Spiegare che il meteo è preso ogni 3 ore?',
+                                          'Low atmospheric pressure contributes to increasing the risk of headaches',
                                       infoTextStyle: WorkSans.bodyMedium
                                           .copyWith(color: Palette.deepBlue),
                                       iconData: Icons.info,
