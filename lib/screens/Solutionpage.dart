@@ -16,7 +16,7 @@ import 'package:aura/models/solution.dart';
 import 'package:aura/screens/solution_screens/BreathingSol.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'solution_screens/ExerciseSol.dart';
+import 'solution_screens/YogaSol.dart';
 import 'solution_screens/SleepingSol.dart';
 
 class Solutionpage extends StatefulWidget {

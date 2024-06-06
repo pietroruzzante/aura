@@ -90,6 +90,20 @@ flutter:
   - assets/weather_animation.gif
   - assets/weather_animation_first_frame.png
   - assets/yoga.png
+  - assets/shoulder_stand.png
+  - assets/scorpion_pose.png
+  - assets/standing_forward_bend.png
+  - assets/child_pose.png
+  - assets/bow_pose.png
+  - assets/splits.png
+  - assets/easy_pose.png
+  - assets/boat_pose.png
+  - assets/camel_pose.png
+  - assets/dancer_pose.png
+  - assets/downward_facing_dog.png
+  - assets/warrior_iii.png
+
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
