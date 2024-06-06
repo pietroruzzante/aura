@@ -253,8 +253,8 @@ class _SolutionpageState extends State<Solutionpage> {
           pageRoute: SleepingSol()));
     }
     if (needExercise()) {
-      solutions.add(Solution('Exercise', 'assets/spotify.png', 'description',
-          pageRoute: ExerciseSol()));
+      solutions.add(Solution('Exercise', 'assets/yoga.png', 'Yoga has significant potential to alleviate stress and headaches. By promoting relaxation, enhancing blood circulation, and improving posture, yoga can reduce tension and discomfort. Regular practice helps calm the mind, releasing stress and preventing headaches, leading to better overall well-being and a more balanced, healthier lifestyle.',
+          pageRoute: YogaScreen()))  ;
     }
     return solutions;
   }
