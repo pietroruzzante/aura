@@ -16,7 +16,7 @@ import 'package:aura/models/solution.dart';
 import 'package:aura/screens/solution_screens/BreathingSol.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'solution_screens/ExerciseSol.dart';
+import 'solution_screens/YogaSol.dart';
 import 'solution_screens/SleepingSol.dart';
 
 class Solutionpage extends StatefulWidget {
@@ -253,8 +253,8 @@ class _SolutionpageState extends State<Solutionpage> {
           pageRoute: SleepingSol()));
     }
     if (needExercise()) {
-      solutions.add(Solution('Exercise', 'assets/spotify.png', 'description',
-          pageRoute: ExerciseSol()));
+      solutions.add(Solution('Exercise', 'assets/yoga.png', 'Yoga has significant potential to alleviate stress and headaches. By promoting relaxation, enhancing blood circulation, and improving posture, yoga can reduce tension and discomfort. Regular practice helps calm the mind, releasing stress and preventing headaches, leading to better overall well-being and a more balanced, healthier lifestyle.',
+          pageRoute: YogaScreen()))  ;
     }
     return solutions;
   }
