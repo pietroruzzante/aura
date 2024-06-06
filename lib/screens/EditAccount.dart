@@ -17,8 +17,12 @@ class _EditAccountpageState extends State<EditAccountpage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
 
   String? _errorMessage;
+
+  DateTime selectedDate = DateTime.now();
+  bool manualDateEntryEnabled = true;
 
   @override
   void initState() {
@@ -26,21 +30,46 @@ class _EditAccountpageState extends State<EditAccountpage> {
     loadUserInfo();
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(1970, 1),
+        lastDate: DateTime(2024, 12));
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        dateController.text = picked
+            .toLocal()
+            .toString()
+            .split(' ')[0]; // Format date as YYYY-MM-DD
+      });
+    }
+  }
+
   Future<void> loadUserInfo() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? name = prefs.getString('name') ?? 'User';
     String? age = prefs.getString('age');
     String? address = prefs.getString('address');
+    String? dateOfBirth = prefs.getString('date_of_birth');
 
     setState(() {
       nameController.text = name;
       if (age != null) ageController.text = age;
       if (address != null) addressController.text = address;
       gender = prefs.getString('gender') ?? 'man';
+      if (dateOfBirth != null) {
+        selectedDate = DateTime.parse(dateOfBirth);
+        dateController.text = selectedDate.toLocal().toString().split(' ')[0];
+      }
+      manualDateEntryEnabled =
+          prefs.getBool('manual_date_entry_enabled') ?? true;
     });
   }
 
-  Future<void> saveUserInfo(String name, String age, String address) async {
+  Future<void> saveUserInfo(
+      String name, String age, String address, String dateOfBirth) async {
     setState(() {
       _errorMessage = null;
     });
@@ -95,6 +124,8 @@ class _EditAccountpageState extends State<EditAccountpage> {
     await prefs.setString('age', age);
     await prefs.setString('address', address);
     await prefs.setString('gender', gender);
+    await prefs.setString('date_of_birth', dateOfBirth);
+    await prefs.setBool('manual_date_entry_enabled', manualDateEntryEnabled);
   }
 
   @override
@@ -119,11 +150,12 @@ class _EditAccountpageState extends State<EditAccountpage> {
                     nameController.text,
                     ageController.text,
                     addressController.text,
+                    dateController.text,
                   );
                   if (_errorMessage == null) {
                     Navigator.pop(context);
                   }
-                },  
+                },
                 style: IconButton.styleFrom(
                   backgroundColor: Palette.blue,
                   shape: RoundedRectangleBorder(
@@ -154,23 +186,25 @@ class _EditAccountpageState extends State<EditAccountpage> {
             ),
             SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(30,10,30,30),
+                padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       "Account",
-                      style: WorkSans.titleMedium.copyWith(color: Palette.white),
+                      style:
+                          WorkSans.titleMedium.copyWith(color: Palette.white),
                     ),
                     const SizedBox(height: 15),
                     CircleAvatar(
-                        radius: 35,
-                        backgroundColor: Palette.deepBlue, // Placeholder color
-                        child: Text(
-                          "U", // Initials or placeholder text
-                          style: WorkSans.titleMedium.copyWith(color: Palette.blue),
-                        ),
+                      radius: 35,
+                      backgroundColor: Palette.deepBlue, // Placeholder color
+                      child: Text(
+                        "U", // Initials or placeholder text
+                        style:
+                            WorkSans.titleMedium.copyWith(color: Palette.blue),
                       ),
+                    ),
                     const SizedBox(height: 40),
                     EditItem(
                       title: "Name",
@@ -198,7 +232,8 @@ class _EditAccountpageState extends State<EditAccountpage> {
                             ),
                             icon: Icon(
                               Ionicons.male,
-                              color: gender == "man" ? Colors.white : Colors.black,
+                              color:
+                                  gender == "man" ? Colors.white : Colors.black,
                               size: 18,
                             ),
                           ),
@@ -217,7 +252,9 @@ class _EditAccountpageState extends State<EditAccountpage> {
                             ),
                             icon: Icon(
                               Ionicons.female,
-                              color: gender == "woman" ? Colors.white : Colors.black,
+                              color: gender == "woman"
+                                  ? Colors.white
+                                  : Colors.black,
                               size: 18,
                             ),
                           )
@@ -241,6 +278,48 @@ class _EditAccountpageState extends State<EditAccountpage> {
                       ),
                       controller: addressController,
                     ),
+                    const SizedBox(height: 20),
+                    if (gender == "woman")
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Disable period date",
+                                style: WorkSans.headlineSmall
+                                    .copyWith(color: Palette.darkBlue),
+                              ),
+                            ),
+                            Switch(
+                              value: !manualDateEntryEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  manualDateEntryEnabled = !value;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    if (gender == "woman")
+                      Opacity(
+                        opacity: !manualDateEntryEnabled
+                            ? 0.3
+                            : 1.0, 
+                        child: EditItem(
+                          title: "Date of Female Period",
+                          widget: AbsorbPointer(
+                            absorbing: !manualDateEntryEnabled,
+                            child: TextField(
+                              controller: dateController,
+                              readOnly: true,
+                              onTap: () => _selectDate(context),
+                            ),
+                          ),
+                          controller: dateController,
+                        ),
+                      ),
                     if (_errorMessage != null) ...[
                       const SizedBox(height: 20),
                       Text(
