@@ -430,7 +430,7 @@ class _MetricspageState extends State<Metricspage> {
       sleepNeeded = 7;
     }
     if (todaySleep < sleepNeeded) {
-      return "You didn't sleep enough! :()";
+      return "You didn't sleep enough! :(";
     } else {
       return "Well Done! You slept enough :)";
     }

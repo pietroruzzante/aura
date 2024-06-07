@@ -214,6 +214,13 @@ class _StateCycleState extends State<StateCycle> {
           autoStart: true,
           isReverse: true,
           onComplete: () {},
+          timeFormatterFunction: (defaultFormatterFunction, duration) {
+            if (duration.inSeconds == 0) {
+              return '1';
+            } else {
+              return Function.apply(defaultFormatterFunction, [Duration(seconds: duration.inSeconds + 1)]);
+            }
+          },
         ),
       ],
     );
