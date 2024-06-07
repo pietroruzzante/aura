@@ -28,8 +28,10 @@ class MichaelSol extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             'Try Michael\'s Solution',
-            style: WorkSans.titleSmall.copyWith(color: Palette.white),
+            style: WorkSans.titleSmall.copyWith(color: Palette.deepBlue),
           ),
+          backgroundColor: Palette.white,
+          iconTheme: const IconThemeData(color: Palette.deepBlue),
         ),
         body: Center(
           child: Column(
