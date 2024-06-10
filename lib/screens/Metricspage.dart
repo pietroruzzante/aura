@@ -475,7 +475,7 @@ class _MetricspageState extends State<Metricspage> {
     final pressure = getPressureFromTimestamp(
             unixDates()[3],
             await Openweather().getData(await Openweather()
-                .getCoordinates(await int.parse(prefs.getString('address')!))),
+                .getCoordinates(await int.parse(prefs.getString('zipCode')!))),
             'current')
         .toInt();
 

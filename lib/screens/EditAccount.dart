@@ -16,7 +16,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
   String gender = "man";
   TextEditingController nameController = TextEditingController();
   TextEditingController ageController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
+  TextEditingController zipController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
   String? _errorMessage;
@@ -51,16 +51,16 @@ class _EditAccountpageState extends State<EditAccountpage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? name = prefs.getString('name') ?? 'User';
     String? age = prefs.getString('age');
-    String? address = prefs.getString('address');
-    String? dateOfBirth = prefs.getString('date_of_birth');
+    String? zipCode = prefs.getString('zipCode');
+    String? onMenstrualDate = prefs.getString('onMenstrualDate');
 
     setState(() {
       nameController.text = name;
       if (age != null) ageController.text = age;
-      if (address != null) addressController.text = address;
+      if (zipCode != null) zipController.text = zipCode;
       gender = prefs.getString('gender') ?? 'man';
-      if (dateOfBirth != null) {
-        selectedDate = DateTime.parse(dateOfBirth);
+      if (onMenstrualDate != null) {
+        selectedDate = DateTime.parse(onMenstrualDate);
         dateController.text = selectedDate.toLocal().toString().split(' ')[0];
       }
       manualDateEntryEnabled =
@@ -69,27 +69,27 @@ class _EditAccountpageState extends State<EditAccountpage> {
   }
 
   Future<void> saveUserInfo(
-      String name, String age, String address, String dateOfBirth) async {
+      String name, String age, String zipCode, String onMenstrualDate) async {
     setState(() {
       _errorMessage = null;
     });
 
     // CAP VALIDATION
-    if (address.isEmpty) {
+    if (zipCode.isEmpty) {
       setState(() {
         _errorMessage = 'CAP is necessary';
       });
       return;
     }
 
-    if (address.length != 5) {
+    if (zipCode.length != 5) {
       setState(() {
         _errorMessage = 'CAP must be 5 numbers';
       });
       return;
     }
 
-    if (!RegExp(r'^[0-9]+$').hasMatch(address)) {
+    if (!RegExp(r'^[0-9]+$').hasMatch(zipCode)) {
       setState(() {
         _errorMessage = 'CAP must contain only numbers';
       });
@@ -122,9 +122,9 @@ class _EditAccountpageState extends State<EditAccountpage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('name', name);
     await prefs.setString('age', age);
-    await prefs.setString('address', address);
+    await prefs.setString('zipCode', zipCode);
     await prefs.setString('gender', gender);
-    await prefs.setString('date_of_birth', dateOfBirth);
+    await prefs.setString('onMenstrualDate', onMenstrualDate);
     await prefs.setBool('manual_date_entry_enabled', manualDateEntryEnabled);
   }
 
@@ -149,7 +149,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   await saveUserInfo(
                     nameController.text,
                     ageController.text,
-                    addressController.text,
+                    zipController.text,
                     dateController.text,
                   );
                   if (_errorMessage == null) {
@@ -272,11 +272,11 @@ class _EditAccountpageState extends State<EditAccountpage> {
                     ),
                     const SizedBox(height: 40),
                     EditItem(
-                      title: "CAP",
+                      title: "ZIP Code",
                       widget: TextField(
-                        controller: addressController,
+                        controller: zipController,
                       ),
-                      controller: addressController,
+                      controller: zipController,
                     ),
                     const SizedBox(height: 20),
                     if (gender == "woman")
@@ -308,7 +308,8 @@ class _EditAccountpageState extends State<EditAccountpage> {
                             ? 0.3
                             : 1.0, 
                         child: EditItem(
-                          title: "Date of next period",
+                          title: "date of the next menstrual cycle:",
+
                           widget: AbsorbPointer(
                             absorbing: !manualDateEntryEnabled,
                             child: TextField(
