@@ -1,5 +1,7 @@
 import 'package:aura/services/openWeather.dart';
 import 'package:aura/services/impact.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:ml_algo/ml_algo.dart';
 import 'package:flutter/services.dart';
@@ -80,11 +82,11 @@ class HeadacheScore {
   Future<List<double>> getStress() async {
     final todayData = await impact.getSleepHR();
     final hrv = await impact.calculateHRV();
-    //final SharedPreferences sp = await SharedPreferences.getInstance();
-    final age = 32; //connection to PREFERENCE!!!!!!!!!!!!!!!!!!!!!!!
-    final gender = 1;
-    final onMenstrual = 0;
-
+    final SharedPreferences sp = await SharedPreferences.getInstance();
+    final age = sp.getString('age');
+    final gender = (sp.getString('gender') == 'man')? 1 : 0;
+    DateFormat formatter = DateFormat('yyyy-MM-dd');
+    final onMenstrual = ((sp.getString('onMenstrualDate') == formatter.format(DateTime.now())) & (gender == 0))? 1 : 0;
 
     const featureNames = [
       "hours_of_sleep",
@@ -99,7 +101,7 @@ class HeadacheScore {
     List<List<double>> rows =
         List.generate(7, (_) => List.filled(featureNames.length, 0.0));
 
-    rows[3] = [todayData[0], todayData[1], hrv[0].toDouble(), hrv[1].toDouble(), age.toDouble(), gender.toDouble(), onMenstrual.toDouble()];
+    rows[3] = [todayData[0], todayData[1], hrv[0].toDouble(), hrv[1].toDouble(), int.parse(age!).toDouble(), gender.toDouble(), onMenstrual.toDouble()];
 
     for (int i=0; i<5; i++){
       if (rows[3][i] == 0) {

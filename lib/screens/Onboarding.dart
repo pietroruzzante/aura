@@ -11,7 +11,7 @@ class OnboardingPage extends StatefulWidget {
 }
 
 class _OnboardingPageState extends State<OnboardingPage> {
-  final TextEditingController _capController = TextEditingController();
+  final TextEditingController _zipController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   String _selectedGender = 'man';
@@ -24,7 +24,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     });
 
     String name = _nameController.text;
-    String zip = _capController.text;
+    String zip = _zipController.text;
     String age = _ageController.text;
     String gender = _selectedGender;
 
@@ -117,7 +117,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                   const SizedBox(height: 20),
                   _inputField('Name', _nameController),
                   const SizedBox(height: 20),
-                  _inputField('ZIP code', _capController, keyboardType: TextInputType.number),
+                  _inputField('ZIP code', _zipController, keyboardType: TextInputType.number),
                   const SizedBox(height: 20),
                   _inputField('Age', _ageController, keyboardType: TextInputType.number),
                   const SizedBox(height: 20),
