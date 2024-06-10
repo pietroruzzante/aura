@@ -20,10 +20,10 @@ class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
   @override
-  _HomepageState createState() => _HomepageState();
+  HomepageState createState() => HomepageState();
 }
 
-class _HomepageState extends State<Homepage> with TickerProviderStateMixin {
+class HomepageState extends State<Homepage> with TickerProviderStateMixin {
   int currentIndex = 0;
   late TabController tabController;
   late Future<HeadacheScore> score;
