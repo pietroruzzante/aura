@@ -131,7 +131,7 @@ class HeadacheScore {
     //print('dates: $dates');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int zip = int.parse(prefs.getString('address')!);
+    int zip = int.parse(prefs.getString('zipCode')!);
 
     final coordinates = await Openweather().getCoordinates(zip);
     final decodedResponse = await Openweather().getData(coordinates);
