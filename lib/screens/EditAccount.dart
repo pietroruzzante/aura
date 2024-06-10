@@ -308,7 +308,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                             ? 0.3
                             : 1.0, 
                         child: EditItem(
-                          title: "Date of Female Period",
+                          title: "Date of next period",
                           widget: AbsorbPointer(
                             absorbing: !manualDateEntryEnabled,
                             child: TextField(
