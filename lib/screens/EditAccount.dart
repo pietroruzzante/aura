@@ -309,6 +309,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                             : 1.0, 
                         child: EditItem(
                           title: "date of the next menstrual cycle:",
+
                           widget: AbsorbPointer(
                             absorbing: !manualDateEntryEnabled,
                             child: TextField(
