@@ -57,6 +57,7 @@ dependencies:
   connectivity_plus: ^6.0.3
   nps_survey: ^1.1.0
   wiredash: ^2.1.2
+  gsheets: ^0.5.0
 
 
 dev_dependencies:
@@ -84,6 +85,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
   - assets/stress_model.json
+  - assets/credentials.json
   - assets/logo.png
   - assets/spotify.png
   - assets/breathing.png
