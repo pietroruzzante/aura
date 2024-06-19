@@ -74,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text('Insert your credentials ', style: WorkSans.displaySmall.copyWith(fontSize: 20),),
                 const SizedBox(height: 40),
                 _inputField("Username", _emailController),
                 const SizedBox(height: 20),

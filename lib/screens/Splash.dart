@@ -70,7 +70,7 @@ class Splash extends StatelessWidget {
             ),
             SizedBox(height: 250),
             Text(
-              'Powered by:',
+              'Powered by',
               style: WorkSans.headlineMedium,
             ),
             Text(
