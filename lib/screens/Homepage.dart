@@ -1,6 +1,7 @@
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Accountpage.dart';
 import 'package:aura/screens/Loginpage.dart';
+import 'package:aura/screens/NPSpage.dart';
 import 'package:aura/screens/Solutionpage.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
@@ -218,12 +219,16 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     'Logout',
                     style: WorkSans.headlineSmall,
                   ),
-                  onTap: () async {
-                    final sp = await SharedPreferences.getInstance();
-                    await sp.clear();
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: ((context) => LoginPage())));
-                  },
+                   onTap: ()  {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) => NPSpage())));
+                   }
+                  // onTap: () async {
+                  //   final sp = await SharedPreferences.getInstance();
+                  //   await sp.clear();
+                  //   Navigator.of(context).pushReplacement(
+                  //       MaterialPageRoute(builder: ((context) => LoginPage())));
+                  // }, Migrated to NPSpage
                 ),
               ],
             ),

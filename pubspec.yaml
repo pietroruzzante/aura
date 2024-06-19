@@ -55,6 +55,8 @@ dependencies:
   cherry_toast: ^1.10.1
   gif: ^2.3.0
   connectivity_plus: ^6.0.3
+  nps_survey: ^1.1.0
+  wiredash: ^2.1.2
 
 
 dev_dependencies:
