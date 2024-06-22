@@ -52,7 +52,7 @@ class _MetricspageState extends State<Metricspage> {
                           // Title
                           Text('Insights',
                               style: WorkSans.titleMedium
-                                  .copyWith(color: Palette.white)),
+                                  .copyWith(color: Palette.deepBlue)),
                           const SizedBox(height: 15),
                           // Aura score chart
                           Text(
