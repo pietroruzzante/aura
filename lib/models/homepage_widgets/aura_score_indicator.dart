@@ -160,9 +160,10 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
         width: 480,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Palette.blue2, Palette.blue],
+            colors: [Palette.deepBlue2, Palette.deepBlue],
             begin: Alignment.topLeft,
             end: Alignment.center,
+
           ),
           borderRadius: BorderRadius.circular(20.0),
           boxShadow: const [
@@ -182,21 +183,21 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
                 children: [
                   const SizedBox(height: 20),
                   DashedCircularProgressBar.aspectRatio(
-                    aspectRatio: 1.5,
+                    aspectRatio: 1.3,
                     valueNotifier: valueNotifier,
                     progress: widget.score[widget.day.toInt()],
                     maxProgress: 10,
                     startAngle: 225,
                     sweepAngle: 270,
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.black12,
-                    foregroundStrokeWidth: 15,
-                    backgroundStrokeWidth: 15,
+                    backgroundColor: Palette.softBlue3,
+                    foregroundStrokeWidth: 20,
+                    backgroundStrokeWidth: 20,
                     animation: true,
                     animationDuration: Duration(milliseconds: 500),
                     animationCurve: Curves.easeInOut,
                     seekSize: 10,
-                    seekColor: Palette.white,
+                    seekColor: Palette.deepBlue,
                     child: Center(
                       child: ValueListenableBuilder(
                         valueListenable: valueNotifier,
@@ -215,6 +216,7 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
                               getText(widget.score[widget.day.toInt()]),
                               style: WorkSans.headlineMedium.copyWith(
                                 color: Colors.white70,
+                                fontSize: 25
                               ),
                             ),
                           ],
@@ -235,7 +237,7 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
                   infoText:
                       "The score for the upcoming days has been calculated using today's stress score and future weather forecasts.",
                   infoTextStyle:
-                      WorkSans.bodyMedium.copyWith(color: Colors.white),
+                      WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
                   iconData: Icons.info_outline,
                   iconColor: Colors.white70,
                 ),
