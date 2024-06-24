@@ -249,7 +249,7 @@ class _SolutionpageState extends State<Solutionpage> {
   List<Solution> _getSolutions(List<dynamic> data) {
     List<Solution> solutions = List.from(_fixedSolutions);
     if (needSleep(data[0], data[8])) {
-      solutions.add(Solution('Sleeping', 'assets/spotify.png', 'description',
+      solutions.add(Solution('Sleeping', 'assets/sleepingSol.jpg', 'Set your bedtime and wake-up times, and get personalized tips to wake up feeling refreshed. Explore relaxing bedtime routines designed to help you unwind and sleep deeply. Take charge of your sleep routine and enjoy waking up ready to take on the day.',
           pageRoute: SleepingSol()));
     }
     if (needExercise()) {
@@ -269,7 +269,8 @@ class _SolutionpageState extends State<Solutionpage> {
     } else {
       sleepNeeded = 7;
     }
-    return todaySleep < sleepNeeded;
+    return true;
+    // todaySleep < sleepNeeded
   }
 
   bool needExercise() {
