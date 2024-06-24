@@ -15,7 +15,7 @@ class ExerciseSol extends StatelessWidget{
           ),
         ),
         body: Center(
-          child: Text(
+          child: Text(  
             'Exercise',
             style: WorkSans.bodyMedium.copyWith(color: Palette.blue),),
         ),

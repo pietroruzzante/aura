@@ -65,6 +65,13 @@ class WorkSans {
     color: Palette.deepBlue,
   );
 
+  static const TextStyle bodyLarge = TextStyle(
+    fontFamily: 'WorkSans',
+    fontSize: 18,
+    fontWeight: FontWeight.normal,
+    color: Palette.white,
+  );
+
   static const TextStyle bodyMedium = TextStyle(
     fontFamily: 'WorkSans',
     fontSize: 13,
