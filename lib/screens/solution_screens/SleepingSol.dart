@@ -2,6 +2,7 @@ import 'package:aura/models/homepage_widgets/headache_score.dart';
 import 'package:aura/models/palette.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/solution_screens/BreathingSol.dart';
+import 'package:aura/screens/solution_screens/YogaSol.dart';
 import 'package:aura/services/impact.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
@@ -20,11 +21,13 @@ class _SleepingSolState extends State<SleepingSol> {
   TimeOfDay? _bedtime;
   TimeOfDay? _wakeupTime;
   String _messageHead = 'Set a sleeping schedule';
-  String _message = 'Set the time you plan on going to bed or waking up (or both!), and get personalized tips to find a consistent sleep schedule.';
+  String _message =
+      'Set the time you plan on going to bed or waking up (or both!), and get personalized tips to find a consistent sleep schedule.';
   int sleepNeeded = 8; // default
   Map<String, String> linkMap = {
     'Reading': 'https://dreamlittlestar.com/bedtime-stories-for-adults/',
-    'Music': 'https://open.spotify.com/playlist/2bz6wk2mbPgF9ZNXhLN4Ts?si=0fe7203fa4364f4e',
+    'Music':
+        'https://open.spotify.com/playlist/2bz6wk2mbPgF9ZNXhLN4Ts?si=0fe7203fa4364f4e',
   };
 
   @override
@@ -69,7 +72,7 @@ class _SleepingSolState extends State<SleepingSol> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10,0,10,0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Card(
                     clipBehavior: Clip.antiAlias,
                     margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -80,9 +83,9 @@ class _SleepingSolState extends State<SleepingSol> {
                     shadowColor: Palette.softBlue2,
                     child: Column(
                       children: [
-                        const Text(
-                          'Set a time',
-                          style: WorkSans.titleSmall,
+                        Text(
+                          _messageHead,
+                          style: WorkSans.titleSmall.copyWith(color: Palette.blue, fontSize: 20),
                         ),
                         ListTile(
                             title: Text(
@@ -90,9 +93,12 @@ class _SleepingSolState extends State<SleepingSol> {
                               style: WorkSans.bodyLarge
                                   .copyWith(color: Palette.deepBlue),
                             ),
-                            trailing: _bedtime != null 
-                                ? Text(_bedtime!.format(context), style: WorkSans.bodyLarge.copyWith(color: Palette.deepBlue)) 
-                                : const Icon(Icons.bedtime, color: Palette.deepBlue),
+                            trailing: _bedtime != null
+                                ? Text(_bedtime!.format(context),
+                                    style: WorkSans.bodyLarge
+                                        .copyWith(color: Palette.deepBlue))
+                                : const Icon(Icons.bedtime,
+                                    color: Palette.deepBlue),
                             onTap: () async {
                               TimeOfDay? selectedTime = await showTimePicker(
                                 context: context,
@@ -111,9 +117,13 @@ class _SleepingSolState extends State<SleepingSol> {
                             style: WorkSans.bodyLarge
                                 .copyWith(color: Palette.deepBlue),
                           ),
-                          trailing: _wakeupTime != null 
-                              ? Text(_wakeupTime!.format(context), style: WorkSans.bodyLarge.copyWith(color: Palette.deepBlue)) 
-                              : const Icon(Icons.wb_sunny,color: Palette.deepBlue,
+                          trailing: _wakeupTime != null
+                              ? Text(_wakeupTime!.format(context),
+                                  style: WorkSans.bodyLarge
+                                      .copyWith(color: Palette.deepBlue))
+                              : const Icon(
+                                  Icons.wb_sunny,
+                                  color: Palette.deepBlue,
                                 ),
                           onTap: () async {
                             TimeOfDay? selectedTime = await showTimePicker(
@@ -128,44 +138,23 @@ class _SleepingSolState extends State<SleepingSol> {
                             }
                           },
                         ),
+                        const SizedBox(height: 5,),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(15,0,15,10),
+                          child: Text(
+                            _message,
+                            style: WorkSans.bodyMedium
+                                .copyWith(color: Palette.deepBlue),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10,0,10,0),
-                  child: Card(
-                    clipBehavior: Clip.antiAlias,
-                    margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
-                    color: Palette.white,
-                    elevation: 10,
-                    shadowColor: Palette.softBlue2,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(15,10,15,10),
-                      child: Column(
-                        children: [
-                          Text(
-                            _messageHead,
-                            style: WorkSans.titleSmall,
-                          ),
-                          const SizedBox(height: 5,),
-                          Text(
-                            _message,
-                            style: WorkSans.bodyMedium
-                                .copyWith(color: Palette.deepBlue),
-                            textAlign: TextAlign.justify,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10,0,10,0),
+                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Card(
                     clipBehavior: Clip.antiAlias,
                     margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -191,16 +180,20 @@ class _SleepingSolState extends State<SleepingSol> {
                               Text(
                                 'Routine',
                                 textAlign: TextAlign.start,
-                                style: WorkSans.headlineSmall.copyWith(color: Palette.blue, fontWeight: FontWeight.bold),
+                                style: WorkSans.headlineSmall.copyWith(
+                                    color: Palette.blue,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                         ),
                         ListTile(
-                          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                          visualDensity:
+                              const VisualDensity(horizontal: 0, vertical: -4),
                           title: Text(
                             'Deep Breathing Exercise',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                            style: WorkSans.bodyMedium
+                                .copyWith(color: Palette.deepBlue),
                           ),
                           trailing: const Icon(
                             Icons.arrow_forward_ios,
@@ -208,14 +201,20 @@ class _SleepingSolState extends State<SleepingSol> {
                             size: 15,
                           ),
                           onTap: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const BreathingSol()));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        const BreathingSol()));
                           },
                         ),
                         ListTile(
-                          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                          visualDensity:
+                              const VisualDensity(horizontal: 0, vertical: -4),
                           title: Text(
                             'Light Stretching or Gentle Yoga',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                            style: WorkSans.bodyMedium
+                                .copyWith(color: Palette.deepBlue),
                           ),
                           trailing: const Icon(
                             Icons.arrow_forward_ios,
@@ -223,10 +222,15 @@ class _SleepingSolState extends State<SleepingSol> {
                             size: 15,
                           ),
                           onTap: () {
-                            //Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => YogaSol()));
                           },
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: Row(
@@ -234,16 +238,20 @@ class _SleepingSolState extends State<SleepingSol> {
                               Text(
                                 'Activities',
                                 textAlign: TextAlign.start,
-                                style: WorkSans.headlineSmall.copyWith(color: Palette.blue, fontWeight: FontWeight.bold),
+                                style: WorkSans.headlineSmall.copyWith(
+                                    color: Palette.blue,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                         ),
                         ListTile(
-                          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                          visualDensity:
+                              const VisualDensity(horizontal: 0, vertical: -4),
                           title: Text(
                             'Read a book! Reading short stories at bedtime induces positive emotions',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                            style: WorkSans.bodyMedium
+                                .copyWith(color: Palette.deepBlue),
                           ),
                           trailing: const Icon(
                             Icons.arrow_forward_ios,
@@ -253,10 +261,12 @@ class _SleepingSolState extends State<SleepingSol> {
                           onTap: () => open(context, 'Reading'),
                         ),
                         ListTile(
-                          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                          visualDensity:
+                              const VisualDensity(horizontal: 0, vertical: -4),
                           title: Text(
                             'Listen to calming music or nature sounds to induce relaxation',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                            style: WorkSans.bodyMedium
+                                .copyWith(color: Palette.deepBlue),
                           ),
                           trailing: const Icon(
                             Icons.arrow_forward_ios,
@@ -265,7 +275,9 @@ class _SleepingSolState extends State<SleepingSol> {
                           ),
                           onTap: () => open(context, 'Music'),
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: Row(
@@ -273,16 +285,20 @@ class _SleepingSolState extends State<SleepingSol> {
                               Text(
                                 'Environment',
                                 textAlign: TextAlign.start,
-                                style: WorkSans.headlineSmall.copyWith(color: Palette.blue, fontWeight: FontWeight.bold),
+                                style: WorkSans.headlineSmall.copyWith(
+                                    color: Palette.blue,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                         ),
                         ListTile(
-                          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                          visualDensity:
+                              const VisualDensity(horizontal: 0, vertical: -4),
                           title: Text(
                             'Maintain a cool and comfortable temperature in your bedroom',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                            style: WorkSans.bodyMedium
+                                .copyWith(color: Palette.deepBlue),
                           ),
                           trailing: const Icon(
                             Icons.device_thermostat,
@@ -291,10 +307,12 @@ class _SleepingSolState extends State<SleepingSol> {
                           ),
                         ),
                         ListTile(
-                          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                          visualDensity:
+                              const VisualDensity(horizontal: 0, vertical: -4),
                           title: Text(
                             'Use blackout curtains and reduce noise for an ideal sleeping environment',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                            style: WorkSans.bodyMedium
+                                .copyWith(color: Palette.deepBlue),
                           ),
                           trailing: const Icon(
                             Icons.volume_off_rounded,
@@ -302,7 +320,9 @@ class _SleepingSolState extends State<SleepingSol> {
                             size: 20,
                           ),
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(left: 15),
                           child: Row(
@@ -310,16 +330,20 @@ class _SleepingSolState extends State<SleepingSol> {
                               Text(
                                 'Other advice',
                                 textAlign: TextAlign.start,
-                                style: WorkSans.headlineSmall.copyWith(color: Palette.blue, fontWeight: FontWeight.bold),
+                                style: WorkSans.headlineSmall.copyWith(
+                                    color: Palette.blue,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
                         ),
                         ListTile(
-                          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                          visualDensity:
+                              const VisualDensity(horizontal: 0, vertical: -4),
                           title: Text(
                             'Avoid electronic devices at least an hour before bed to reduce exposure to blue light',
-                            style: WorkSans.bodyMedium.copyWith(color: Palette.deepBlue),
+                            style: WorkSans.bodyMedium
+                                .copyWith(color: Palette.deepBlue),
                           ),
                           trailing: const Icon(
                             Icons.phonelink_off_rounded,
@@ -331,7 +355,9 @@ class _SleepingSolState extends State<SleepingSol> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10,)
+                const SizedBox(
+                  height: 10,
+                )
               ],
             ),
           )),
@@ -365,7 +391,8 @@ class _SleepingSolState extends State<SleepingSol> {
           'Rise and shine at ${_wakeupTime!.format(context)}! To get your $sleepNeeded hours of sleep, make sure to hit the bed by ${bedtime.format(context)}.';
     } else {
       _messageHead = 'Set a sleeping schedule';
-      _message = 'Set the time you plan on going to bed or waking up (or both!), and get personalized tips to find a consistent sleep schedule.';
+      _message =
+          'Set the time you plan on going to bed or waking up (or both!), and get personalized tips to find a consistent sleep schedule.';
     }
   }
 

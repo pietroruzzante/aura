@@ -1,4 +1,5 @@
 import 'package:aura/models/palette.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/EditAccount.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,10 +48,12 @@ class _ProfileCardState extends State<ProfileCard> {
         }
       },
       child: Card(
-        elevation: 5,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+        color: Palette.white,
+        elevation: 10,
+        shadowColor: Palette.softBlue2,
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
@@ -64,7 +67,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     backgroundColor: Palette.rainyBlue,
                     child: Text(
                       name.isNotEmpty ? name[0] : 'U',
-                      style: TextStyle(color: Colors.white, fontSize: 24),
+                      style: WorkSans.titleMedium.copyWith(color: Palette.white),
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -73,34 +76,22 @@ class _ProfileCardState extends State<ProfileCard> {
                     children: [
                       Text(
                         name,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: WorkSans.titleMedium
                       ),
                       const SizedBox(height: 5),
                       Text(
                         'Age: $age',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
+                        style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
                       ),
                       const SizedBox(height: 5),
                       Text(
                         'ZIP Code: $zipCode',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
+                        style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
                       ),
                       const SizedBox(height: 5),
                       Text(
                         'Gender: $gender',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
+                        style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
                       ),
                     ],
                   ),

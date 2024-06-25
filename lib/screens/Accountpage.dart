@@ -2,11 +2,6 @@ import 'package:aura/models/edit_account_widgets/profileCard.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Loginpage.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:aura/screens/EditAccount.dart';
-import 'package:aura/models/edit_account_widgets/forward_button.dart';
-import 'package:aura/models/edit_account_widgets/setting_item.dart';
-import 'package:aura/models/edit_account_widgets/setting_switch.dart';
 import 'package:aura/models/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,27 +40,24 @@ class _AccountpageState extends State<Accountpage> {
           children: [
             Text(
               "Account",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 26,
-                  fontWeight: FontWeight.bold),
+              style: WorkSans.titleMedium.copyWith(color: Palette.white),
             ),
             const SizedBox(height: 30),
             ProfileCard(),
             const SizedBox(height: 20),
             Text(
               "About",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: WorkSans.headlineLarge.copyWith(fontWeight: FontWeight.bold),
             ),
             ListTile(
-              leading: Icon(Icons.info),
-              title: Text('App Version'),
-              subtitle: Text('1.0.0'),
+              leading: const Icon(Icons.info, color: Palette.deepBlue),
+              title: Text('App Version', style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600]),),
+              subtitle: Text('1.0.0', style: WorkSans.bodyMedium.copyWith(color: Colors.grey[600]),),
             ),
             ListTile(
-              leading: Icon(Icons.contact_mail),
-              title: Text('Contact Us'),
-              subtitle: Text('support@example.com'),
+              leading: const Icon(Icons.contact_mail, color: Palette.deepBlue,),
+              title: Text('Contact Us', style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600]),),
+              subtitle: Text('support@example.com', style: WorkSans.bodyMedium.copyWith(color: Colors.grey[600]),),
             ),
             const SizedBox(height: 20),
             Center(
@@ -81,7 +73,7 @@ class _AccountpageState extends State<Accountpage> {
                     Navigator.of(context).pushReplacement(
                         MaterialPageRoute(builder: ((context) => LoginPage())));
                   },
-                child: Text('Logout', style: TextStyle(fontSize: 16),),
+                child: Text('Logout', style: WorkSans.headlineSmall.copyWith(color: Colors.red),),
               ),
             ),
           ],
