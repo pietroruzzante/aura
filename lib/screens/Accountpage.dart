@@ -1,6 +1,7 @@
 import 'package:aura/models/edit_account_widgets/profileCard.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Loginpage.dart';
+import 'package:aura/screens/NPSpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -68,10 +69,13 @@ class _AccountpageState extends State<Accountpage> {
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 ),
                 onPressed: () async {
+                  Navigator.push(context,
+                        MaterialPageRoute(builder: ((context) => NPSpage())));
+                  /*
                     final sp = await SharedPreferences.getInstance();
                     await sp.clear();
                     Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: ((context) => LoginPage())));
+                        MaterialPageRoute(builder: ((context) => LoginPage()))); */
                   },
                 child: Text('Logout', style: WorkSans.headlineSmall.copyWith(color: Colors.red),),
               ),

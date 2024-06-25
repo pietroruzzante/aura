@@ -19,7 +19,10 @@ class _EditAccountpageState extends State<EditAccountpage> {
   TextEditingController zipController = TextEditingController();
   TextEditingController dateController = TextEditingController();
 
-  String? _errorMessage;
+  String? _nameError;
+  String? _ageError;
+  String? _zipError;
+  String? _dateError;
 
   DateTime selectedDate = DateTime.now();
   bool manualDateEntryEnabled = true;
@@ -59,7 +62,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
       if (age != null) ageController.text = age;
       if (zipCode != null) zipController.text = zipCode;
       gender = prefs.getString('gender') ?? 'man';
-      if (onMenstrualDate != null) {
+      if (onMenstrualDate != null && onMenstrualDate.isNotEmpty) {
         selectedDate = DateTime.parse(onMenstrualDate);
         dateController.text = selectedDate.toLocal().toString().split(' ')[0];
       }
@@ -69,53 +72,79 @@ class _EditAccountpageState extends State<EditAccountpage> {
   }
 
   Future<void> saveUserInfo(
-      String name, String age, String zipCode, String onMenstrualDate) async {
+    String name,
+    String age,
+    String zipCode,
+    String onMenstrualDate,
+  ) async {
     setState(() {
-      _errorMessage = null;
+      _nameError = null;
+      _ageError = null;
+      _zipError = null;
+      _dateError = null;
     });
+
+    bool hasError = false;
+
+    // Name validation
+    if (name.isEmpty) {
+      setState(() {
+        _nameError = 'Name is necessary';
+      });
+      hasError = true;
+    }
 
     // CAP VALIDATION
     if (zipCode.isEmpty) {
       setState(() {
-        _errorMessage = 'CAP is necessary';
+        _zipError = 'CAP is necessary';
       });
-      return;
-    }
-
-    if (zipCode.length != 5) {
+      hasError = true;
+    } else if (zipCode.length != 5) {
       setState(() {
-        _errorMessage = 'CAP must be 5 numbers';
+        _zipError = 'CAP must be 5 numbers';
       });
-      return;
-    }
-
-    if (!RegExp(r'^[0-9]+$').hasMatch(zipCode)) {
+      hasError = true;
+    } else if (!RegExp(r'^[0-9]+$').hasMatch(zipCode)) {
       setState(() {
-        _errorMessage = 'CAP must contain only numbers';
+        _zipError = 'CAP must contain only numbers';
       });
-      return;
+      hasError = true;
     }
 
     // AGE VALIDATION
     if (age.isEmpty) {
       setState(() {
-        _errorMessage = 'Age is necessary';
+        _ageError = 'Age is necessary';
       });
-      return;
+      hasError = true;
+    } else if (!RegExp(r'^[0-9]+$').hasMatch(age)) {
+      setState(() {
+        _ageError = 'Age must contain only numbers';
+      });
+      hasError = true;
+    } else {
+      int ageValue = int.parse(age);
+      if (ageValue < 0 || ageValue > 120) {
+        setState(() {
+          _ageError = 'Age must be between 0 and 120';
+        });
+        hasError = true;
+      }
     }
 
-    if (!RegExp(r'^[0-9]+$').hasMatch(age)) {
+    // Menstrual date validation if gender is woman and manual entry is enabled
+    if (gender == "woman" &&
+        manualDateEntryEnabled &&
+        onMenstrualDate.isEmpty) {
       setState(() {
-        _errorMessage = 'Age must contain only numbers';
+        _dateError =
+            'Please pick a date or disable the date input.';
       });
-      return;
+      hasError = true;
     }
 
-    int ageValue = int.parse(age);
-    if (ageValue < 0 || ageValue > 120) {
-      setState(() {
-        _errorMessage = 'Age must be between 0 and 120';
-      });
+    if (hasError) {
       return;
     }
 
@@ -152,7 +181,10 @@ class _EditAccountpageState extends State<EditAccountpage> {
                     zipController.text,
                     dateController.text,
                   );
-                  if (_errorMessage == null) {
+                  if (_nameError == null &&
+                      _ageError == null &&
+                      _zipError == null &&
+                      _dateError == null) {
                     Navigator.pop(context);
                   }
                 },
@@ -208,8 +240,31 @@ class _EditAccountpageState extends State<EditAccountpage> {
                     const SizedBox(height: 40),
                     EditItem(
                       title: "Name",
-                      widget: TextField(
-                        controller: nameController,
+                      widget: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            controller: nameController,
+                            decoration: InputDecoration(
+                              errorText: _nameError,
+                              errorStyle: TextStyle(color: Colors.red),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: _nameError != null
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: _nameError != null
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       controller: nameController,
                     ),
@@ -265,16 +320,62 @@ class _EditAccountpageState extends State<EditAccountpage> {
                     const SizedBox(height: 40),
                     EditItem(
                       title: "Age",
-                      widget: TextField(
-                        controller: ageController,
+                      widget: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            controller: ageController,
+                            decoration: InputDecoration(
+                              errorText: _ageError,
+                              errorStyle: TextStyle(color: Colors.red),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: _ageError != null
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: _ageError != null
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       controller: ageController,
                     ),
                     const SizedBox(height: 40),
                     EditItem(
                       title: "ZIP Code",
-                      widget: TextField(
-                        controller: zipController,
+                      widget: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            controller: zipController,
+                            decoration: InputDecoration(
+                              errorText: _zipError,
+                              errorStyle: TextStyle(color: Colors.red),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: _zipError != null
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: _zipError != null
+                                      ? Colors.red
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       controller: zipController,
                     ),
@@ -304,30 +405,38 @@ class _EditAccountpageState extends State<EditAccountpage> {
                       ),
                     if (gender == "woman")
                       Opacity(
-                        opacity: !manualDateEntryEnabled
-                            ? 0.3
-                            : 1.0, 
+                        opacity: !manualDateEntryEnabled ? 0.3 : 1.0,
                         child: EditItem(
-                          title: "date of the next menstrual cycle:",
-
+                          title: "Date of the next menstrual cycle:",
                           widget: AbsorbPointer(
                             absorbing: !manualDateEntryEnabled,
                             child: TextField(
                               controller: dateController,
                               readOnly: true,
                               onTap: () => _selectDate(context),
+                              decoration: InputDecoration(
+                                errorText: _dateError,
+                                errorStyle: TextStyle(color: Colors.red),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: _dateError != null
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: _dateError != null
+                                        ? Colors.red
+                                        : Colors.grey,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                           controller: dateController,
                         ),
                       ),
-                    if (_errorMessage != null) ...[
-                      const SizedBox(height: 20),
-                      Text(
-                        _errorMessage!,
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    ],
                   ],
                 ),
               ),
