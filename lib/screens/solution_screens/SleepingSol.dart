@@ -20,7 +20,7 @@ class _SleepingSolState extends State<SleepingSol> {
   TimeOfDay? _bedtime;
   TimeOfDay? _wakeupTime;
   String _messageHead = 'Set a sleeping schedule';
-  String _message = 'Maintain a consistent sleep schedule, going to bed and waking up at the same time every day';
+  String _message = 'Set the time you plan on going to bed or waking up (or both!), and get personalized tips to find a consistent sleep schedule.';
   int sleepNeeded = 8; // default
   Map<String, String> linkMap = {
     'Reading': 'https://dreamlittlestar.com/bedtime-stories-for-adults/',
@@ -80,14 +80,19 @@ class _SleepingSolState extends State<SleepingSol> {
                     shadowColor: Palette.softBlue2,
                     child: Column(
                       children: [
+                        const Text(
+                          'Set a time',
+                          style: WorkSans.titleSmall,
+                        ),
                         ListTile(
                             title: Text(
                               'Select bed time',
                               style: WorkSans.bodyLarge
                                   .copyWith(color: Palette.deepBlue),
                             ),
-                            trailing: const Icon(Icons.bedtime,
-                                color: Palette.deepBlue),
+                            trailing: _bedtime != null 
+                                ? Text(_bedtime!.format(context), style: WorkSans.bodyLarge.copyWith(color: Palette.deepBlue)) 
+                                : const Icon(Icons.bedtime, color: Palette.deepBlue),
                             onTap: () async {
                               TimeOfDay? selectedTime = await showTimePicker(
                                 context: context,
@@ -106,10 +111,10 @@ class _SleepingSolState extends State<SleepingSol> {
                             style: WorkSans.bodyLarge
                                 .copyWith(color: Palette.deepBlue),
                           ),
-                          trailing: const Icon(
-                            Icons.wb_sunny,
-                            color: Palette.deepBlue,
-                          ),
+                          trailing: _wakeupTime != null 
+                              ? Text(_wakeupTime!.format(context), style: WorkSans.bodyLarge.copyWith(color: Palette.deepBlue)) 
+                              : const Icon(Icons.wb_sunny,color: Palette.deepBlue,
+                                ),
                           onTap: () async {
                             TimeOfDay? selectedTime = await showTimePicker(
                               context: context,
@@ -138,25 +143,23 @@ class _SleepingSolState extends State<SleepingSol> {
                     color: Palette.white,
                     elevation: 10,
                     shadowColor: Palette.softBlue2,
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(15,10,15,10),
+                      child: Column(
+                        children: [
+                          Text(
                             _messageHead,
                             style: WorkSans.titleSmall,
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(15, 0, 15, 8),
-                          child: Text(
+                          const SizedBox(height: 5,),
+                          Text(
                             _message,
                             style: WorkSans.bodyMedium
                                 .copyWith(color: Palette.deepBlue),
                             textAlign: TextAlign.justify,
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -362,7 +365,7 @@ class _SleepingSolState extends State<SleepingSol> {
           'Rise and shine at ${_wakeupTime!.format(context)}! To get your $sleepNeeded hours of sleep, make sure to hit the bed by ${bedtime.format(context)}.';
     } else {
       _messageHead = 'Set a sleeping schedule';
-      _message = 'Maintain a consistent sleep schedule, going to bed and waking up at the same time every day';
+      _message = 'Set the time you plan on going to bed or waking up (or both!), and get personalized tips to find a consistent sleep schedule.';
     }
   }
 

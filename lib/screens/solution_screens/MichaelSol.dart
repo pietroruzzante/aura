@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class MichaelSol extends StatelessWidget {
-  final String videoId =
-      'aiMcewLra2g'; // ID del video di YouTube da visualizzare
+  final String videoId = 'aiMcewLra2g';
 
   @override
   Widget build(BuildContext context) {
-    YoutubePlayerController _controller = YoutubePlayerController(
+    YoutubePlayerController controller = YoutubePlayerController(
       initialVideoId: videoId,
       flags: const YoutubePlayerFlags(
         mute: false,
@@ -26,62 +25,80 @@ class MichaelSol extends StatelessWidget {
       color: Palette.white,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(
-            'Try Michael\'s Solution',
-            style: WorkSans.titleSmall.copyWith(color: Palette.white),
+            title: const Text(
+              'Michael\'s Solution',
+              style: WorkSans.titleSmall,
+            ),
+            backgroundColor: Palette.white,
+            iconTheme: const IconThemeData(color: Palette.deepBlue),
           ),
-        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.all(10.0),
-                child: YoutubePlayer(
-                  controller: _controller,
-                  showVideoProgressIndicator: true,
-                  progressIndicatorColor: Palette.blue,
-                  topActions: <Widget>[
-                    const SizedBox(width: 8.0),
-                    Expanded(
-                      child: Text(
-                        _controller.metadata.title,
-                        style: const TextStyle(
-                          color: Palette.white,
-                          fontSize: 18.0,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      left: 20,
+                      top: 40,
+                      child: SizedBox(
+                        height: 160,
+                        child: AspectRatio(
+                          aspectRatio: 3 / 2,
+                          child: YoutubePlayer(
+                            controller: controller,
+                            showVideoProgressIndicator: true,
+                            progressIndicatorColor: Palette.blue,
+                            topActions: <Widget>[
+                              const SizedBox(width: 8.0),
+                              Expanded(
+                                child: Text(
+                                  controller.metadata.title,
+                                  style: const TextStyle(
+                                    color: Palette.white,
+                                    fontSize: 18.0,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.settings,
+                                  color: Palette.white,
+                                  size: 25.0,
+                                ),
+                                onPressed: () {
+                                  // Logica per i pulsanti
+                                },
+                              ),
+                            ],
+                            onReady: () {
+                              print('Player is ready.');
+                            },
+                            onEnded: (data) {
+                              controller.load(videoId);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(content: Text('Video Ended!')),
+                              );
+                            },
+                          ),
                         ),
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.settings,
-                        color: Palette.white,
-                        size: 25.0,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10,0,10,0),
+                      child: Image.asset(
+                        'assets/tvframe.png',
+                        alignment: Alignment.center,
+                        fit: BoxFit.fill,
                       ),
-                      onPressed: () {
-                        // Logica per i pulsanti
-                      },
                     ),
                   ],
-                  onReady: () {
-                    print('Player is ready.');
-                  },
-                  onEnded: (data) {
-                    _controller.load(videoId); // Ripeti il video quando termina
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Video Ended!')),
-                    );
-                  },
                 ),
-              ),
-              SizedBox(height: 20,),
-              ElevatedButton(
-                child: Text('Other solutions'),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
               ),
             ],
           ),
