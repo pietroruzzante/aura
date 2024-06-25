@@ -183,7 +183,7 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
                 children: [
                   const SizedBox(height: 20),
                   DashedCircularProgressBar.aspectRatio(
-                    aspectRatio: 1.3,
+                    aspectRatio: 1.5,
                     valueNotifier: valueNotifier,
                     progress: widget.score[widget.day.toInt()],
                     maxProgress: 10,
