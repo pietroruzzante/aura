@@ -16,7 +16,7 @@ class YogaExercise {
   });
 }
 
-class YogaScreen extends StatelessWidget {
+class YogaSol extends StatelessWidget {
   final List<YogaExercise> yogaExercises = [
     YogaExercise(
       name: 'Shoulder Stand',
