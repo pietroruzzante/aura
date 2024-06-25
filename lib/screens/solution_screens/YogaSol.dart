@@ -1,4 +1,5 @@
 import 'package:aura/models/palette.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 
 class YogaExercise {
@@ -160,7 +161,12 @@ class YogaScreen extends StatelessWidget {
       color: Palette.white,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Yoga Exercises'),
+          title: const Text(
+            'Yoga',
+            style: WorkSans.titleSmall,
+          ),
+          backgroundColor: Palette.white,
+          iconTheme: const IconThemeData(color: Palette.deepBlue),
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -198,6 +204,7 @@ class YogaExerciseCard extends StatelessWidget {
   final VoidCallback onTap;
 
   YogaExerciseCard({
+    super.key,
     required this.exercise,
     required this.onTap,
   });
@@ -207,8 +214,14 @@ class YogaExerciseCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
+        clipBehavior: Clip.antiAlias,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20))),
+        color: Palette.white,
+        elevation: 10,
+        shadowColor: Palette.softBlue2,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -217,15 +230,11 @@ class YogaExerciseCard extends StatelessWidget {
                 size: 50,
                 color: Palette.blue,
               ),
-              SizedBox(height: 10),
-              Text(
-                exercise.name,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              const SizedBox(height: 10),
+              Text(exercise.name,
+                  textAlign: TextAlign.center,
+                  style: WorkSans.bodyMedium.copyWith(
+                      color: Palette.deepBlue, fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -237,7 +246,7 @@ class YogaExerciseCard extends StatelessWidget {
 class YogaExerciseDetailScreen extends StatelessWidget {
   final YogaExercise exercise;
 
-  YogaExerciseDetailScreen({required this.exercise});
+  YogaExerciseDetailScreen({super.key, required this.exercise});
 
   @override
   Widget build(BuildContext context) {
@@ -245,26 +254,64 @@ class YogaExerciseDetailScreen extends StatelessWidget {
       color: Palette.white,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(exercise.name),
+          title: Text(
+            exercise.name,
+            style: WorkSans.titleSmall,
+          ),
+          backgroundColor: Palette.white,
+          iconTheme: const IconThemeData(color: Palette.deepBlue),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Icon(
-                exercise.icon,
-                size: 100,
-                color: Palette.blue,
-              ),
-              SizedBox(height: 20),
-              Text(
-                exercise.description.join('\n'),
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.justify,
+              Card(
+                clipBehavior: Clip.antiAlias,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                color: Palette.white,
+                elevation: 10,
+                shadowColor: Palette.softBlue2,
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      children: [
+                        Icon(
+                          exercise.icon,
+                          size: 100,
+                          color: Palette.blue,
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          exercise.description.join('\n'),
+                          style: WorkSans.bodyMedium
+                              .copyWith(color: Palette.deepBlue),
+                          textAlign: TextAlign.justify,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
               SizedBox(
                 height: 300,
-                child: Image.asset(exercise.imagePath))
+                child: Card(
+                  clipBehavior: Clip.antiAlias,
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                  color: Palette.white,
+                  elevation: 10,
+                  shadowColor: Palette.softBlue2,
+                  child: Center(
+                    child: Image.asset(
+                      exercise.imagePath,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -272,7 +319,3 @@ class YogaExerciseDetailScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
