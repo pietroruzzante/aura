@@ -26,13 +26,17 @@ class _SevenDayCalendarState extends State<SevenDayCalendar> {
             focusDate: selectedDate,
             lastDate: DateTime.now().add(const Duration(days: 3)),
             timeLineProps: const EasyTimeLineProps(
-                separatorPadding: 1.0, margin: EdgeInsets.zero),
+                separatorPadding: 2.0, margin: EdgeInsets.zero),
             dayProps: EasyDayProps(
               inactiveDayStyle: DayStyle(
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
                   border: const Border(
+                    right: BorderSide(
+                      width: 0.5,
+                      color: Palette.blue,
+                    ),
                     bottom: BorderSide(
                       width: 2,
                       color: Palette.blue,
@@ -41,7 +45,7 @@ class _SevenDayCalendarState extends State<SevenDayCalendar> {
                 ),
               ),
               todayStyle: DayStyle(
-                monthStrStyle: const TextStyle(color: Palette.blue),
+                monthStrStyle: const TextStyle(color: Palette.deepBlue),
                 dayNumStyle: const TextStyle(
                     color: Palette.blue,
                     fontWeight: FontWeight.bold,
@@ -53,7 +57,7 @@ class _SevenDayCalendarState extends State<SevenDayCalendar> {
                   border: const Border(
                     bottom: BorderSide(
                       width: 2,
-                      color: Palette.blue,
+                      color: Palette.deepBlue,
                     ),
                   ),
                 ),
@@ -64,10 +68,11 @@ class _SevenDayCalendarState extends State<SevenDayCalendar> {
                 borderRadius: BorderRadius.circular(20),
               )),
             ),
-            showTimelineHeader: false,
+            showTimelineHeader: true,
             onDateChange: (selectedDate) => widget.day.setDay(
                 selectedDate, DateTime.now().subtract(const Duration(days: 4))),
           ),
         ));
   }
 }
+

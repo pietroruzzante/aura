@@ -246,7 +246,7 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 child: Container(
                   // sets height of top panel
                   height: MediaQuery.of(context).size.height * 0.16,
-                  color: Palette.blue,
+                  color: Palette.white,
                 ),
               ),
             ),
@@ -288,7 +288,7 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                                     "Welcome, $name",
                                                     style: WorkSans.displaySmall
                                                         .copyWith(
-                                                            color: Palette.white),
+                                                            color: Palette.deepBlue),
                                                   ),
                                                 ),
                                               ),
@@ -316,9 +316,9 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                               //TodayDate(day: day),
                                               SevenDayCalendar(day: day),
                                               const SizedBox(height: 10,),
-                                              const Text(
+                                              Text(
                                                 'Your Aura Score:',
-                                                style: WorkSans.titleMedium,
+                                                style: WorkSans.displaySmall.copyWith(fontSize: 25, color: Palette.deepBlue, fontWeight: FontWeight.w400),
                                               ),
                                               const SizedBox(height: 5,),
                                               AuraScoreIndicator(
@@ -407,3 +407,4 @@ class TopSemiCircleClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+

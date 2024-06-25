@@ -27,11 +27,11 @@ class MyApp extends StatelessWidget {
               ColorScheme.fromSeed(seedColor: Palette.blue),
           useMaterial3: true,
           appBarTheme: AppBarTheme(
-            color: Palette.blue,
+            color: Palette.white,
             iconTheme: IconThemeData(
-              color: Palette.white,
+              color: Palette.deepBlue,
             ),
-            titleTextStyle: WorkSans.titleMedium.copyWith(color: Palette.white),
+            titleTextStyle: WorkSans.titleMedium.copyWith(color: Palette.deepBlue),
           ),
           actionIconTheme: ActionIconThemeData(
             backButtonIconBuilder: (context) => Icon(Icons.arrow_back_ios),

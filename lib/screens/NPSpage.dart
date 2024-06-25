@@ -73,9 +73,9 @@ class _NPSpageState extends State<NPSpage> {
   Future<void> saveScoreToSheet(double score) async {
     try {
       final gsheets = GSheets(credentials);
-      final spreadsheetId = '1ecEyRBKJU1qjSRiYV2ASgYKR08S0E-tOxAgGEGgkYRg'; 
+      final spreadsheetId = '1Vh9Z8kYfYW5tH93Nty9iP-wmrYkkzj_oYPDLAcPWtE4'; 
       final spreadsheet = await getSpreadsheet(gsheets, spreadsheetId);
-      final worksheet = await getWorksheet(spreadsheet, 'Foglio1');
+      final worksheet = await getWorksheet(spreadsheet, 'Sheet1');
 
       if (worksheet != null) {
         await worksheet.values.appendRow([score.toInt()]);
