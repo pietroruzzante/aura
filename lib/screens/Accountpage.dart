@@ -67,6 +67,7 @@ class _AccountpageState extends State<Accountpage> {
                   foregroundColor: Colors.red, // White text
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 ),
+
                 onPressed: () {
                    Navigator.push(context,
                           MaterialPageRoute(builder: ((context) => NPSpage())));
