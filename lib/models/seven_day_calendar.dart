@@ -29,6 +29,12 @@ class _SevenDayCalendarState extends State<SevenDayCalendar> {
                 separatorPadding: 2.0, margin: EdgeInsets.zero),
             dayProps: EasyDayProps(
               inactiveDayStyle: DayStyle(
+                monthStrStyle: const TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w700),
+                dayNumStyle: const TextStyle(
+                    color: Palette.darkBlue,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20),
+                dayStrStyle: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w700),
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
@@ -45,30 +51,33 @@ class _SevenDayCalendarState extends State<SevenDayCalendar> {
                 ),
               ),
               todayStyle: DayStyle(
-                monthStrStyle: const TextStyle(color: Palette.deepBlue),
+                monthStrStyle: const TextStyle(color: Palette.deepBlue, fontWeight: FontWeight.w700),
                 dayNumStyle: const TextStyle(
-                    color: Palette.blue,
+                    color: Palette.deepBlue,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
-                dayStrStyle: const TextStyle(color: Palette.blue),
+                dayStrStyle: const TextStyle(color: Palette.deepBlue, fontWeight: FontWeight.w700),
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
                   border: const Border(
                     bottom: BorderSide(
                       width: 2,
-                      color: Palette.deepBlue,
+                      color: Palette.blue,
                     ),
                   ),
                 ),
               ),
               activeDayStyle: DayStyle(
+                dayNumStyle: TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 22),
+                dayStrStyle: TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 14),
+                monthStrStyle:  TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 14),
                   decoration: BoxDecoration(
                 color: Palette.deepBlue,
                 borderRadius: BorderRadius.circular(20),
               )),
             ),
-            showTimelineHeader: true,
+            showTimelineHeader: false,
             onDateChange: (selectedDate) => widget.day.setDay(
                 selectedDate, DateTime.now().subtract(const Duration(days: 4))),
           ),
