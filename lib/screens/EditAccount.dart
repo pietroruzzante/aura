@@ -203,6 +203,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
               children: [
                 Text("Account", style: WorkSans.titleMedium.copyWith(color: Palette.deepBlue, fontSize: 40)),
                 const SizedBox(height: 15),
+
                 EditItem(
                   title: "Name",
                   widget: Column(
