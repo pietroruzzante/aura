@@ -140,7 +140,7 @@ class _SolutionpageState extends State<Solutionpage> {
                             child: ClipPath(
                               child: CurvedBackground(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.25,
+                                    MediaQuery.of(context).size.height * 0.30,
                                 color: Palette.blue,
                               ),
                             ),
@@ -266,7 +266,8 @@ class _SolutionpageState extends State<Solutionpage> {
     } else {
       sleepNeeded = 7;
     }
-    return todaySleep < sleepNeeded;
+    return true;
+    //return todaySleep < sleepNeeded;
   }
 
   bool needExercise(String lastDateExercise) {
@@ -274,7 +275,8 @@ class _SolutionpageState extends State<Solutionpage> {
     DateTime currentDate = DateTime.now();
     int differenceInDays = currentDate.difference(lastExerciseDate).inDays;
     bool needExercise = differenceInDays > 3;
-    return needExercise;
+    return true;
+    //return needExercise;
   }
 
 }
