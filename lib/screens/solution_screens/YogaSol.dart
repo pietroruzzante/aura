@@ -171,7 +171,7 @@ class YogaSol extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
               mainAxisSpacing: 10.0,
               crossAxisSpacing: 10.0,
@@ -203,7 +203,7 @@ class YogaExerciseCard extends StatelessWidget {
   final YogaExercise exercise;
   final VoidCallback onTap;
 
-  YogaExerciseCard({
+  const YogaExerciseCard({
     super.key,
     required this.exercise,
     required this.onTap,
@@ -246,7 +246,7 @@ class YogaExerciseCard extends StatelessWidget {
 class YogaExerciseDetailScreen extends StatelessWidget {
   final YogaExercise exercise;
 
-  YogaExerciseDetailScreen({super.key, required this.exercise});
+  const YogaExerciseDetailScreen({super.key, required this.exercise});
 
   @override
   Widget build(BuildContext context) {

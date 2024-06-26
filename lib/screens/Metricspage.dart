@@ -200,7 +200,7 @@ class _MetricspageState extends State<Metricspage> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                                color: Palette.white,
+                                color: Palette.deepBlue,
                                 borderRadius: BorderRadius.circular(20),
                                 boxShadow: const [
                                   BoxShadow(
@@ -210,77 +210,82 @@ class _MetricspageState extends State<Metricspage> {
                                 ]),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.center,
+                              child: Column(
                                 children: [
-                                  // Stress
-                                  Column(
+                                  SizedBox(height: 10,),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      DashedCircularProgressBar(
-                                        width: 75,
-                                        height: 75,
-                                        progress: data[1][3],
-                                        maxProgress: 6,
-                                        startAngle: 225,
-                                        sweepAngle: 270,
-                                        foregroundColor: Palette.deepBlue,
-                                        backgroundColor: Palette.softBlue1,
-                                        foregroundStrokeWidth: 6,
-                                        backgroundStrokeWidth: 6,
-                                        seekColor: Palette.white,
-                                        seekSize: 5,
-                                        animation: true,
-                                        animationDuration:
-                                            const Duration(milliseconds: 500),
-                                        animationCurve:
-                                            Easing.standardDecelerate,
-                                        child: Center(
-                                            child: Text(
-                                          '${data[1][3].toInt()}/6',
-                                          style: WorkSans.bodyMedium.copyWith(
-                                              color: Palette.deepBlue,
-                                              fontWeight: FontWeight.bold),
-                                        )),
+                                      // Stress
+                                      Column(
+                                        children: [
+                                          DashedCircularProgressBar(
+                                            width: 75,
+                                            height: 75,
+                                            progress: data[1][3],
+                                            maxProgress: 6,
+                                            startAngle: 225,
+                                            sweepAngle: 270,
+                                            foregroundColor: Palette.white,
+                                            backgroundColor: Palette.softBlue3,
+                                            foregroundStrokeWidth: 6,
+                                            backgroundStrokeWidth: 6,
+                                            seekColor: Palette.white,
+                                            seekSize: 5,
+                                            animation: true,
+                                            animationDuration:
+                                                const Duration(milliseconds: 500),
+                                            animationCurve:
+                                                Easing.standardDecelerate,
+                                            child: Center(
+                                                child: Text(
+                                              '${data[1][3].toInt()}/6',
+                                              style: WorkSans.bodyMedium.copyWith(
+                                                  color: Palette.white,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                          ),
+                                          Text('stress',
+                                              style: WorkSans.headlineSmall.copyWith(color: Palette.white)),
+                                        ],
                                       ),
-                                      const Text('stress',
-                                          style: WorkSans.headlineSmall),
+                                      // Weather
+                                      Column(
+                                        children: [
+                                          DashedCircularProgressBar(
+                                            width: 75,
+                                            height: 75,
+                                            startAngle: 225,
+                                            sweepAngle: 270,
+                                            progress: data[2][3],
+                                            maxProgress: 4,
+                                            foregroundColor: Palette.white,
+                                            backgroundColor: Palette.softBlue3,
+                                            foregroundStrokeWidth: 6,
+                                            backgroundStrokeWidth: 6,
+                                            seekColor: Palette.white,
+                                            seekSize: 5,
+                                            animation: true,
+                                            animationDuration:
+                                                const Duration(milliseconds: 500),
+                                            animationCurve:
+                                                Easing.standardDecelerate,
+                                            child: Center(
+                                                child: Text(
+                                              '${data[2][3].toInt()}/4',
+                                              style: WorkSans.bodyMedium.copyWith(
+                                                  color: Palette.white,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                          ),
+                                          Text('weather',
+                                              style: WorkSans.headlineSmall.copyWith(color: Palette.white)),
+                                        ],
+                                      )
                                     ],
                                   ),
-                                  // Weather
-                                  Column(
-                                    children: [
-                                      DashedCircularProgressBar(
-                                        width: 75,
-                                        height: 75,
-                                        startAngle: 225,
-                                        sweepAngle: 270,
-                                        progress: data[2][3],
-                                        maxProgress: 4,
-                                        foregroundColor: Palette.deepBlue,
-                                        backgroundColor: Palette.softBlue1,
-                                        foregroundStrokeWidth: 6,
-                                        backgroundStrokeWidth: 6,
-                                        seekColor: Palette.white,
-                                        seekSize: 5,
-                                        animation: true,
-                                        animationDuration:
-                                            const Duration(milliseconds: 500),
-                                        animationCurve:
-                                            Easing.standardDecelerate,
-                                        child: Center(
-                                            child: Text(
-                                          '${data[2][3].toInt()}/4',
-                                          style: WorkSans.bodyMedium.copyWith(
-                                              color: Palette.deepBlue,
-                                              fontWeight: FontWeight.bold),
-                                        )),
-                                      ),
-                                      const Text('weather',
-                                          style: WorkSans.headlineSmall),
-                                    ],
-                                  )
                                 ],
                               ),
                             ),
@@ -414,6 +419,7 @@ class _MetricspageState extends State<Metricspage> {
                               ),
                             ]),
                           ),
+                          SizedBox(height: 90,)
                         ],
                       ),
                     ]),

@@ -189,52 +189,41 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   }
                 },
                 style: IconButton.styleFrom(
-                  backgroundColor: Palette.blue,
+                  backgroundColor: Palette.deepBlue,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  fixedSize: Size(50, 50),
-                  elevation: 3,
+                  fixedSize: const Size(50, 50),
+                  elevation: 1,
                 ),
                 icon: const Icon(Ionicons.checkmark, color: Palette.white),
               ),
             ),
           ],
         ),
-        body: Stack(
-          children: [
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: ClipPath(
-                clipper: TopSemiCircleClipper(),
-                child: Container(
-                  // sets height of top panel
-                  height: MediaQuery.of(context).size.height * 0.16,
-                  color: Palette.blue,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Account",
+                  style: WorkSans.titleMedium
+                      .copyWith(color: Palette.deepBlue, fontSize: 40),
                 ),
-              ),
-            ),
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Account",
-                      style:
-                          WorkSans.titleMedium.copyWith(color: Palette.white),
-                    ),
-                    const SizedBox(height: 15),
-                    CircleAvatar(
-                      radius: 35,
-                      backgroundColor: Palette.deepBlue, // Placeholder color
-                      child: Text(
-                        "U", // Initials or placeholder text
-                        style:
-                            WorkSans.titleMedium.copyWith(color: Palette.blue),
+                const SizedBox(height: 40),
+                EditItem(
+                  title: "Name",
+                  widget: TextField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide:
+                            const BorderSide(color: Palette.deepBlue, width: 2.0),
                       ),
                     ),
                     const SizedBox(height: 40),
@@ -266,54 +255,34 @@ class _EditAccountpageState extends State<EditAccountpage> {
                           ),
                         ],
                       ),
-                      controller: nameController,
+                      hintText: 'Enter name here',
+                      hintStyle: const TextStyle(color: Colors.grey),
                     ),
-                    const SizedBox(height: 40),
-                    EditItem(
-                      title: "Gender",
-                      widget: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                gender = "man";
-                              });
-                            },
-                            style: IconButton.styleFrom(
-                              backgroundColor: gender == "man"
-                                  ? Palette.blue
-                                  : Colors.grey.shade200,
-                              fixedSize: const Size(50, 50),
-                            ),
-                            icon: Icon(
-                              Ionicons.male,
-                              color:
-                                  gender == "man" ? Colors.white : Colors.black,
-                              size: 18,
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                gender = "woman";
-                              });
-                            },
-                            style: IconButton.styleFrom(
-                              backgroundColor: gender == "woman"
-                                  ? Palette.yellow
-                                  : Colors.grey.shade200,
-                              fixedSize: const Size(50, 50),
-                            ),
-                            icon: Icon(
-                              Ionicons.female,
-                              color: gender == "woman"
-                                  ? Colors.white
-                                  : Colors.black,
-                              size: 18,
-                            ),
-                          )
-                        ],
+                  ),
+                  controller: nameController,
+                ),
+                const SizedBox(height: 40),
+                EditItem(
+                  title: "Gender",
+                  widget: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            gender = "man";
+                          });
+                        },
+                        style: IconButton.styleFrom(
+                          backgroundColor: gender == "man"
+                              ? Palette.deepBlue
+                              : Colors.grey.shade200,
+                          fixedSize: const Size(50, 50),
+                        ),
+                        icon: Icon(
+                          Ionicons.male,
+                          color: gender == "man" ? Colors.white : Colors.black,
+                          size: 18,
+                        ),
                       ),
                       controller: TextEditingController(),
                     ),
@@ -345,8 +314,10 @@ class _EditAccountpageState extends State<EditAccountpage> {
                             ),
                           ),
                         ],
+
                       ),
-                      controller: ageController,
+                      hintText: 'Enter age here',
+                      hintStyle: const TextStyle(color: Colors.grey),
                     ),
                     const SizedBox(height: 40),
                     EditItem(
@@ -377,29 +348,48 @@ class _EditAccountpageState extends State<EditAccountpage> {
                           ),
                         ],
                       ),
-                      controller: zipController,
+                      hintText: 'Enter ZIP code here',
+                      hintStyle: const TextStyle(color: Colors.grey),
                     ),
-                    const SizedBox(height: 20),
-                    if (gender == "woman")
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        child: Row(
+                  ),
+                  controller: zipController,
+                ),
+                const SizedBox(height: 20),
+                if (gender == "woman")
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            "Disable period date",
+                            style: WorkSans.headlineSmall
+                                .copyWith(color: Palette.darkBlue),
+                          ),
+                        ),
+                        Switch(
+                          value: !manualDateEntryEnabled,
+                          onChanged: (value) {
+                            setState(() {
+                              manualDateEntryEnabled = !value;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                if (gender == "woman")
+                  Opacity(
+                    opacity: !manualDateEntryEnabled ? 0.3 : 1.0,
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: Text(
-                                "Disable period date",
-                                style: WorkSans.headlineSmall
-                                    .copyWith(color: Palette.darkBlue),
-                              ),
-                            ),
-                            Switch(
-                              value: !manualDateEntryEnabled,
-                              onChanged: (value) {
-                                setState(() {
-                                  manualDateEntryEnabled = !value;
-                                });
-                              },
-                            ),
+                            Text(
+                                'Insert the date of your next menstrual cycle: ',
+                                style: WorkSans.displaySmall.copyWith(
+                                    fontSize: 15, color: Palette.black)),
                           ],
                         ),
                       ),
@@ -440,26 +430,11 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   ],
                 ),
               ),
+
             ),
-          ],
+          ),
         ),
       ),
     );
   }
-}
-
-class TopSemiCircleClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0, size.height);
-    path.quadraticBezierTo(
-        size.width * 0.5, size.height * 0.8, size.width, size.height);
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

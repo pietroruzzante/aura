@@ -5,10 +5,10 @@ class CurvedBackground extends StatelessWidget {
   final Color color;
 
   const CurvedBackground({
-    Key? key,
+    super.key,
     required this.height,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

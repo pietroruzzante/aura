@@ -6,6 +6,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 class MichaelSol extends StatelessWidget {
   final String videoId = 'aiMcewLra2g';
 
+  const MichaelSol({super.key});
+
   @override
   Widget build(BuildContext context) {
     YoutubePlayerController controller = YoutubePlayerController(

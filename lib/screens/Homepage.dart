@@ -32,21 +32,6 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
   String name = 'User';
 
-  List<BottomNavigationBarItem> navBarItems = [
-    const BottomNavigationBarItem(
-      icon: Icon(Icons.health_and_safety),
-      label: 'Aura Score',
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(Icons.query_stats),
-      label: 'Metrics',
-    ),
-    const BottomNavigationBarItem(
-      icon: Icon(Icons.person),
-      label: 'Account',
-    ),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -74,33 +59,35 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
     CherryToast.warning(
       height: 200,
       width: 400,
-      title: const Text('Warning!', style: WorkSans.titleSmall,),
-      description: Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: 'One or more data not available',
-            style: WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w800),
-          ),
-          TextSpan(
-            text: '\nStress estimate could be inaccurate!',
-            style: WorkSans.headlineSmall.copyWith(
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
+      title: const Text(
+        'Warning!',
+        style: WorkSans.titleSmall,
       ),
-      textAlign: TextAlign.left,
-    ),
+      description: Text.rich(
+        TextSpan(
+          children: [
+            TextSpan(
+              text: 'One or more data not available',
+              style:
+                  WorkSans.headlineSmall.copyWith(fontWeight: FontWeight.w800),
+            ),
+            TextSpan(
+              text: '\nStress estimate could be inaccurate!',
+              style: WorkSans.headlineSmall.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ],
+        ),
+        textAlign: TextAlign.left,
+      ),
       displayIcon: true,
       animationType: AnimationType.fromTop,
       animationDuration: const Duration(seconds: 1),
       toastDuration: const Duration(seconds: 5),
       inheritThemeColors: true,
       autoDismiss: true,
-      
-    ).show(context)
-    ;
+    ).show(context);
   }
 
   // Score initialization
@@ -153,8 +140,8 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 Row(children: [
                   Image.asset(
                     'assets/logo.png',
-                    height: 50,
-                    width: 50,
+                    height: 60,
+                    width: 60,
                   ),
                   const SizedBox(width: 10),
                   const Text(
@@ -211,47 +198,27 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 const Divider(),
                 // Logout
                 ListTile(
-                  leading: const Icon(
-                    Icons.logout,
-                    color: Palette.deepBlue,
-                  ),
-                  title: const Text(
-                    'Logout',
-                    style: WorkSans.headlineSmall,
-                  ),
-                   onTap: ()  {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: ((context) => NPSpage())));
-                   }
-                  // onTap: () async {
-                  //   final sp = await SharedPreferences.getInstance();
-                  //   await sp.clear();
-                  //   Navigator.of(context).pushReplacement(
-                  //       MaterialPageRoute(builder: ((context) => LoginPage())));
-                  // }, Migrated to NPSpage
-                ),
+                    leading: const Icon(
+                      Icons.logout,
+                      color: Palette.deepBlue,
+                    ),
+                    title: const Text(
+                      'Logout',
+                      style: WorkSans.headlineSmall,
+                    ),
+                    onTap: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: ((context) => NPSpage())));
+                    }
+                    ),
               ],
             ),
           ),
         ),
         body: Stack(
           children: [
-            // Semicircle behind Scaffold
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: ClipPath(
-                clipper: TopSemiCircleClipper(),
-                child: Container(
-                  // sets height of top panel
-                  height: MediaQuery.of(context).size.height * 0.16,
-                  color: Palette.white,
-                ),
-              ),
-            ),
             // Homepage elements
-            Positioned.fill(
+            Positioned(
               child: FutureBuilder<HeadacheScore>(
                 future: score,
                 builder: (context, snapshot) {
@@ -275,7 +242,9 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                   child: SizedBox(
                                       width: 350,
                                       child: Column(children: [
-                                        const SizedBox(height: 10,),
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.fromLTRB(
                                               15, 0, 10, 0),
@@ -288,7 +257,8 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                                     "Welcome, $name",
                                                     style: WorkSans.displaySmall
                                                         .copyWith(
-                                                            color: Palette.deepBlue),
+                                                            color: Palette
+                                                                .deepBlue),
                                                   ),
                                                 ),
                                               ),
@@ -315,19 +285,30 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                             children: [
                                               //TodayDate(day: day),
                                               SevenDayCalendar(day: day),
-                                              const SizedBox(height: 10,),
-                                              Text(
-                                                'Your Aura Score:',
-                                                style: WorkSans.displaySmall.copyWith(fontSize: 25, color: Palette.deepBlue, fontWeight: FontWeight.w400),
+                                              const SizedBox(
+                                                height: 10,
                                               ),
-                                              const SizedBox(height: 5,),
+                                              // Text(
+                                              //   'Your Aura Score:',
+                                              //   style: WorkSans.displaySmall
+                                              //       .copyWith(
+                                              //           fontSize: 25,
+                                              //           color: Palette.deepBlue,
+                                              //           fontWeight:
+                                              //               FontWeight.w400),
+                                              // ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
                                               AuraScoreIndicator(
-                                                score: score,
-                                                day: day,
-                                                onTap: () => _onItemTapped(1)
+                                                  score: score,
+                                                  day: day,
+                                                  onTap: () =>
+                                                      _onItemTapped(1)),
+                                              const SizedBox(
+                                                height: 20,
                                               ),
-                                              const SizedBox(height: 30,),
-                                              FindSolutions(),
+                                              const FindSolutions(),
                                             ],
                                           )));
                                         })
@@ -338,32 +319,72 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Palette.white,
-                          borderRadius: BorderRadius.circular(30.0),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.blueGrey,
-                              blurRadius: 8.0,
-                            ),
-                          ],
-                        ),
-                        margin:
-                            const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        child: BottomNavigationBar(
-                          currentIndex: currentIndex,
-                          onTap: _onItemTapped,
-                          items: navBarItems,
-                          backgroundColor: Palette.transparent,
-                          elevation: 0,
-                        ),
-                      ),
+                    
                     ],
                   );
                 },
               ),
             ),
+            Positioned(
+            left: 28,
+            right: 28,
+            bottom: 30,
+            child: Center(
+              child: Container(
+                height: 70, 
+                width: 490,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      spreadRadius: 2,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.health_and_safety, size: 30),
+                          onPressed: () => _onItemTapped(0),
+                          color: currentIndex == 0 ? Palette.deepBlue : Colors.grey[600],
+                        ),
+                        Text('Aura Score', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: currentIndex == 0 ? Palette.deepBlue : Colors.grey[700], fontWeight: FontWeight.w400),)
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.query_stats, size: 30),
+                          onPressed: () => _onItemTapped(1),
+                          color: currentIndex == 1 ? Palette.deepBlue : Colors.grey[600],
+                        ),
+                        Text('Metrics', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: currentIndex == 1 ? Palette.deepBlue : Colors.grey[700], fontWeight: FontWeight.w400),)
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.person, size: 30),
+                          onPressed: () => _onItemTapped(2),
+                          color: currentIndex == 2 ? Palette.deepBlue : Colors.grey[600],
+                        ),
+                        Text('Account', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: currentIndex == 2 ? Palette.deepBlue : Colors.grey[700], fontWeight: FontWeight.w400),)
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           ],
         ),
       ),
@@ -373,11 +394,11 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
 // text to display according to AuraScore
 String getText(double score) {
-  if (score < 2) {
+  if (score < 4) {
     return "Low";
-  } else if ((score >= 2) & (score < 4)) {
-    return "Medium";
   } else if ((score >= 4) & (score < 6)) {
+    return "Medium";
+  } else if ((score >= 6) & (score < 8)) {
     return "High";
   } else {
     return "Very high!";
@@ -389,22 +410,5 @@ DateTime getDateForValue(int value) {
   DateTime now = DateTime.now();
   int difference = value - 3; // 3 is the central value and it represents today
   return now.add(Duration(days: difference));
-}
-
-// to draw semicircle for background
-class TopSemiCircleClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0, size.height);
-    path.quadraticBezierTo(
-        size.width * 0.5, size.height * 0.8, size.width, size.height);
-    path.lineTo(size.width, 0);
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 

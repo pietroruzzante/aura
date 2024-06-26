@@ -5,7 +5,7 @@ import 'package:aura/models/solution.dart';
 class SolutionCard extends StatelessWidget {
   final Solution solution;
 
-  SolutionCard({super.key, required this.solution});
+  const SolutionCard({super.key, required this.solution});
 
   @override
   Widget build(BuildContext context) {
