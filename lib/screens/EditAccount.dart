@@ -35,17 +35,15 @@ class _EditAccountpageState extends State<EditAccountpage> {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-        context: context,
-        initialDate: selectedDate,
-        firstDate: DateTime(1970, 1),
-        lastDate: DateTime(2024, 12));
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(1970, 1),
+      lastDate: DateTime(2024, 12),
+    );
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        dateController.text = picked
-            .toLocal()
-            .toString()
-            .split(' ')[0]; // Format date as YYYY-MM-DD
+        dateController.text = picked.toLocal().toString().split(' ')[0]; // Format date as YYYY-MM-DD
       });
     }
   }
@@ -66,8 +64,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
         selectedDate = DateTime.parse(onMenstrualDate);
         dateController.text = selectedDate.toLocal().toString().split(' ')[0];
       }
-      manualDateEntryEnabled =
-          prefs.getBool('manual_date_entry_enabled') ?? true;
+      manualDateEntryEnabled = prefs.getBool('manual_date_entry_enabled') ?? true;
     });
   }
 
@@ -134,12 +131,9 @@ class _EditAccountpageState extends State<EditAccountpage> {
     }
 
     // Menstrual date validation if gender is woman and manual entry is enabled
-    if (gender == "woman" &&
-        manualDateEntryEnabled &&
-        onMenstrualDate.isEmpty) {
+    if (gender == "woman" && manualDateEntryEnabled && onMenstrualDate.isEmpty) {
       setState(() {
-        _dateError =
-            'Please pick a date or disable the date input.';
+        _dateError = 'Please pick a date or disable the date input.';
       });
       hasError = true;
     }
@@ -189,12 +183,12 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   }
                 },
                 style: IconButton.styleFrom(
-                  backgroundColor: Palette.deepBlue,
+                  backgroundColor: Palette.blue,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  fixedSize: const Size(50, 50),
-                  elevation: 1,
+                  fixedSize: Size(50, 50),
+                  elevation: 3,
                 ),
                 icon: const Icon(Ionicons.checkmark, color: Palette.white),
               ),
@@ -207,57 +201,40 @@ class _EditAccountpageState extends State<EditAccountpage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Account",
-                  style: WorkSans.titleMedium
-                      .copyWith(color: Palette.deepBlue, fontSize: 40),
+                Text("Account", style: WorkSans.titleMedium.copyWith(color: Palette.white)),
+                const SizedBox(height: 15),
+                CircleAvatar(
+                  radius: 35,
+                  backgroundColor: Palette.deepBlue, // Placeholder color
+                  child: Text(
+                    "U", // Initials or placeholder text
+                    style: WorkSans.titleMedium.copyWith(color: Palette.blue),
+                  ),
                 ),
                 const SizedBox(height: 40),
                 EditItem(
                   title: "Name",
-                  widget: TextField(
-                    controller: nameController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                        borderSide:
-                            const BorderSide(color: Palette.deepBlue, width: 2.0),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    EditItem(
-                      title: "Name",
-                      widget: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextField(
-                            controller: nameController,
-                            decoration: InputDecoration(
-                              errorText: _nameError,
-                              errorStyle: TextStyle(color: Colors.red),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: _nameError != null
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: _nameError != null
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                              ),
+                  widget: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                          errorText: _nameError,
+                          errorStyle: TextStyle(color: Colors.red),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _nameError != null ? Colors.red : Colors.grey,
                             ),
                           ),
-                        ],
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _nameError != null ? Colors.red : Colors.grey,
+                            ),
+                          ),
+                        ),
                       ),
-                      hintText: 'Enter name here',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                    ),
+                    ],
                   ),
                   controller: nameController,
                 ),
@@ -274,7 +251,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                         },
                         style: IconButton.styleFrom(
                           backgroundColor: gender == "man"
-                              ? Palette.deepBlue
+                              ? Palette.blue
                               : Colors.grey.shade200,
                           fixedSize: const Size(50, 50),
                         ),
@@ -284,73 +261,80 @@ class _EditAccountpageState extends State<EditAccountpage> {
                           size: 18,
                         ),
                       ),
-                      controller: TextEditingController(),
-                    ),
-                    const SizedBox(height: 40),
-                    EditItem(
-                      title: "Age",
-                      widget: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextField(
-                            controller: ageController,
-                            decoration: InputDecoration(
-                              errorText: _ageError,
-                              errorStyle: TextStyle(color: Colors.red),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: _ageError != null
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: _ageError != null
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                              ),
+                      const SizedBox(width: 20),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            gender = "woman";
+                          });
+                        },
+                        style: IconButton.styleFrom(
+                          backgroundColor: gender == "woman"
+                              ? Palette.yellow
+                              : Colors.grey.shade200,
+                          fixedSize: const Size(50, 50),
+                        ),
+                        icon: Icon(
+                          Ionicons.female,
+                          color: gender == "woman" ? Colors.white : Colors.black,
+                          size: 18,
+                        ),
+                      )
+                    ],
+                  ),
+                  controller: TextEditingController(),
+                ),
+                const SizedBox(height: 40),
+                EditItem(
+                  title: "Age",
+                  widget: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: ageController,
+                        decoration: InputDecoration(
+                          errorText: _ageError,
+                          errorStyle: TextStyle(color: Colors.red),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _ageError != null ? Colors.red : Colors.grey,
                             ),
                           ),
-                        ],
-
-                      ),
-                      hintText: 'Enter age here',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                    ),
-                    const SizedBox(height: 40),
-                    EditItem(
-                      title: "ZIP Code",
-                      widget: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          TextField(
-                            controller: zipController,
-                            decoration: InputDecoration(
-                              errorText: _zipError,
-                              errorStyle: TextStyle(color: Colors.red),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: _zipError != null
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: _zipError != null
-                                      ? Colors.red
-                                      : Colors.grey,
-                                ),
-                              ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _ageError != null ? Colors.red : Colors.grey,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                      hintText: 'Enter ZIP code here',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                    ),
+                    ],
+                  ),
+                  controller: ageController,
+                ),
+                const SizedBox(height: 40),
+                EditItem(
+                  title: "ZIP Code",
+                  widget: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextField(
+                        controller: zipController,
+                        decoration: InputDecoration(
+                          errorText: _zipError,
+                          errorStyle: TextStyle(color: Colors.red),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _zipError != null ? Colors.red : Colors.grey,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _zipError != null ? Colors.red : Colors.grey,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   controller: zipController,
                 ),
@@ -363,8 +347,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                         Expanded(
                           child: Text(
                             "Disable period date",
-                            style: WorkSans.headlineSmall
-                                .copyWith(color: Palette.darkBlue),
+                            style: WorkSans.headlineSmall.copyWith(color: Palette.darkBlue),
                           ),
                         ),
                         Switch(
@@ -381,56 +364,34 @@ class _EditAccountpageState extends State<EditAccountpage> {
                 if (gender == "woman")
                   Opacity(
                     opacity: !manualDateEntryEnabled ? 0.3 : 1.0,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                                'Insert the date of your next menstrual cycle: ',
-                                style: WorkSans.displaySmall.copyWith(
-                                    fontSize: 15, color: Palette.black)),
-                          ],
-                        ),
-                      ),
-                    if (gender == "woman")
-                      Opacity(
-                        opacity: !manualDateEntryEnabled ? 0.3 : 1.0,
-                        child: EditItem(
-                          title: "Date of the next menstrual cycle:",
-                          widget: AbsorbPointer(
-                            absorbing: !manualDateEntryEnabled,
-                            child: TextField(
-                              controller: dateController,
-                              readOnly: true,
-                              onTap: () => _selectDate(context),
-                              decoration: InputDecoration(
-                                errorText: _dateError,
-                                errorStyle: TextStyle(color: Colors.red),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: _dateError != null
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: _dateError != null
-                                        ? Colors.red
-                                        : Colors.grey,
-                                  ),
-                                ),
+                    child: EditItem(
+                      title: "Date of the next menstrual cycle:",
+                      widget: AbsorbPointer(
+                        absorbing: !manualDateEntryEnabled,
+                        child: TextField(
+                          controller: dateController,
+                          readOnly: true,
+                          onTap: () => _selectDate(context),
+                          decoration: InputDecoration(
+                            errorText: _dateError,
+                            errorStyle: TextStyle(color: Colors.red),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _dateError != null ? Colors.red : Colors.grey,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: _dateError != null ? Colors.red : Colors.grey,
                               ),
                             ),
                           ),
-                          controller: dateController,
                         ),
                       ),
-                  ],
-                ),
-              ),
-
+                      controller: dateController,
+                    ),
+                  ),
+              ],
             ),
           ),
         ),
@@ -438,3 +399,5 @@ class _EditAccountpageState extends State<EditAccountpage> {
     );
   }
 }
+
+
