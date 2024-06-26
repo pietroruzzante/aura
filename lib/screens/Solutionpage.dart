@@ -267,7 +267,7 @@ class _SolutionpageState extends State<Solutionpage> {
       sleepNeeded = 7;
     }
     return true;
-    //return todaySleep < sleepNeeded;
+    //return todaySleep < sleepNeeded; //Commented for Demo
   }
 
   bool needExercise(String lastDateExercise) {
@@ -276,7 +276,7 @@ class _SolutionpageState extends State<Solutionpage> {
     int differenceInDays = currentDate.difference(lastExerciseDate).inDays;
     bool needExercise = differenceInDays > 3;
     return true;
-    //return needExercise;
+    //return needExercise; //Commented for Demo
   }
 
 }
