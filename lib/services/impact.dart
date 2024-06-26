@@ -116,7 +116,7 @@ class Impact {
   Future<List<double>> getSleepHR() async {
     var header = await getBearer();
     var day = DateFormat('yyyy-MM-dd')
-        .format(DateTime.now().subtract(Duration(days:1))); // set the day !!!! C'è un problema inserendo un il giorno DateTime.now().subtract(Duration(days:1))
+        .format(DateTime.now().subtract(Duration(days:1))); 
     final urlSleep =
         '${Impact.baseUrl}data/v1/sleep/patients/$patientUsername/day/$day/';
     final urlRestHR =
