@@ -5,7 +5,7 @@ import 'package:gif/gif.dart';
 
 class FindSolutions extends StatefulWidget {
 
-  FindSolutions({super.key});
+  const FindSolutions({super.key});
 
   @override
   State<FindSolutions> createState() => _FindSolutionsState();
@@ -35,8 +35,8 @@ class _FindSolutionsState extends State<FindSolutions> with TickerProviderStateM
             context, MaterialPageRoute(builder: (context) => Solutionpage()));
       },
       child: Container(
-        width: 480,
-        height: 200,
+        width: 490,
+        height: 240,
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           boxShadow: const [

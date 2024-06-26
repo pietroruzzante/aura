@@ -252,7 +252,7 @@ class _SolutionpageState extends State<Solutionpage> {
       solutions.add(Solution('Sleeping', 'assets/sleepingSol.jpg', 'Set your bedtime and wake-up times, and get personalized tips to wake up feeling refreshed. Explore relaxing bedtime routines designed to help you unwind and sleep deeply. Take charge of your sleep routine and enjoy waking up ready to take on the day.',
           pageRoute: SleepingSol()));
     }
-    if (needExercise()) {
+    if (needExercise(data[3])) {
       solutions.add(Solution('Exercise', 'assets/yoga.png', 'Yoga has significant potential to alleviate stress and headaches. By promoting relaxation, enhancing blood circulation, and improving posture, yoga can reduce tension and discomfort. Regular practice helps calm the mind, releasing stress and preventing headaches, leading to better overall well-being and a more balanced, healthier lifestyle.',
           pageRoute: YogaSol()))  ;
     }
@@ -260,8 +260,7 @@ class _SolutionpageState extends State<Solutionpage> {
   }
 
   bool needSleep(double todaySleep, int age) {
-    int sleepNeeded;
-
+    int sleepNeeded = 7;
     if (age <= 12) {
       sleepNeeded = 9;
     } else if (age >= 13 && age <= 18) {
@@ -269,13 +268,17 @@ class _SolutionpageState extends State<Solutionpage> {
     } else {
       sleepNeeded = 7;
     }
-    return true;
-    // todaySleep < sleepNeeded
+    return todaySleep < sleepNeeded;
   }
 
-  bool needExercise() {
-    return true;
+  bool needExercise(String lastDateExercise) {
+    DateTime lastExerciseDate = DateTime.parse(lastDateExercise);
+    DateTime currentDate = DateTime.now();
+    int differenceInDays = currentDate.difference(lastExerciseDate).inDays;
+    bool needExercise = differenceInDays > 3;
+    return needExercise;
   }
+
 }
 
 Future<List<dynamic>> loadData(BuildContext context) async {

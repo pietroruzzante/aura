@@ -140,8 +140,8 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                 Row(children: [
                   Image.asset(
                     'assets/logo.png',
-                    height: 50,
-                    width: 50,
+                    height: 60,
+                    width: 60,
                   ),
                   const SizedBox(width: 10),
                   const Text(
@@ -210,12 +210,6 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                       Navigator.push(context,
                           MaterialPageRoute(builder: ((context) => NPSpage())));
                     }
-                    // onTap: () async {
-                    //   final sp = await SharedPreferences.getInstance();
-                    //   await sp.clear();
-                    //   Navigator.of(context).pushReplacement(
-                    //       MaterialPageRoute(builder: ((context) => LoginPage())));
-                    // }, Migrated to NPSpage
                     ),
               ],
             ),
@@ -294,15 +288,15 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                               const SizedBox(
                                                 height: 10,
                                               ),
-                                              Text(
-                                                'Your Aura Score:',
-                                                style: WorkSans.displaySmall
-                                                    .copyWith(
-                                                        fontSize: 25,
-                                                        color: Palette.deepBlue,
-                                                        fontWeight:
-                                                            FontWeight.w400),
-                                              ),
+                                              // Text(
+                                              //   'Your Aura Score:',
+                                              //   style: WorkSans.displaySmall
+                                              //       .copyWith(
+                                              //           fontSize: 25,
+                                              //           color: Palette.deepBlue,
+                                              //           fontWeight:
+                                              //               FontWeight.w400),
+                                              // ),
                                               const SizedBox(
                                                 height: 5,
                                               ),
@@ -312,9 +306,9 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                                   onTap: () =>
                                                       _onItemTapped(1)),
                                               const SizedBox(
-                                                height: 30,
+                                                height: 20,
                                               ),
-                                              FindSolutions(),
+                                              const FindSolutions(),
                                             ],
                                           )));
                                         })
@@ -337,12 +331,13 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
             bottom: 30,
             child: Center(
               child: Container(
-                height: 70, // Adjust the height as needed
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                height: 70, 
+                width: 490,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 10,
@@ -358,31 +353,31 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.health_and_safety, size: 30),
+                          icon: const Icon(Icons.health_and_safety, size: 30),
                           onPressed: () => _onItemTapped(0),
-                          color: currentIndex == 0 ? Palette.deepBlue : Colors.grey,
+                          color: currentIndex == 0 ? Palette.deepBlue : Colors.grey[600],
                         ),
-                        Text('Aura Score', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: Palette.deepBlue),)
+                        Text('Aura Score', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: currentIndex == 0 ? Palette.deepBlue : Colors.grey[700], fontWeight: FontWeight.w400),)
                       ],
                     ),
                     Column(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.query_stats, size: 30),
+                          icon: const Icon(Icons.query_stats, size: 30),
                           onPressed: () => _onItemTapped(1),
-                          color: currentIndex == 1 ? Palette.deepBlue : Colors.grey,
+                          color: currentIndex == 1 ? Palette.deepBlue : Colors.grey[600],
                         ),
-                        Text('Metrics', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: Palette.deepBlue),)
+                        Text('Metrics', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: currentIndex == 1 ? Palette.deepBlue : Colors.grey[700], fontWeight: FontWeight.w400),)
                       ],
                     ),
                     Column(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.person, size: 30),
+                          icon: const Icon(Icons.person, size: 30),
                           onPressed: () => _onItemTapped(2),
-                          color: currentIndex == 2 ? Palette.deepBlue : Colors.grey,
+                          color: currentIndex == 2 ? Palette.deepBlue : Colors.grey[600],
                         ),
-                        Text('Account', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: Palette.deepBlue),)
+                        Text('Account', style: WorkSans.displaySmall.copyWith(fontSize: 12, color: currentIndex == 2 ? Palette.deepBlue : Colors.grey[700], fontWeight: FontWeight.w400),)
                       ],
                     ),
                   ],
@@ -399,11 +394,11 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
 
 // text to display according to AuraScore
 String getText(double score) {
-  if (score < 2) {
+  if (score < 4) {
     return "Low";
-  } else if ((score >= 2) & (score < 4)) {
-    return "Medium";
   } else if ((score >= 4) & (score < 6)) {
+    return "Medium";
+  } else if ((score >= 6) & (score < 8)) {
     return "High";
   } else {
     return "Very high!";

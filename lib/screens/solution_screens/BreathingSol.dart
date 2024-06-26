@@ -85,7 +85,7 @@ class _BreathingSolState extends State<BreathingPhases> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Are you ready?',
                           style: WorkSans.titleMedium,
                         ),
@@ -143,7 +143,7 @@ class _BreathingSolState extends State<BreathingPhases> {
 class StateCycle extends StatefulWidget {
   final Function onCycleEnd;
 
-  const StateCycle({Key? key, required this.onCycleEnd}) : super(key: key);
+  const StateCycle({super.key, required this.onCycleEnd});
 
   @override
   _StateCycleState createState() => _StateCycleState();
