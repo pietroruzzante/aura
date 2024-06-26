@@ -71,29 +71,35 @@ class _ProfileCardState extends State<ProfileCard> {
                     ),
                   ),
                   const SizedBox(width: 20),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        name,
-                        style: WorkSans.titleMedium
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Age: $age',
-                        style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'ZIP Code: $zipCode',
-                        style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Gender: $gender',
-                        style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          name,
+                          style: WorkSans.titleMedium
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Text(
+                              'Age: $age',
+                              style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'ZIP Code: $zipCode',
+                          style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'Gender: $gender',
+                          style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -133,7 +133,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
     // Menstrual date validation if gender is woman and manual entry is enabled
     if (gender == "woman" && manualDateEntryEnabled && onMenstrualDate.isEmpty) {
       setState(() {
-        _dateError = 'Please pick a date or disable the date input.';
+        _dateError = 'Pick a date or disable option';
       });
       hasError = true;
     }
@@ -183,7 +183,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   }
                 },
                 style: IconButton.styleFrom(
-                  backgroundColor: Palette.blue,
+                  backgroundColor: Palette.deepBlue,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -201,17 +201,8 @@ class _EditAccountpageState extends State<EditAccountpage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Account", style: WorkSans.titleMedium.copyWith(color: Palette.white)),
+                Text("Account", style: WorkSans.titleMedium.copyWith(color: Palette.deepBlue, fontSize: 40)),
                 const SizedBox(height: 15),
-                CircleAvatar(
-                  radius: 35,
-                  backgroundColor: Palette.deepBlue, // Placeholder color
-                  child: Text(
-                    "U", // Initials or placeholder text
-                    style: WorkSans.titleMedium.copyWith(color: Palette.blue),
-                  ),
-                ),
-                const SizedBox(height: 40),
                 EditItem(
                   title: "Name",
                   widget: Column(
@@ -251,7 +242,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                         },
                         style: IconButton.styleFrom(
                           backgroundColor: gender == "man"
-                              ? Palette.blue
+                              ? Palette.deepBlue
                               : Colors.grey.shade200,
                           fixedSize: const Size(50, 50),
                         ),
@@ -364,8 +355,22 @@ class _EditAccountpageState extends State<EditAccountpage> {
                 if (gender == "woman")
                   Opacity(
                     opacity: !manualDateEntryEnabled ? 0.3 : 1.0,
-                    child: EditItem(
-                      title: "Date of the next menstrual cycle:",
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                                'Insert the date of your next menstrual cycle: ',
+                                style: WorkSans.displaySmall.copyWith(
+                                    fontSize: 15, color: Palette.black)),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                    EditItem(
+                      title: "Date:",
                       widget: AbsorbPointer(
                         absorbing: !manualDateEntryEnabled,
                         child: TextField(
@@ -389,14 +394,15 @@ class _EditAccountpageState extends State<EditAccountpage> {
                         ),
                       ),
                       controller: dateController,
+                      
                     ),
+                    ],
                   ),
-              ],
             ),
-          ),
+          ]),
         ),
       ),
-    );
+    ));
   }
 }
 
