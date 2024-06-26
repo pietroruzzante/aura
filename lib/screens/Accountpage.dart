@@ -1,6 +1,5 @@
 import 'package:aura/models/edit_account_widgets/profileCard.dart';
 import 'package:aura/models/work_sans.dart';
-import 'package:aura/screens/Loginpage.dart';
 import 'package:aura/screens/NPSpage.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/palette.dart';
@@ -66,7 +65,7 @@ class _AccountpageState extends State<Accountpage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Palette.white, // Red background
                   foregroundColor: Colors.red, // White text
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                 ),
                 onPressed: () {
                    Navigator.push(context,

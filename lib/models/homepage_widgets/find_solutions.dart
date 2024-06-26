@@ -5,7 +5,7 @@ import 'package:gif/gif.dart';
 
 class FindSolutions extends StatefulWidget {
 
-  FindSolutions({super.key});
+  const FindSolutions({super.key});
 
   @override
   State<FindSolutions> createState() => _FindSolutionsState();

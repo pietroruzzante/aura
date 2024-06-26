@@ -306,9 +306,9 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                                   onTap: () =>
                                                       _onItemTapped(1)),
                                               const SizedBox(
-                                                height: 30,
+                                                height: 20,
                                               ),
-                                              FindSolutions(),
+                                              const FindSolutions(),
                                             ],
                                           )));
                                         })
@@ -333,11 +333,11 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
               child: Container(
                 height: 70, 
                 width: 490,
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 10,
@@ -353,7 +353,7 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         IconButton(
-                          icon: Icon(Icons.health_and_safety, size: 30),
+                          icon: const Icon(Icons.health_and_safety, size: 30),
                           onPressed: () => _onItemTapped(0),
                           color: currentIndex == 0 ? Palette.deepBlue : Colors.grey[600],
                         ),
@@ -363,7 +363,7 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     Column(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.query_stats, size: 30),
+                          icon: const Icon(Icons.query_stats, size: 30),
                           onPressed: () => _onItemTapped(1),
                           color: currentIndex == 1 ? Palette.deepBlue : Colors.grey[600],
                         ),
@@ -373,7 +373,7 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                     Column(
                       children: [
                         IconButton(
-                          icon: Icon(Icons.person, size: 30),
+                          icon: const Icon(Icons.person, size: 30),
                           onPressed: () => _onItemTapped(2),
                           color: currentIndex == 2 ? Palette.deepBlue : Colors.grey[600],
                         ),

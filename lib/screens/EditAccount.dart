@@ -161,7 +161,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  fixedSize: Size(50, 50),
+                  fixedSize: const Size(50, 50),
                   elevation: 1,
                 ),
                 icon: const Icon(Ionicons.checkmark, color: Palette.white),
@@ -191,15 +191,15 @@ class _EditAccountpageState extends State<EditAccountpage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide:
-                            BorderSide(color: Palette.deepBlue, width: 2.0),
+                            const BorderSide(color: Palette.deepBlue, width: 2.0),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide:
-                            BorderSide(color: Palette.deepBlue, width: 2.0),
+                            const BorderSide(color: Palette.deepBlue, width: 2.0),
                       ),
                       hintText: 'Enter name here',
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: const TextStyle(color: Colors.grey),
                     ),
                   ),
                   controller: nameController,
@@ -262,15 +262,15 @@ class _EditAccountpageState extends State<EditAccountpage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide:
-                            BorderSide(color: Palette.deepBlue, width: 2.0),
+                            const BorderSide(color: Palette.deepBlue, width: 2.0),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide:
-                            BorderSide(color: Palette.deepBlue, width: 2.0),
+                            const BorderSide(color: Palette.deepBlue, width: 2.0),
                       ),
                       hintText: 'Enter age here',
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: const TextStyle(color: Colors.grey),
                     ),
                   ),
                   controller: ageController,
@@ -286,15 +286,15 @@ class _EditAccountpageState extends State<EditAccountpage> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide:
-                            BorderSide(color: Palette.deepBlue, width: 2.0),
+                            const BorderSide(color: Palette.deepBlue, width: 2.0),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10.0),
                         borderSide:
-                            BorderSide(color: Palette.deepBlue, width: 2.0),
+                            const BorderSide(color: Palette.deepBlue, width: 2.0),
                       ),
                       hintText: 'Enter ZIP code here',
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintStyle: const TextStyle(color: Colors.grey),
                     ),
                   ),
                   controller: zipController,
@@ -337,7 +337,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                                     fontSize: 15, color: Palette.black)),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         EditItem(
@@ -353,16 +353,16 @@ class _EditAccountpageState extends State<EditAccountpage> {
                                 fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Palette.deepBlue, width: 2.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10.0),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: Palette.deepBlue, width: 2.0),
                                 ),
                                 hintText: 'Click to select',
-                                hintStyle: TextStyle(color: Colors.grey),
+                                hintStyle: const TextStyle(color: Colors.grey),
                               ),
                             ),
                           ),
@@ -375,7 +375,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   const SizedBox(height: 20),
                   Text(
                     _errorMessage!,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
                 ],
               ],

@@ -1,5 +1,4 @@
 import 'package:aura/models/palette.dart';
-import 'package:aura/models/homepage_widgets/today_date.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Homepage.dart';
 import 'package:dashed_circular_progress_bar/dashed_circular_progress_bar.dart';
@@ -11,7 +10,7 @@ class AuraScoreIndicator extends StatefulWidget {
   final dynamic day;
   final VoidCallback onTap;
 
-  AuraScoreIndicator({
+  const AuraScoreIndicator({
     super.key,
     required this.score,
     required this.day,
@@ -33,8 +32,9 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
       onHorizontalDragEnd: _onHorizontalDragEnd,
       child: Container(
         width: 490,
+        height: 390,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [Palette.deepBlue2, Palette.deepBlue],
             begin: Alignment.topLeft,
             end: Alignment.center,
@@ -51,7 +51,7 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(5.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -75,7 +75,7 @@ class _AuraScoreIndicatorState extends State<AuraScoreIndicator> {
                     foregroundStrokeWidth: 20,
                     backgroundStrokeWidth: 20,
                     animation: true,
-                    animationDuration: Duration(milliseconds: 600),
+                    animationDuration: const Duration(milliseconds: 600),
                     animationCurve: Curves.easeInOut,
                     seekSize: 10,
                     seekColor: Palette.white,

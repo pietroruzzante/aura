@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class SevenDayCalendar extends StatefulWidget {
   final Day day;
 
-  SevenDayCalendar({super.key, required this.day});
+  const SevenDayCalendar({super.key, required this.day});
 
   @override
   State<SevenDayCalendar> createState() => _SevenDayCalendarState();
@@ -34,7 +34,7 @@ class _SevenDayCalendarState extends State<SevenDayCalendar> {
                     color: Palette.darkBlue,
                     fontWeight: FontWeight.bold,
                     fontSize: 20),
-                dayStrStyle: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w700),
+                dayStrStyle: const TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w700),
                 decoration: BoxDecoration(
                   color: Palette.white,
                   borderRadius: BorderRadius.circular(20),
@@ -69,9 +69,9 @@ class _SevenDayCalendarState extends State<SevenDayCalendar> {
                 ),
               ),
               activeDayStyle: DayStyle(
-                dayNumStyle: TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 22),
-                dayStrStyle: TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 14),
-                monthStrStyle:  TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 14),
+                dayNumStyle: const TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 22),
+                dayStrStyle: const TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 14),
+                monthStrStyle:  const TextStyle(color: Palette.white, fontWeight: FontWeight.w700, fontSize: 14),
                   decoration: BoxDecoration(
                 color: Palette.deepBlue,
                 borderRadius: BorderRadius.circular(20),

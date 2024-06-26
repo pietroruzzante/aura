@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 class TodayDate extends StatefulWidget {
   final dynamic day;
 
-  TodayDate(
+  const TodayDate(
       {super.key,
       required this.day});
 
