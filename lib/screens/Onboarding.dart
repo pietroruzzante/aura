@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:aura/services/impact.dart';
 import 'package:aura/screens/Homepage.dart';
 import 'package:aura/models/palette.dart';
 

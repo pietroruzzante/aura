@@ -2,7 +2,6 @@ import 'package:aura/models/edit_account_widgets/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/models/edit_account_widgets/edit_item.dart';
 import 'package:aura/models/palette.dart';
