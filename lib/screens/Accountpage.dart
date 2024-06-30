@@ -1,37 +1,19 @@
 import 'package:aura/models/edit_account_widgets/profileCard.dart';
+import 'package:aura/models/palette.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/NPSpage.dart';
 import 'package:flutter/material.dart';
-import 'package:aura/models/palette.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-typedef UserNameUpdatedCallback = void Function(String newName);
-
-class Accountpage extends StatefulWidget {
-  const Accountpage({super.key});
+class AccountPage extends StatefulWidget {
+  const AccountPage({Key? key}) : super(key: key);
 
   @override
-  State<Accountpage> createState() => _AccountpageState();
+  _AccountPageState createState() => _AccountPageState();
 }
 
-class _AccountpageState extends State<Accountpage> {
-  String name = 'User';
-
+class _AccountPageState extends State<AccountPage> {
   @override
-  void initState() {
-    super.initState();
-    loadUserName();
-  }
-
-  Future<void> loadUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      name = prefs.getString('name') ?? 'User';
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+ Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(30, 10, 30, 30),
@@ -42,7 +24,6 @@ class _AccountpageState extends State<Accountpage> {
               "Account",
               style: WorkSans.titleMedium.copyWith(color: Palette.deepBlue),
             ),
-            const SizedBox(height: 30),
             ProfileCard(),
             const SizedBox(height: 20),
             Text(
@@ -74,10 +55,8 @@ class _AccountpageState extends State<Accountpage> {
                   },
                 child: Text('Logout', style: WorkSans.headlineSmall.copyWith(color: Colors.red),),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            )])));
+
+
   }
 }

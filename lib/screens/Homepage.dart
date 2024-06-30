@@ -315,7 +315,7 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                       ]))),
                             ),
                             Metricspage(),
-                            const Accountpage(),
+                            const AccountPage(),
                           ],
                         ),
                       ),

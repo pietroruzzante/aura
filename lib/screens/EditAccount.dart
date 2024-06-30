@@ -1,9 +1,11 @@
-import 'package:aura/models/work_sans.dart';
+import 'package:aura/models/edit_account_widgets/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:aura/models/work_sans.dart';
 import 'package:aura/models/edit_account_widgets/edit_item.dart';
 import 'package:aura/models/palette.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EditAccountpage extends StatefulWidget {
   const EditAccountpage({super.key});
@@ -13,11 +15,10 @@ class EditAccountpage extends StatefulWidget {
 }
 
 class _EditAccountpageState extends State<EditAccountpage> {
-  String gender = "man";
-  TextEditingController nameController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
-  TextEditingController zipController = TextEditingController();
-  TextEditingController dateController = TextEditingController();
+  late TextEditingController nameController;
+  late TextEditingController ageController;
+  late TextEditingController zipController;
+  late TextEditingController dateController;
 
   String? _nameError;
   String? _ageError;
@@ -25,12 +26,15 @@ class _EditAccountpageState extends State<EditAccountpage> {
   String? _dateError;
 
   DateTime selectedDate = DateTime.now();
-  bool manualDateEntryEnabled = true;
 
   @override
   void initState() {
     super.initState();
-    loadUserInfo();
+    final userModel = Provider.of<UserModel>(context, listen: false);
+    nameController = TextEditingController(text: userModel.name);
+    ageController = TextEditingController(text: userModel.age);
+    zipController = TextEditingController(text: userModel.zipCode);
+    dateController = TextEditingController(text: userModel.onMenstrualDate);
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -43,37 +47,12 @@ class _EditAccountpageState extends State<EditAccountpage> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        dateController.text = picked.toLocal().toString().split(' ')[0]; // Format date as YYYY-MM-DD
+        dateController.text = picked.toLocal().toString().split(' ')[0];
       });
     }
   }
 
-  Future<void> loadUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? name = prefs.getString('name') ?? 'User';
-    String? age = prefs.getString('age');
-    String? zipCode = prefs.getString('zipCode');
-    String? onMenstrualDate = prefs.getString('onMenstrualDate');
-
-    setState(() {
-      nameController.text = name;
-      if (age != null) ageController.text = age;
-      if (zipCode != null) zipController.text = zipCode;
-      gender = prefs.getString('gender') ?? 'man';
-      if (onMenstrualDate != null && onMenstrualDate.isNotEmpty) {
-        selectedDate = DateTime.parse(onMenstrualDate);
-        dateController.text = selectedDate.toLocal().toString().split(' ')[0];
-      }
-      manualDateEntryEnabled = prefs.getBool('manual_date_entry_enabled') ?? true;
-    });
-  }
-
-  Future<void> saveUserInfo(
-    String name,
-    String age,
-    String zipCode,
-    String onMenstrualDate,
-  ) async {
+  Future<void> saveUserInfo(BuildContext context) async {
     setState(() {
       _nameError = null;
       _ageError = null;
@@ -83,45 +62,47 @@ class _EditAccountpageState extends State<EditAccountpage> {
 
     bool hasError = false;
 
+    final userModel = Provider.of<UserModel>(context, listen: false);
+
     // Name validation
-    if (name.isEmpty) {
+    if (nameController.text.isEmpty) {
       setState(() {
         _nameError = 'Name is necessary';
       });
       hasError = true;
     }
 
-    // CAP VALIDATION
-    if (zipCode.isEmpty) {
+    // CAP validation
+    if (zipController.text.isEmpty) {
       setState(() {
         _zipError = 'CAP is necessary';
       });
       hasError = true;
-    } else if (zipCode.length != 5) {
+    } else if (zipController.text.length != 5) {
       setState(() {
         _zipError = 'CAP must be 5 numbers';
       });
       hasError = true;
-    } else if (!RegExp(r'^[0-9]+$').hasMatch(zipCode)) {
+    } else if (!RegExp(r'^[0-9]+$').hasMatch(zipController.text)) {
       setState(() {
         _zipError = 'CAP must contain only numbers';
       });
       hasError = true;
     }
 
-    // AGE VALIDATION
-    if (age.isEmpty) {
+    // Age validation
+    if (ageController.text.isEmpty) {
       setState(() {
         _ageError = 'Age is necessary';
       });
       hasError = true;
-    } else if (!RegExp(r'^[0-9]+$').hasMatch(age)) {
+    } else if (!RegExp(r'^[0-9]+$').hasMatch(ageController.text)) {
       setState(() {
         _ageError = 'Age must contain only numbers';
       });
       hasError = true;
     } else {
-      int ageValue = int.parse(age);
+      int ageValue = int.parse(ageController.text);
       if (ageValue < 0 || ageValue > 120) {
         setState(() {
           _ageError = 'Age must be between 0 and 120';
@@ -131,7 +112,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
     }
 
     // Menstrual date validation if gender is woman and manual entry is enabled
-    if (gender == "woman" && manualDateEntryEnabled && onMenstrualDate.isEmpty) {
+    if (userModel.gender == 'woman' && userModel.manualDateEntryEnabled && dateController.text.isEmpty) {
       setState(() {
         _dateError = 'Pick a date or disable option';
       });
@@ -142,17 +123,24 @@ class _EditAccountpageState extends State<EditAccountpage> {
       return;
     }
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('name', name);
-    await prefs.setString('age', age);
-    await prefs.setString('zipCode', zipCode);
-    await prefs.setString('gender', gender);
-    await prefs.setString('onMenstrualDate', onMenstrualDate);
-    await prefs.setBool('manual_date_entry_enabled', manualDateEntryEnabled);
+    await userModel.saveUserInfo(
+      nameController.text,
+      ageController.text,
+      zipController.text,
+      userModel.gender,
+      dateController.text,
+      userModel.manualDateEntryEnabled,
+    );
+
+    if (_nameError == null && _ageError == null && _zipError == null && _dateError == null) {
+      Navigator.pop(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final userModel = Provider.of<UserModel>(context);
+
     return Container(
       color: Palette.white,
       child: Scaffold(
@@ -169,18 +157,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
               padding: const EdgeInsets.only(right: 15),
               child: IconButton(
                 onPressed: () async {
-                  await saveUserInfo(
-                    nameController.text,
-                    ageController.text,
-                    zipController.text,
-                    dateController.text,
-                  );
-                  if (_nameError == null &&
-                      _ageError == null &&
-                      _zipError == null &&
-                      _dateError == null) {
-                    Navigator.pop(context);
-                  }
+                  await saveUserInfo(context);
                 },
                 style: IconButton.styleFrom(
                   backgroundColor: Palette.deepBlue,
@@ -203,7 +180,6 @@ class _EditAccountpageState extends State<EditAccountpage> {
               children: [
                 Text("Account", style: WorkSans.titleMedium.copyWith(color: Palette.deepBlue, fontSize: 40)),
                 const SizedBox(height: 15),
-
                 EditItem(
                   title: "Name",
                   widget: Column(
@@ -230,53 +206,60 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   ),
                   controller: nameController,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 15),
                 EditItem(
                   title: "Gender",
-                  widget: Row(
+                  widget: DropdownButton<String>(
+                    value: userModel.gender,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        userModel.gender = newValue!;
+                        if (newValue != "woman") {
+                          dateController.clear();
+                          userModel.manualDateEntryEnabled = false;
+                        } else {
+                          userModel.manualDateEntryEnabled = true;
+                        }
+                      });
+                    },
+                    items: <String>["man", "woman", "non-binary", "other"]
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value, style: const TextStyle(fontSize: 15)),
+                      );
+                    }).toList(),
+                  ),
+                  controller: TextEditingController(text: userModel.gender),
+                ),
+                const SizedBox(height: 15),
+                EditItem(
+                  title: "CAP",
+                  widget: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            gender = "man";
-                          });
-                        },
-                        style: IconButton.styleFrom(
-                          backgroundColor: gender == "man"
-                              ? Palette.deepBlue
-                              : Colors.grey.shade200,
-                          fixedSize: const Size(50, 50),
-                        ),
-                        icon: Icon(
-                          Ionicons.male,
-                          color: gender == "man" ? Colors.white : Colors.black,
-                          size: 18,
+                      TextField(
+                        controller: zipController,
+                        decoration: InputDecoration(
+                          errorText: _zipError,
+                          errorStyle: TextStyle(color: Colors.red),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _zipError != null ? Colors.red : Colors.grey,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: _zipError != null ? Colors.red : Colors.grey,
+                            ),
+                          ),
                         ),
                       ),
-                      const SizedBox(width: 20),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            gender = "woman";
-                          });
-                        },
-                        style: IconButton.styleFrom(
-                          backgroundColor: gender == "woman"
-                              ? Palette.yellow
-                              : Colors.grey.shade200,
-                          fixedSize: const Size(50, 50),
-                        ),
-                        icon: Icon(
-                          Ionicons.female,
-                          color: gender == "woman" ? Colors.white : Colors.black,
-                          size: 18,
-                        ),
-                      )
                     ],
                   ),
-                  controller: TextEditingController(),
+                  controller: zipController,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 15),
                 EditItem(
                   title: "Age",
                   widget: Column(
@@ -303,35 +286,8 @@ class _EditAccountpageState extends State<EditAccountpage> {
                   ),
                   controller: ageController,
                 ),
-                const SizedBox(height: 40),
-                EditItem(
-                  title: "ZIP Code",
-                  widget: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextField(
-                        controller: zipController,
-                        decoration: InputDecoration(
-                          errorText: _zipError,
-                          errorStyle: TextStyle(color: Colors.red),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: _zipError != null ? Colors.red : Colors.grey,
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: _zipError != null ? Colors.red : Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  controller: zipController,
-                ),
-                const SizedBox(height: 20),
-                if (gender == "woman")
+                const SizedBox(height: 15),
+                if (userModel.gender == "woman")
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: Row(
@@ -343,19 +299,19 @@ class _EditAccountpageState extends State<EditAccountpage> {
                           ),
                         ),
                         Switch(
-                          value: !manualDateEntryEnabled,
+                          value: !userModel.manualDateEntryEnabled,
                           onChanged: (value) {
                             setState(() {
-                              manualDateEntryEnabled = !value;
+                              userModel.manualDateEntryEnabled = !value;
                             });
                           },
                         ),
                       ],
                     ),
                   ),
-                if (gender == "woman")
+                if (userModel.gender == "woman")
                   Opacity(
-                    opacity: !manualDateEntryEnabled ? 0.3 : 1.0,
+                    opacity: !userModel.manualDateEntryEnabled ? 0.3 : 1.0,
                     child: Column(
                       children: [
                         Row(
@@ -367,44 +323,41 @@ class _EditAccountpageState extends State<EditAccountpage> {
                                     fontSize: 15, color: Palette.black)),
                           ],
                         ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                    EditItem(
-                      title: "Date:",
-                      widget: AbsorbPointer(
-                        absorbing: !manualDateEntryEnabled,
-                        child: TextField(
-                          controller: dateController,
-                          readOnly: true,
-                          onTap: () => _selectDate(context),
-                          decoration: InputDecoration(
-                            errorText: _dateError,
-                            errorStyle: TextStyle(color: Colors.red),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: _dateError != null ? Colors.red : Colors.grey,
-                              ),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: _dateError != null ? Colors.red : Colors.grey,
+                        const SizedBox(height: 20),
+                        EditItem(
+                          title: "Date:",
+                          widget: AbsorbPointer(
+                            absorbing: !userModel.manualDateEntryEnabled,
+                            child: TextField(
+                              controller: dateController,
+                              readOnly: true,
+                              onTap: () => _selectDate(context),
+                              decoration: InputDecoration(
+                                errorText: _dateError,
+                                errorStyle: TextStyle(color: Colors.red),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: _dateError != null ? Colors.red : Colors.grey,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: _dateError != null ? Colors.red : Colors.grey,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
+                          controller: dateController,
                         ),
-                      ),
-                      controller: dateController,
-                      
+                      ],
                     ),
-                    ],
                   ),
+              ],
             ),
-          ]),
+          ),
         ),
       ),
-    ));
+    );
   }
 }
-
-
