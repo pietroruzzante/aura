@@ -1,4 +1,4 @@
-
+import 'package:aura/models/edit_account_widgets/user_model.dart';
 import 'package:aura/models/work_sans.dart';
 import 'package:flutter/material.dart';
 import 'package:aura/models/day.dart';
@@ -17,31 +17,32 @@ class MyApp extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Day>(
-      create: (context) => Day(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Day>(create: (context) => Day()),
+        ChangeNotifierProvider<UserModel>(create: (context) => UserModel()),
+      ],
       child: MaterialApp(
         title: 'Aura',
         theme: ThemeData(
           scaffoldBackgroundColor: Palette.transparent,
-          colorScheme:
-              ColorScheme.fromSeed(seedColor: Palette.blue),
+          colorScheme: ColorScheme.fromSeed(seedColor: Palette.blue),
           useMaterial3: true,
           appBarTheme: AppBarTheme(
             color: Palette.white,
-            iconTheme: IconThemeData(
-              color: Palette.deepBlue,
-            ),
+            iconTheme: IconThemeData(color: Palette.deepBlue),
             titleTextStyle: WorkSans.titleMedium.copyWith(color: Palette.deepBlue),
           ),
           actionIconTheme: ActionIconThemeData(
             backButtonIconBuilder: (context) => Icon(Icons.arrow_back_ios),
-          )
+          ),
         ),
-        home:  Splash()
-      )
+        home: Splash(),
+      ),
     );
   }
 }
+
 
 
 

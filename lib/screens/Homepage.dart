@@ -1,8 +1,6 @@
 import 'package:aura/models/work_sans.dart';
 import 'package:aura/screens/Accountpage.dart';
-import 'package:aura/screens/Loginpage.dart';
 import 'package:aura/screens/NPSpage.dart';
-import 'package:aura/screens/Solutionpage.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
 import 'package:flutter/material.dart';
@@ -315,7 +313,7 @@ class HomepageState extends State<Homepage> with TickerProviderStateMixin {
                                       ]))),
                             ),
                             Metricspage(),
-                            const Accountpage(),
+                            const AccountPage(),
                           ],
                         ),
                       ),

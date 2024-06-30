@@ -1,112 +1,83 @@
-import 'package:aura/models/palette.dart';
-import 'package:aura/models/work_sans.dart';
+import 'package:aura/models/edit_account_widgets/user_model.dart';
 import 'package:aura/screens/EditAccount.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import '../palette.dart';
+import '../work_sans.dart';
 
-class ProfileCard extends StatefulWidget {
-  @override
-  _ProfileCardState createState() => _ProfileCardState();
-}
-
-class _ProfileCardState extends State<ProfileCard> {
-  String name = 'User';
-  String age = '';
-  String zipCode = '';
-  String gender = 'Not specified';
-
-  @override
-  void initState() {
-    super.initState();
-    loadUserInfo();
-  }
-
-  Future<void> loadUserInfo() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      name = prefs.getString('name') ?? 'User';
-      age = prefs.getString('age') ?? 'Unknown';
-      zipCode = prefs.getString('zipCode') ?? 'Unknown';
-      gender = prefs.getString('gender') ?? 'Not specified';
-    });
-  }
-
+class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        final updatedUsername = await Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => EditAccountpage(),
-          ),
-        );
-        if (updatedUsername != null) {
-          setState(() {
-            name = updatedUsername;
-          });
-        }
-      },
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20))),
-        color: Palette.white,
-        elevation: 10,
-        shadowColor: Palette.softBlue2,
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+    return Consumer<UserModel>(
+      builder: (context, userModel, child) {
+        return GestureDetector(
+          onTap: () async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditAccountpage(),
+              ),
+            );
+          },
+          child: Card(
+            clipBehavior: Clip.antiAlias,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            color: Palette.white,
+            elevation: 10,
+            shadowColor: Palette.softBlue2,
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CircleAvatar(
-                    radius: 35,
-                    backgroundColor: Palette.rainyBlue,
-                    child: Text(
-                      name.isNotEmpty ? name[0] : 'U',
-                      style: WorkSans.titleMedium.copyWith(color: Palette.white),
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          name,
-                          style: WorkSans.titleMedium
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        radius: 35,
+                        backgroundColor: Palette.rainyBlue,
+                        child: Text(
+                          userModel.name.isNotEmpty ? userModel.name[0] : 'U',
+                          style: WorkSans.titleMedium.copyWith(color: Palette.white),
                         ),
-                        const SizedBox(height: 5),
-                        Row(
+                      ),
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Age: $age',
-                              style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
+                              userModel.name,
+                              style: WorkSans.titleMedium,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'Age: ${userModel.age}',
+                              style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600]),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'ZIP Code: ${userModel.zipCode}',
+                              style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600]),
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'Gender: ${userModel.gender}',
+                              style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600]),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'ZIP Code: $zipCode',
-                          style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'Gender: $gender',
-                          style: WorkSans.bodyLarge.copyWith(color: Colors.grey[600])
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

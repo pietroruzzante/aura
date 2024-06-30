@@ -1,6 +1,4 @@
 import 'dart:math';
-
-import 'package:aura/models/curved_background.dart';
 import 'package:aura/models/homepage_widgets/headache_score.dart';
 import 'package:aura/models/random_info.dart';
 import 'package:aura/models/random_info_card.dart';
@@ -133,18 +131,6 @@ class _SolutionpageState extends State<Solutionpage> {
                       final data = snapshot.data;
                       return Stack(
                         children: [
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: ClipPath(
-                              child: CurvedBackground(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.30,
-                                color: Palette.blue,
-                              ),
-                            ),
-                          ),
                           Column(
                             children: [
                               Align(
@@ -201,8 +187,8 @@ class _SolutionpageState extends State<Solutionpage> {
                                     slideIndicator:
                                         CircularWaveSlideIndicator(
                                       indicatorBackgroundColor:
-                                          Palette.deepBlue,
-                                      currentIndicatorColor: Palette.white,
+                                          Palette.softBlue2,
+                                      currentIndicatorColor: Palette.deepBlue,
                                     ),
                                   ),
                                   items: _getSolutions(data!).map((solution) {
