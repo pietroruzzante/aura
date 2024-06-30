@@ -8,7 +8,7 @@ Aura Score is a way to predict migraine probability.
 
 Aura App brings prevention and comfort to common users.
 
-# Powered by DartVaders
+## <span style="font-size: smaller;">Powered by DartVaders</span>
 
 - Leonardo Badon
 - Anna Ghiotto
