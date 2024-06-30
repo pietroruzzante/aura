@@ -7,6 +7,7 @@ import 'package:aura/models/work_sans.dart';
 import 'package:aura/models/edit_account_widgets/edit_item.dart';
 import 'package:aura/models/palette.dart';
 
+
 class EditAccountpage extends StatefulWidget {
   const EditAccountpage({super.key});
 
@@ -209,30 +210,50 @@ class _EditAccountpageState extends State<EditAccountpage> {
                 const SizedBox(height: 15),
                 EditItem(
                   title: "Gender",
-                  widget: DropdownButton<String>(
-                    value: userModel.gender,
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        userModel.gender = newValue!;
-                        if (newValue != "woman") {
-                          dateController.clear();
-                          userModel.manualDateEntryEnabled = false;
-                        } else {
-                          userModel.manualDateEntryEnabled = true;
-                        }
-                      });
-                    },
-                    items: <String>["man", "woman"]
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value, style: const TextStyle(fontSize: 15)),
-                      );
-                    }).toList(),
+                  widget: Row(
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            userModel.gender = "man";
+                          });
+                        },
+                        style: IconButton.styleFrom(
+                          backgroundColor: userModel.gender == "man"
+                              ? Palette.deepBlue
+                              : Colors.grey.shade200,
+                          fixedSize: const Size(50, 50),
+                        ),
+                        icon: Icon(
+                          Ionicons.male,
+                          color: userModel.gender == "man" ? Colors.white : Colors.black,
+                          size: 18,
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            userModel.gender = "woman";
+                          });
+                        },
+                        style: IconButton.styleFrom(
+                          backgroundColor: userModel.gender == "woman"
+                              ? Palette.yellow
+                              : Colors.grey.shade200,
+                          fixedSize: const Size(50, 50),
+                        ),
+                        icon: Icon(
+                          Ionicons.female,
+                          color: userModel.gender == "woman" ? Colors.white : Colors.black,
+                          size: 18,
+                        ),
+                      )
+                    ],
                   ),
-                  controller: TextEditingController(text: userModel.gender),
+                  controller: TextEditingController(),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 40),
                 EditItem(
                   title: "CAP",
                   widget: Column(
