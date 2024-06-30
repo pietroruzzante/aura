@@ -222,7 +222,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                         }
                       });
                     },
-                    items: <String>["man", "woman", "non-binary", "other"]
+                    items: <String>["man", "woman"]
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
