@@ -248,7 +248,7 @@ class _NPSpageState extends State<NPSpage> {
                         ),
                         ElevatedButton(
                           onPressed: () async {
-                            await saveScoreToSheet(selectedScore);
+                            // await saveScoreToSheet(selectedScore); This line has been commented for publication purposes
                             final sp = await SharedPreferences.getInstance();
                             await sp.clear();
                             Navigator.of(context).pushReplacement(
