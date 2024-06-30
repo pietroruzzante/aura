@@ -119,114 +119,116 @@ class _SolutionpageState extends State<Solutionpage> {
               backgroundColor: Palette.white,
               iconTheme: const IconThemeData(color: Palette.deepBlue),
             ),
-            body: Center(
-              child: FutureBuilder<dynamic>(
-                  future: futureData,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    } else if (snapshot.hasError) {
-                      return const Text('Error');
-                    } else {
-                      final data = snapshot.data;
-                      return Stack(
-                        children: [
-                          Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.topCenter,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 10),
-                                        child: Text(
-                                          'Did you know...?',
-                                          style: WorkSans.titleSmall,
+            body: SingleChildScrollView(
+              child: Center(
+                child: FutureBuilder<dynamic>(
+                    future: futureData,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return const Text('Error');
+                      } else {
+                        final data = snapshot.data;
+                        return Stack(
+                          children: [
+                            Column(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topCenter,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const Padding(
+                                          padding: EdgeInsets.only(left: 10),
+                                          child: Text(
+                                            'Did you know...?',
+                                            style: WorkSans.titleSmall,
+                                          ),
                                         ),
-                                      ),
-                                      if (_randomMigraineInfo != null)
-                                        SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width -
-                                                40,
-                                            child: RandomInfoCard(
-                                                migraineInfo:
-                                                    _randomMigraineInfo!)),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              const Padding(
-                                padding: EdgeInsets.only(left: 30),
-                                child: Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    'Try some of our solutions:',
-                                    style: WorkSans.titleSmall,
-                                    //.copyWith(color: Colors.grey[400]),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Container(
-                                margin: const EdgeInsets.only(bottom: 20),
-                                child: FlutterCarousel(
-                                  options: CarouselOptions(
-                                    viewportFraction: 0.9,
-                                    height: 400,
-                                    showIndicator: true,
-                                    indicatorMargin: 0,
-                                    slideIndicator:
-                                        CircularWaveSlideIndicator(
-                                      indicatorBackgroundColor:
-                                          Palette.softBlue2,
-                                      currentIndicatorColor: Palette.deepBlue,
+                                        if (_randomMigraineInfo != null)
+                                          SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width -
+                                                  40,
+                                              child: RandomInfoCard(
+                                                  migraineInfo:
+                                                      _randomMigraineInfo!)),
+                                      ],
                                     ),
                                   ),
-                                  items: _getSolutions(data!).map((solution) {
-                                    return Builder(
-                                        builder: (BuildContext context) {
-                                      return Column(
-                                        children: [
-                                          SizedBox(
-                                            height: 150,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      17, 0, 17, 15),
-                                              child: Text(
-                                                solution.description,
-                                                style: WorkSans.bodyMedium
-                                                    .copyWith(
-                                                  color: Palette.deepBlue,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 30),
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      'Try some of our solutions:',
+                                      style: WorkSans.titleSmall,
+                                      //.copyWith(color: Colors.grey[400]),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(bottom: 20),
+                                  child: FlutterCarousel(
+                                    options: CarouselOptions(
+                                      viewportFraction: 0.9,
+                                      height: 400,
+                                      showIndicator: true,
+                                      indicatorMargin: 0,
+                                      slideIndicator:
+                                          CircularWaveSlideIndicator(
+                                        indicatorBackgroundColor:
+                                            Palette.softBlue2,
+                                        currentIndicatorColor: Palette.deepBlue,
+                                      ),
+                                    ),
+                                    items: _getSolutions(data!).map((solution) {
+                                      return Builder(
+                                          builder: (BuildContext context) {
+                                        return Column(
+                                          children: [
+                                            SizedBox(
+                                              height: 150,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        17, 0, 17, 15),
+                                                child: Text(
+                                                  solution.description,
+                                                  style: WorkSans.bodyMedium
+                                                      .copyWith(
+                                                    color: Palette.deepBlue,
+                                                  ),
+                                                  textAlign: TextAlign.justify,
                                                 ),
-                                                textAlign: TextAlign.justify,
                                               ),
                                             ),
-                                          ),
-                                          SolutionCard(
-                                            solution: solution,
-                                          ),
-                                        ],
-                                      );
-                                    });
-                                  }).toList(),
+                                            SolutionCard(
+                                              solution: solution,
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                    }).toList(),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    }
-                  }),
+                              ],
+                            ),
+                          ],
+                        );
+                      }
+                    }),
+              ),
             )));
   }
 

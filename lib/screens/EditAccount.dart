@@ -338,7 +338,7 @@ class _EditAccountpageState extends State<EditAccountpage> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Text(
-                                'Insert the date of your next menstrual cycle: ',
+                                'Insert the date of your next period:',
                                 style: WorkSans.displaySmall.copyWith(
                                     fontSize: 15, color: Palette.black)),
                           ],
