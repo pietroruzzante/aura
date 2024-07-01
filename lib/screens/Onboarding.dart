@@ -1,8 +1,9 @@
-
+import 'package:aura/models/edit_account_widgets/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:aura/screens/Homepage.dart';
 import 'package:aura/models/palette.dart';
+
 
 class OnboardingPage extends StatefulWidget {
   @override
@@ -17,9 +18,10 @@ class _OnboardingPageState extends State<OnboardingPage> {
   bool _isLoading = false;
   String _errorMessage = '';
 
-  void _submitZipCode() async {
+  void _submitInfo() async {
     setState(() {
       _errorMessage = '';
+      _isLoading = true;
     });
 
     String name = _nameController.text;
@@ -78,15 +80,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('name', name);
-    await prefs.setString('zipCode', zip);
-    await prefs.setString('age', age);
-    await prefs.setString('gender', gender);
+    final userModel = Provider.of<UserModel>(context, listen: false);
+    await userModel.saveUserInfo(name, age, zip, gender, '', false);
 
     Navigator.pushReplacement(
       context,
@@ -156,7 +151,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
-    Widget _icon() {
+  Widget _icon() {
     return Image.asset(
       'assets/logo.png',
       height: 150,
@@ -201,7 +196,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: _submitZipCode,
+        onPressed: _submitInfo,
         child: Text(
           'Submit',
           style: TextStyle(
