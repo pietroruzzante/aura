@@ -37,8 +37,17 @@ Make sure you have Flutter properly installed. You can check by running:
 flutter doctor
 ```
 
-## <span style="font-size: smaller;">Powered by DartVaders</span>
+## Project Structure
+- ```lib/```: Contains the main application code.
+- ```assets/```: Includes images, fonts, and other asset files.
+- ```test/```: Contains unit and widget tests.
+- ```data_stress.csv```: Dataset used for training and evaluating the machine learning model.
 
+## Machine Learning Model
+The application incorporates a machine learning model trained on physiological and environmental data to predict headache occurrences. The data_stress.csv file provides the dataset used for model training and validation.
+
+## Contributors
+Powered by **DartVaders**:
 - Leonardo Badon
 - Anna Ghiotto
 - Pietro Ruzzante
